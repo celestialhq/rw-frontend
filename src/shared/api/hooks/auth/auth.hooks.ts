@@ -6,12 +6,21 @@ import {
     VerifyPasskeyAuthenticationCommand
 } from '@remnawave/backend-contract'
 import { notifications } from '@mantine/notifications'
+import { z } from 'zod'
 
 import { setToken } from '@entities/auth/session-store'
 
 import { createMutationHook } from '../../tsq-helpers'
 
 export const AUTH_QUERY_KEY = 'auth'
+
+const CloudflareAccessResponseSchema = z.object({
+    response: z.object({
+        accessToken: z.string()
+    })
+})
+
+const CloudflareAccessRequestSchema = z.object({})
 
 export const useLogin = createMutationHook({
     endpoint: LoginCommand.TSQ_url,
@@ -80,6 +89,18 @@ export const useOAuth2Authorize = createMutationHook({
                 message: error.message,
                 color: 'red'
             })
+        }
+    }
+})
+
+export const useCloudflareAccessLogin = createMutationHook({
+    endpoint: '/api/auth/cloudflare-access',
+    bodySchema: CloudflareAccessRequestSchema,
+    responseSchema: CloudflareAccessResponseSchema,
+    requestMethod: 'post',
+    rMutationParams: {
+        onSuccess: (data) => {
+            setToken({ token: data.accessToken })
         }
     }
 })

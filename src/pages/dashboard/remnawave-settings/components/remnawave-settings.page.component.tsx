@@ -5,6 +5,7 @@ import { Container } from '@mantine/core'
 
 import { AuthentificationSettingsCardWidget } from '@widgets/remnawave-settings/authentification-settings-card/authentification-settings-card.widget'
 import { BrandingSettingsCardWidget } from '@widgets/remnawave-settings/branding-settings-card/branding-settings-card.widget'
+import { TCloudflareAccessSettings } from '@shared/api/hooks/remnawave-settings/remnawave-settings.mutation.hooks'
 import { ApiTokensCardWidget } from '@widgets/remnawave-settings/api-tokens-card/api-tokens-card.widget'
 import { LoadingScreen, Logo, Page, PageHeaderShared } from '@shared/ui'
 
@@ -15,6 +16,9 @@ interface IProps {
 
 export const RemnawaveSettingsPageComponent = (props: IProps) => {
     const { remnawaveSettings, apiTokensData } = props
+    const remnawaveSettingsWithCloudflareAccess = remnawaveSettings as typeof remnawaveSettings & {
+        cloudflareAccessSettings?: null | TCloudflareAccessSettings
+    }
 
     const { t } = useTranslation()
 
@@ -37,6 +41,9 @@ export const RemnawaveSettingsPageComponent = (props: IProps) => {
             <Container fluid p={0} size="xl">
                 <Masonry columns={{ 300: 1, 1400: 2, 2000: 3, 3000: 4 }} gap={16}>
                     <AuthentificationSettingsCardWidget
+                        cloudflareAccessSettings={
+                            remnawaveSettingsWithCloudflareAccess.cloudflareAccessSettings
+                        }
                         oauth2Settings={remnawaveSettings.oauth2Settings}
                         passkeySettings={remnawaveSettings.passkeySettings}
                         passwordSettings={remnawaveSettings.passwordSettings}

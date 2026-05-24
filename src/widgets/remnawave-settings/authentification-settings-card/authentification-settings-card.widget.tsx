@@ -17,17 +17,21 @@ import {
 } from '@remnawave/backend-contract'
 import { TbAlertCircle, TbFingerprint, TbKey, TbPassword, TbServer } from 'react-icons/tb'
 import { BiLogoGithub, BiLogoTelegram } from 'react-icons/bi'
+import { SiCloudflare, SiKeycloak } from 'react-icons/si'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import { PiGlobe, PiKey } from 'react-icons/pi'
 import { useDisclosure } from '@mantine/hooks'
 import { useTranslation } from 'react-i18next'
-import { SiKeycloak } from 'react-icons/si'
 import { modals } from '@mantine/modals'
 import { useForm } from '@mantine/form'
 import { TFunction } from 'i18next'
 
+import {
+    TCloudflareAccessSettings,
+    UpdateRemnawaveSettingsRequestSchema,
+    useUpdateRemnawaveSettings
+} from '@shared/api/hooks/remnawave-settings/remnawave-settings.mutation.hooks'
 import { PasskeysDrawerComponent } from '@widgets/remnawave-settings/passkeys-settings-drawer/passkeys-drawer.component'
-import { useUpdateRemnawaveSettings } from '@shared/api/hooks/remnawave-settings/remnawave-settings.mutation.hooks'
 import { HelpActionIconShared, THelpDrawerAvailableScreen } from '@shared/ui/help-drawer'
 import { CheckboxCardShared } from '@shared/ui/checkbox-card/checkbox-card.shared'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
@@ -38,6 +42,7 @@ import { handleFormErrors } from '@shared/utils/misc'
 import { queryClient } from '@shared/api'
 
 interface IProps {
+    cloudflareAccessSettings?: null | TCloudflareAccessSettings
     oauth2Settings: NonNullable<GetRemnawaveSettingsCommand.Response['response']['oauth2Settings']>
     passkeySettings: NonNullable<
         GetRemnawaveSettingsCommand.Response['response']['passkeySettings']
@@ -45,6 +50,15 @@ interface IProps {
     passwordSettings: NonNullable<
         GetRemnawaveSettingsCommand.Response['response']['passwordSettings']
     >
+}
+
+const DEFAULT_CLOUDFLARE_ACCESS_SETTINGS: TCloudflareAccessSettings = {
+    enabled: false,
+    teamDomain: null,
+    audience: null,
+    emailAllowlistEnabled: true,
+    allowedEmails: [],
+    allowedDomains: []
 }
 
 const getOAuth2ProvidersConfig = () =>
@@ -179,18 +193,28 @@ const getFieldConfig = (t: TFunction) =>
     }) as const
 
 export const AuthentificationSettingsCardWidget = (props: IProps) => {
-    const { passkeySettings, passwordSettings, oauth2Settings } = props
+    const {
+        passkeySettings,
+        passwordSettings,
+        oauth2Settings,
+        cloudflareAccessSettings = DEFAULT_CLOUDFLARE_ACCESS_SETTINGS
+    } = props
     const { t } = useTranslation()
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
 
-    const form = useForm<NonNullable<UpdateRemnawaveSettingsCommand.Request>>({
+    const form = useForm<
+        NonNullable<UpdateRemnawaveSettingsCommand.Request> & {
+            cloudflareAccessSettings: TCloudflareAccessSettings
+        }
+    >({
         name: 'auth-settings',
         mode: 'uncontrolled',
         validate: zodResolver(
-            UpdateRemnawaveSettingsCommand.RequestSchema.pick({
+            UpdateRemnawaveSettingsRequestSchema.pick({
                 passkeySettings: true,
                 passwordSettings: true,
-                oauth2Settings: true
+                oauth2Settings: true,
+                cloudflareAccessSettings: true
             })
         ),
         initialValues: {
@@ -209,7 +233,8 @@ export const AuthentificationSettingsCardWidget = (props: IProps) => {
                 keycloak: oauth2Settings.keycloak,
                 generic: oauth2Settings.generic,
                 telegram: oauth2Settings.telegram
-            }
+            },
+            cloudflareAccessSettings: cloudflareAccessSettings ?? DEFAULT_CLOUDFLARE_ACCESS_SETTINGS
         }
     })
 
@@ -223,7 +248,9 @@ export const AuthentificationSettingsCardWidget = (props: IProps) => {
                 form.setValues({
                     passkeySettings: data.passkeySettings!,
                     passwordSettings: data.passwordSettings!,
-                    oauth2Settings: data.oauth2Settings!
+                    oauth2Settings: data.oauth2Settings!,
+                    cloudflareAccessSettings:
+                        data.cloudflareAccessSettings ?? DEFAULT_CLOUDFLARE_ACCESS_SETTINGS
                 })
 
                 form.resetDirty()
@@ -274,7 +301,8 @@ export const AuthentificationSettingsCardWidget = (props: IProps) => {
             variables: {
                 passkeySettings: values.passkeySettings,
                 passwordSettings: values.passwordSettings,
-                oauth2Settings: values.oauth2Settings
+                oauth2Settings: values.oauth2Settings,
+                cloudflareAccessSettings: values.cloudflareAccessSettings
             }
         })
     })
@@ -499,6 +527,101 @@ export const AuthentificationSettingsCardWidget = (props: IProps) => {
 
                             {/* OAuth2 */}
                             {OAUTH2_PROVIDERS.map(renderOAuth2Provider)}
+
+                            {/* Cloudflare Access */}
+                            <Accordion.Item key="cloudflare-access" value="cloudflare-access">
+                                <Center>
+                                    <Accordion.Control
+                                        icon={
+                                            <ThemeIcon color="orange" size="lg" variant="light">
+                                                <SiCloudflare size={24} />
+                                            </ThemeIcon>
+                                        }
+                                    >
+                                        <Group justify="space-between" pr="md">
+                                            <Text fw={500}>Cloudflare Access</Text>
+                                        </Group>
+                                    </Accordion.Control>
+                                    <Group gap="xs" justify="flex-end" pr="xs" wrap="nowrap">
+                                        <Switch
+                                            color="teal.8"
+                                            key={form.key('cloudflareAccessSettings.enabled')}
+                                            onClick={(e) => e.stopPropagation()}
+                                            size="md"
+                                            {...form.getInputProps(
+                                                'cloudflareAccessSettings.enabled',
+                                                {
+                                                    type: 'checkbox'
+                                                }
+                                            )}
+                                        />
+                                    </Group>
+                                </Center>
+
+                                <Accordion.Panel>
+                                    <Stack gap="md">
+                                        <TextInput
+                                            description="Cloudflare Access team domain, for example team.cloudflareaccess.com"
+                                            key={form.key('cloudflareAccessSettings.teamDomain')}
+                                            label="Team domain"
+                                            placeholder="team.cloudflareaccess.com"
+                                            {...form.getInputProps(
+                                                'cloudflareAccessSettings.teamDomain'
+                                            )}
+                                        />
+
+                                        <TextInput
+                                            description="Cloudflare Access application AUD tag"
+                                            key={form.key('cloudflareAccessSettings.audience')}
+                                            label="Audience"
+                                            placeholder="0000000000000000000000000000000000000000000000000000000000000000"
+                                            {...form.getInputProps(
+                                                'cloudflareAccessSettings.audience'
+                                            )}
+                                        />
+
+                                        <CheckboxCardShared
+                                            description="When disabled, any user accepted by this Cloudflare Access application can sign in."
+                                            key={form.key(
+                                                'cloudflareAccessSettings.emailAllowlistEnabled'
+                                            )}
+                                            label="Check email allowlist"
+                                            {...form.getInputProps(
+                                                'cloudflareAccessSettings.emailAllowlistEnabled',
+                                                {
+                                                    type: 'checkbox'
+                                                }
+                                            )}
+                                        />
+
+                                        <TagsInput
+                                            clearable
+                                            description="Email addresses allowed to sign in through Cloudflare Access"
+                                            key={form.key('cloudflareAccessSettings.allowedEmails')}
+                                            label="Allowed emails"
+                                            placeholder="admin@example.com"
+                                            splitChars={[',', ' ', ';']}
+                                            {...form.getInputProps(
+                                                'cloudflareAccessSettings.allowedEmails'
+                                            )}
+                                        />
+
+                                        <TagsInput
+                                            clearable
+                                            description="Email domains allowed to sign in through Cloudflare Access"
+                                            key={form.key(
+                                                'cloudflareAccessSettings.allowedDomains'
+                                            )}
+                                            label="Allowed domains"
+                                            placeholder="example.com"
+                                            splitChars={[',', ' ', ';']}
+                                            {...form.getInputProps(
+                                                'cloudflareAccessSettings.allowedDomains'
+                                            )}
+                                        />
+                                    </Stack>
+                                </Accordion.Panel>
+                            </Accordion.Item>
                         </Accordion>
                     </SettingsCardShared.Content>
 
