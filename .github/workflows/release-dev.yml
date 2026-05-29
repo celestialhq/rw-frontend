@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - dev
+    workflow_dispatch:
 
 permissions:
     contents: write
@@ -12,16 +13,21 @@ jobs:
     send-start-deploy-telegram-message:
         name: Send Telegram message
         runs-on: ubuntu-latest
+        env:
+            TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+            TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+            TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
         steps:
             - name: Checkout source code
               uses: actions/checkout@v2
 
             - name: Send Telegram message
+              if: env.TELEGRAM_TOKEN != '' && env.TELEGRAM_CHAT_ID != ''
               uses: proDreams/actions-telegram-notifier@main
               with:
-                  token: ${{ secrets.TELEGRAM_TOKEN }}
-                  chat_id: ${{ secrets.TELEGRAM_CHAT_ID }}
-                  thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
+                  token: ${{ env.TELEGRAM_TOKEN }}
+                  chat_id: ${{ env.TELEGRAM_CHAT_ID }}
+                  thread_id: ${{ env.TELEGRAM_TOPIC_ID }}
                   status: info
                   notify_fields: 'repository,branch,commit,workflow'
                   title: 'Build frontend:dev build started'
@@ -29,6 +35,9 @@ jobs:
     build-and-release:
         name: Build and release
         runs-on: ubuntu-22.04
+        env:
+            CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+            CROWDIN_API_TOKEN: ${{ secrets.CROWDIN_API_TOKEN }}
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -42,10 +51,8 @@ jobs:
               run: |
                   npm ci
 
-            - name: Upload sources
-              env:
-                  CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-                  CROWDIN_API_TOKEN: ${{ secrets.CROWDIN_API_TOKEN }}
+            - name: Upload sources to Crowdin
+              if: env.CROWDIN_PROJECT_ID != '' && env.CROWDIN_API_TOKEN != ''
               run: |
                   npm run crowdin:upload
 
@@ -57,11 +64,16 @@ jobs:
               run: |
                   zip -r remnawave-frontend.zip ./dist
 
-            - name: Remove previous ZIP from release (if exists)
+            - name: Ensure dev-build release exists
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  gh release delete-asset dev-build remnawave-frontend.zip || true
+                  gh release view dev-build >/dev/null 2>&1 || \
+                    gh release create dev-build \
+                      --target "${GITHUB_SHA}" \
+                      --title "Development build" \
+                      --notes "Development build for the latest dev branch." \
+                      --prerelease
 
             - name: Upload new ZIP to release
               env:
@@ -77,25 +89,31 @@ jobs:
                   DATE=$(date -u +'%Y-%m-%d %H:%M:%S UTC')
 
                   gh release edit dev-build --notes-file - <<EOF
-                  🔄 Updated development build
-                  🔗 [Commit]($COMMIT_URL)  
-                  📅 Built: $DATE
+                  Updated development build
+
+                  Commit: $COMMIT_URL
+                  Built: $DATE
                   EOF
 
     send-telegram-message:
         name: Send Telegram message
         needs: [build-and-release]
         runs-on: ubuntu-latest
+        env:
+            TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+            TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+            TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
         steps:
             - name: Checkout source code
               uses: actions/checkout@v2
 
             - name: Send Telegram message
+              if: env.TELEGRAM_TOKEN != '' && env.TELEGRAM_CHAT_ID != ''
               uses: proDreams/actions-telegram-notifier@main
               with:
-                  token: ${{ secrets.TELEGRAM_TOKEN }}
-                  chat_id: ${{ secrets.TELEGRAM_CHAT_ID }}
-                  thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
+                  token: ${{ env.TELEGRAM_TOKEN }}
+                  chat_id: ${{ env.TELEGRAM_CHAT_ID }}
+                  thread_id: ${{ env.TELEGRAM_TOPIC_ID }}
                   status: success
                   notify_fields: 'repository,branch,commit,workflow'
                   title: 'Build frontend:dev build finished'
@@ -104,16 +122,21 @@ jobs:
         runs-on: ubuntu-latest
         needs: [build-and-release]
         if: failure()
+        env:
+            TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+            TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+            TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
         steps:
             - name: Checkout source code
               uses: actions/checkout@v2
 
             - name: Send Telegram message
+              if: env.TELEGRAM_TOKEN != '' && env.TELEGRAM_CHAT_ID != ''
               uses: proDreams/actions-telegram-notifier@main
               with:
-                  token: ${{ secrets.TELEGRAM_TOKEN }}
-                  chat_id: ${{ secrets.TELEGRAM_CHAT_ID }}
-                  thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
+                  token: ${{ env.TELEGRAM_TOKEN }}
+                  chat_id: ${{ env.TELEGRAM_CHAT_ID }}
+                  thread_id: ${{ env.TELEGRAM_TOPIC_ID }}
                   status: error
                   notify_fields: 'repository,branch,commit,workflow'
                   title: 'Build frontend:dev build failed'
