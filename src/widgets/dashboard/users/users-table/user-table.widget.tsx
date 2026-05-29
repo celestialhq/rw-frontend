@@ -34,8 +34,6 @@ import { preventBackScrollTables } from '@shared/utils/misc'
 import { DataTableShared } from '@shared/ui/table'
 import { sToMs } from '@shared/utils/time-utils'
 
-import { BulkUserActionsDrawerWidget } from '../bulk-user-actions-drawer/bulk-user-actions-drawer.widget'
-
 export function UserTableWidget() {
     const { t } = useTranslation()
 
@@ -233,8 +231,6 @@ export function UserTableWidget() {
             <DataTableShared.Content>
                 <MantineReactTable table={table} />
             </DataTableShared.Content>
-
-            <BulkUserActionsDrawerWidget resetRowSelection={table.resetRowSelection} />
         </DataTableShared.Container>
     )
 }

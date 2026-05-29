@@ -3,6 +3,7 @@ import {
     TbBaselineDensityMedium,
     TbBaselineDensitySmall,
     TbColumns,
+    TbDots,
     TbFilter,
     TbFilterOff,
     TbMaximize,
@@ -23,24 +24,29 @@ import {
     Text,
     Tooltip
 } from '@mantine/core'
-import { useTranslation } from 'react-i18next'
 import { useDisclosure } from '@mantine/hooks'
+import { useTranslation } from 'react-i18next'
+import { modals } from '@mantine/modals'
 
-import { BulkAllUserActionsDrawerWidget } from '@widgets/dashboard/users/bulk-all-user-actions-drawer/bulk-all-user-actions-drawer.widget'
+import { BulkAllUsersActionsWidget } from '@widgets/dashboard/users/bulk-all-users-actions/bulk-all-users-actions.widget'
 import { useUserCreationModalStoreActions } from '@entities/dashboard/user-creation-modal-store'
 import { useUsersTableStoreActions } from '@entities/dashboard/users/users-table-store'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
+import { queryClient } from '@shared/api/query-client'
+import { QueryKeys } from '@shared/api/hooks'
+import { useIsMobile } from '@shared/hooks'
 
 import { IProps } from './interfaces'
 
 export const UserActionGroupFeature = (props: IProps) => {
     const { t } = useTranslation()
 
+    const isMobile = useIsMobile()
+
     const [isHelpDrawerOpen, helpDrawerHandlers] = useDisclosure(false)
 
     const { isLoading, refetch, table } = props
     const actions = useUsersTableStoreActions()
-    const [isBulkAllUserActionsDrawerOpen, bulkAllDrawerHandlers] = useDisclosure(false)
 
     const userCreationModalActions = useUserCreationModalStoreActions()
 
@@ -77,6 +83,11 @@ export const UserActionGroupFeature = (props: IProps) => {
             table.resetColumnFilters(true)
             table.resetGlobalFilter(true)
         }
+    }
+
+    const handleCloseModal = async () => {
+        await queryClient.refetchQueries({ queryKey: QueryKeys.users.getAllUsers._def })
+        await queryClient.refetchQueries({ queryKey: QueryKeys.system._def })
     }
 
     if (!table || !refetch) {
@@ -128,10 +139,26 @@ export const UserActionGroupFeature = (props: IProps) => {
                         <ActionIcon
                             color="red"
                             loading={isLoading}
-                            onClick={() => {
-                                table.resetRowSelection()
-                                bulkAllDrawerHandlers.open()
-                            }}
+                            onClick={() =>
+                                modals.open({
+                                    title: (
+                                        <BaseOverlayHeader
+                                            iconColor="cyan"
+                                            IconComponent={TbDots}
+                                            iconVariant="soft"
+                                            title={t(
+                                                'bulk-all-user-actions-drawer.widget.bulk-all-user-actions'
+                                            )}
+                                            titleOrder={5}
+                                        />
+                                    ),
+                                    onClose: handleCloseModal,
+                                    centered: true,
+                                    size: 'lg',
+                                    fullScreen: isMobile,
+                                    children: <BulkAllUsersActionsWidget isMobile={isMobile} />
+                                })
+                            }
                             size="input-md"
                             variant="soft"
                         >
@@ -162,11 +189,6 @@ export const UserActionGroupFeature = (props: IProps) => {
                     </Tooltip>
                 </ActionIconGroup>
             </Group>
-
-            <BulkAllUserActionsDrawerWidget
-                handlers={bulkAllDrawerHandlers}
-                isDrawerOpen={isBulkAllUserActionsDrawerOpen}
-            />
 
             <Drawer
                 keepMounted={false}
