@@ -5,6 +5,9 @@ on:
         branches:
             - dev
 
+permissions:
+    contents: write
+
 jobs:
     send-start-deploy-telegram-message:
         name: Send Telegram message
