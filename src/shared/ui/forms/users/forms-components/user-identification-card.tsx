@@ -23,10 +23,8 @@ import { renderSVG } from 'uqr'
 import { memo } from 'react'
 import dayjs from 'dayjs'
 
-import { GetUserSubscriptionRequestHistoryFeature } from '@features/ui/dashboard/users/get-user-subscription-request-history'
 import { GetUserTorrentBlockerReportsFeature } from '@features/ui/dashboard/users/get-user-torrent-blocker-reports'
 import { GetUserSubscriptionLinksFeature } from '@features/ui/dashboard/users/get-user-subscription-links'
-import { GetUserActiveSessionsFeature } from '@features/ui/dashboard/users/get-user-active-sessions'
 import { formatRelativeDateUtil, formatTimeUtil, getTimeAgoUtil } from '@shared/utils/time-utils'
 import { GetHwidUserDevicesFeature } from '@features/ui/dashboard/users/get-hwid-user-devices'
 import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
@@ -235,9 +233,7 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                 userUuid={user.uuid}
                             />
                             <GetUserTorrentBlockerReportsFeature userUuid={user.uuid} />
-                            <GetUserSubscriptionRequestHistoryFeature userUuid={user.uuid} />
                             <GetHwidUserDevicesFeature userUuid={user.uuid} />
-                            <GetUserActiveSessionsFeature userUuid={user.uuid} />
                         </Group>
                     </Group>
                 </SectionCard.Section>
