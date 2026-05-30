@@ -9,7 +9,6 @@ import {
 import { SubpageConfigEditorPageConnector } from '@pages/dashboard/subpage-config/ui/connectors/subpage-config-editor-page.connector'
 import { ConfigProfileByUuidPageConnector } from '@pages/dashboard/config-profiles/connectors/config-profile-by-uuid.page.connector'
 import { SubpageConfigBasePageConnector } from '@pages/dashboard/subpage-config/ui/connectors/subpage-config-base-page.connector'
-import { SessionsExplorerPageConnector } from '@pages/dashboard/sessions-explorer/ui/connectors/sessions-explorer.page.connector'
 import { NodePluginEditorPageConnector } from '@pages/dashboard/node-plugins/ui/connectors/node-plugin-editor-page.connector'
 import { NodePluginsBasePageConnector } from '@pages/dashboard/node-plugins/ui/connectors/node-plugins-base-page.connector'
 import { InternalSquadsPageConnector } from '@pages/dashboard/internal-squads/connectors/internal-squads.page.connector'
@@ -25,7 +24,6 @@ import { HwidInspectorPageConnector } from '@pages/dashboard/hwid-inspector/ui/c
 import { ConfigProfilesPageConnector } from '@pages/dashboard/config-profiles/connectors'
 import { ExternalSquadsPageConnector } from '@pages/dashboard/external-squads/connectors'
 import { NodesMetricsPageConnector } from '@pages/dashboard/nodes-metrics/ui/connectors'
-import { SrhInspectorPageConnector } from '@pages/dashboard/srh-inspector/ui/connectors'
 import { StatisticNodesConnector } from '@pages/dashboard/statistic-nodes/connectors'
 import { Oauth2CallbackPage } from '@pages/auth/oauth2-callback/oauth2-callback.page'
 import { HostsPageConnector } from '@pages/dashboard/hosts/ui/connectors'
@@ -135,18 +133,10 @@ const router = createBrowserRouter(
                             element={<HwidInspectorPageConnector />}
                             path={ROUTES.DASHBOARD.TOOLS.HWID_INSPECTOR}
                         />
-                        <Route
-                            element={<SrhInspectorPageConnector />}
-                            path={ROUTES.DASHBOARD.TOOLS.SRH_INSPECTOR}
-                        />
 
                         <Route
                             element={<TorrentBlockerReportsPageConnector />}
                             path={ROUTES.DASHBOARD.TOOLS.TORRENT_BLOCKER_REPORTS}
-                        />
-                        <Route
-                            element={<SessionsExplorerPageConnector />}
-                            path={ROUTES.DASHBOARD.TOOLS.SESSIONS_EXPLORER}
                         />
                     </Route>
 
