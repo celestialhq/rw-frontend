@@ -4,7 +4,6 @@ import { notifications } from '@mantine/notifications'
 import { memo, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiListChecks } from 'react-icons/pi'
-import { modals } from '@mantine/modals'
 import { useForm } from '@mantine/form'
 import { Drawer } from '@mantine/core'
 import consola from 'consola/browser'
@@ -139,7 +138,8 @@ export const EditHostModalWidget = memo(() => {
                 overrideSniFromAddress: host.overrideSniFromAddress,
                 keepSniBlank: host.keepSniBlank,
                 vlessRouteId: host.vlessRouteId ?? undefined,
-                allowInsecure: host.allowInsecure ?? undefined,
+                pinnedPeerCertSha256: host.pinnedPeerCertSha256 ?? undefined,
+                verifyPeerCertByName: host.verifyPeerCertByName ?? undefined,
                 shuffleHost: host.shuffleHost ?? undefined,
                 mihomoX25519: host.mihomoX25519 ?? undefined,
                 nodes: host.nodes ?? undefined,
@@ -164,31 +164,6 @@ export const EditHostModalWidget = memo(() => {
                 'port',
                 configProfile.inbounds.find((inbound) => inbound.uuid === value)?.port ?? undefined
             )
-        }
-    })
-
-    form.watch('allowInsecure', ({ value }) => {
-        if (value === true) {
-            modals.openConfirmModal({
-                title: t('edit-host-modal.widget.are-you-sure'),
-                children: t(
-                    'edit-host-modal.widget.allowing-insecure-connections-can-lead-to-security-risks-we-do-not-recommend-enabling-this-option'
-                ),
-                centered: true,
-                labels: {
-                    confirm: t('edit-host-modal.widget.proceed'),
-                    cancel: t('edit-host-modal.widget.cancel')
-                },
-                confirmProps: {
-                    color: 'red'
-                },
-                onConfirm: () => {
-                    form.setFieldValue('allowInsecure', true)
-                },
-                onCancel: () => {
-                    form.setFieldValue('allowInsecure', false)
-                }
-            })
         }
     })
 
@@ -304,7 +279,8 @@ export const EditHostModalWidget = memo(() => {
                 overrideSniFromAddress: host.overrideSniFromAddress,
                 keepSniBlank: host.keepSniBlank,
                 vlessRouteId: host.vlessRouteId ?? undefined,
-                allowInsecure: host.allowInsecure ?? undefined,
+                pinnedPeerCertSha256: host.pinnedPeerCertSha256 ?? undefined,
+                verifyPeerCertByName: host.verifyPeerCertByName ?? undefined,
                 nodes: host.nodes ?? undefined,
                 xrayJsonTemplateUuid: host.xrayJsonTemplateUuid ?? undefined,
                 excludedInternalSquads: host.excludedInternalSquads ?? undefined,
