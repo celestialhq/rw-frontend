@@ -142,6 +142,7 @@ export const EditHostModalWidget = memo(() => {
                 verifyPeerCertByName: host.verifyPeerCertByName ?? undefined,
                 shuffleHost: host.shuffleHost ?? undefined,
                 mihomoX25519: host.mihomoX25519 ?? undefined,
+                mihomoIpVersion: host.mihomoIpVersion ?? undefined,
                 nodes: host.nodes ?? undefined,
                 xrayJsonTemplateUuid: host.xrayJsonTemplateUuid ?? undefined,
                 excludedInternalSquads: host.excludedInternalSquads ?? undefined,

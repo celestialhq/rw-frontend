@@ -36,6 +36,7 @@ import {
     ALPN,
     CreateHostCommand,
     FINGERPRINTS,
+    MIHOMO_IP_VERSION,
     SECURITY_LAYERS,
     SUBSCRIPTION_TEMPLATE_TYPE,
     UpdateHostCommand
@@ -1146,6 +1147,38 @@ export const BaseHostForm = <T extends CreateHostCommand.Request | UpdateHostCom
                                                     })}
                                                 />
                                             </Group>
+
+                                            <Select
+                                                clearable
+                                                data={Object.values(MIHOMO_IP_VERSION).map(
+                                                    (ipVersion) => ({
+                                                        label: ipVersion,
+                                                        value: ipVersion
+                                                    })
+                                                )}
+                                                key={form.key('mihomoIpVersion')}
+                                                label={
+                                                    <Group gap={4} justify="flex-start">
+                                                        <Text fw={600} size="sm">
+                                                            Mihomo IP Version
+                                                        </Text>
+                                                        <ActionIcon
+                                                            color="gray"
+                                                            onClick={() => {
+                                                                window.open(
+                                                                    'https://wiki.metacubex.one/ru/config/proxies/#ip-version',
+                                                                    '_blank'
+                                                                )
+                                                            }}
+                                                            size="xs"
+                                                            variant="subtle"
+                                                        >
+                                                            <HiQuestionMarkCircle size={20} />
+                                                        </ActionIcon>
+                                                    </Group>
+                                                }
+                                                {...form.getInputProps('mihomoIpVersion')}
+                                            />
                                         </Stack>
                                     </SectionCard.Section>
                                 </SectionCard.Root>
