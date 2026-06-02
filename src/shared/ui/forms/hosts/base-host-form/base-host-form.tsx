@@ -1050,13 +1050,51 @@ export const BaseHostForm = <T extends CreateHostCommand.Request | UpdateHostCom
 
                                             <TextInput
                                                 key={form.key('pinnedPeerCertSha256')}
-                                                label="Pinned Peer Cert SHA256"
+                                                label={
+                                                    <Group gap={4} justify="flex-start">
+                                                        <Text fw={600} size="sm">
+                                                            Pinned Peer Cert SHA256
+                                                        </Text>
+                                                        <ActionIcon
+                                                            color="gray"
+                                                            onClick={() => {
+                                                                window.open(
+                                                                    'https://xtls.github.io/ru/config/transports/tls.html#tlsobject',
+                                                                    '_blank'
+                                                                )
+                                                            }}
+                                                            size="xs"
+                                                            variant="subtle"
+                                                        >
+                                                            <HiQuestionMarkCircle size={20} />
+                                                        </ActionIcon>
+                                                    </Group>
+                                                }
                                                 {...form.getInputProps('pinnedPeerCertSha256')}
                                             />
 
                                             <TextInput
                                                 key={form.key('verifyPeerCertByName')}
-                                                label="Verify Peer Cert By Name"
+                                                label={
+                                                    <Group gap={4} justify="flex-start">
+                                                        <Text fw={600} size="sm">
+                                                            Verify Peer Cert By Name
+                                                        </Text>
+                                                        <ActionIcon
+                                                            color="gray"
+                                                            onClick={() => {
+                                                                window.open(
+                                                                    'https://xtls.github.io/ru/config/transports/tls.html#tlsobject',
+                                                                    '_blank'
+                                                                )
+                                                            }}
+                                                            size="xs"
+                                                            variant="subtle"
+                                                        >
+                                                            <HiQuestionMarkCircle size={20} />
+                                                        </ActionIcon>
+                                                    </Group>
+                                                }
                                                 {...form.getInputProps('verifyPeerCertByName')}
                                             />
 
