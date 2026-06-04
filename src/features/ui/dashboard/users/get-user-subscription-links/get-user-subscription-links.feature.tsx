@@ -202,7 +202,13 @@ export function GetUserSubscriptionLinksFeature(props: IProps) {
             </Drawer>
 
             <Tooltip label={t('get-user-subscription-links.feature.connection-keys')}>
-                <ActionIcon color="teal" onClick={handlers.open} size="lg" variant="soft">
+                <ActionIcon
+                    color="teal"
+                    loading={isLoading}
+                    onClick={handlers.open}
+                    size="lg"
+                    variant="soft"
+                >
                     <PiLinkBreak size="22px" />
                 </ActionIcon>
             </Tooltip>
