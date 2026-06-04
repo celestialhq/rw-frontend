@@ -143,7 +143,7 @@ export const NodeVitalsCard = <T extends CreateNodeCommand.Request | UpdateNodeC
                             {...form.getInputProps('proxyUrl')}
                             description={t('node-vitals.card.proxy-url-description')}
                             leftSection={<TbNetwork size={16} />}
-                            placeholder="socks5://user:pass@some-socks-proxy.com:9050"
+                            placeholder="socks5://user:pass@address:port"
                         />
                     </Stack>
                 </SectionCard.Section>

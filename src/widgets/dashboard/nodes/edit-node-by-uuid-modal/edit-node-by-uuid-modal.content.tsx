@@ -31,6 +31,11 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
     const form = useForm<UpdateNodeCommand.Request>({
         name: 'edit-node-form',
         mode: 'uncontrolled',
+        onValuesChange: (values) => {
+            if (typeof values.proxyUrl === 'string' && values.proxyUrl === '') {
+                form.setFieldValue('proxyUrl', null)
+            }
+        },
         validate: zodResolver(UpdateNodeCommand.RequestSchema.omit({ uuid: true }))
     })
 
