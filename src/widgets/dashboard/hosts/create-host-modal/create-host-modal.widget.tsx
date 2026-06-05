@@ -74,6 +74,12 @@ export const CreateHostModalWidget = () => {
                 await queryClient.refetchQueries({
                     queryKey: QueryKeys.hosts.getAllTags.queryKey
                 })
+
+                notifications.show({
+                    title: 'Success',
+                    message: 'Host created successfully',
+                    color: 'teal'
+                })
             }
         }
     })

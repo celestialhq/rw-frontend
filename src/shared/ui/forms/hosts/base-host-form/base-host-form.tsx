@@ -23,9 +23,18 @@ import {
     Transition
 } from '@mantine/core'
 import {
+    ALPN,
+    CreateHostCommand,
+    FINGERPRINTS,
+    MIHOMO_IP_VERSION,
+    SECURITY_LAYERS,
+    SUBSCRIPTION_TEMPLATE_TYPE,
+    UpdateHostCommand,
+    UpdateManyHostsCommand
+} from '@remnawave/backend-contract'
+import {
     PiArrowUpDuotone,
     PiCaretDown,
-    PiCopyDuotone,
     PiFloppyDiskDuotone,
     PiGearSixDuotone,
     PiInfo,
@@ -35,15 +44,6 @@ import {
     PiPencilDuotone,
     PiTag
 } from 'react-icons/pi'
-import {
-    ALPN,
-    CreateHostCommand,
-    FINGERPRINTS,
-    MIHOMO_IP_VERSION,
-    SECURITY_LAYERS,
-    SUBSCRIPTION_TEMPLATE_TYPE,
-    UpdateHostCommand
-} from '@remnawave/backend-contract'
 import {
     TbCirclesRelation,
     TbCloudNetwork,
@@ -110,7 +110,9 @@ const SUBSCRIPTION_TYPES = {
     }
 } as const
 
-export const BaseHostForm = <T extends CreateHostCommand.Request | UpdateHostCommand.Request>(
+export const BaseHostForm = <
+    T extends CreateHostCommand.Request | UpdateHostCommand.Request | UpdateManyHostsCommand.Request
+>(
     props: IProps<T>
 ) => {
     const {
@@ -118,11 +120,11 @@ export const BaseHostForm = <T extends CreateHostCommand.Request | UpdateHostCom
         handleSubmit,
         configProfiles,
         isSubmitting,
-        handleCloneHost,
         nodes,
         internalSquads,
         subscriptionTemplates,
-        hostTags
+        hostTags,
+        removeRequiredFields
     } = props
 
     const { t } = useTranslation()
@@ -384,7 +386,7 @@ export const BaseHostForm = <T extends CreateHostCommand.Request | UpdateHostCom
                                             label={t('base-host-form.remark')}
                                             {...form.getInputProps('remark')}
                                             leftSection={<TemplateInfoPopoverShared />}
-                                            required
+                                            required={!removeRequiredFields}
                                         />
 
                                         <Stack gap="xs">
@@ -429,7 +431,7 @@ export const BaseHostForm = <T extends CreateHostCommand.Request | UpdateHostCom
                                                 }
                                                 {...form.getInputProps('address')}
                                                 placeholder={t('base-host-form.e-g-example-com')}
-                                                required
+                                                required={!removeRequiredFields}
                                                 rightSection={patternHoverCard(true, true, true)}
                                                 w="65%"
                                             />
@@ -462,7 +464,7 @@ export const BaseHostForm = <T extends CreateHostCommand.Request | UpdateHostCom
                                                 max={65535}
                                                 min={1}
                                                 placeholder={t('base-host-form.e-g-443')}
-                                                required
+                                                required={!removeRequiredFields}
                                                 w="30%"
                                             />
                                         </Group>
@@ -1236,19 +1238,6 @@ export const BaseHostForm = <T extends CreateHostCommand.Request | UpdateHostCom
                     </Group>
 
                     <Group>
-                        {handleCloneHost && (
-                            <Tooltip label={t('base-host-form.clone')}>
-                                <ActionIcon
-                                    color="blue"
-                                    loading={isSubmitting}
-                                    onClick={handleCloneHost}
-                                    size="xl"
-                                    variant="light"
-                                >
-                                    <PiCopyDuotone size="24px" />
-                                </ActionIcon>
-                            </Tooltip>
-                        )}
                         <DeleteHostFeature />
                     </Group>
                 </Group>

@@ -14,6 +14,7 @@ import {
 import { MultiSelectHostsFeature } from '@features/dashboard/hosts/multi-select-hosts/multi-select-hosts.feature'
 import { HostsDataTableWidget } from '@widgets/dashboard/hosts/hosts-datatable/hosts-datatable.widget'
 import { HeaderActionButtonsFeature } from '@features/ui/dashboard/hosts/header-action-buttons'
+import { EditManyHostsDrawer } from '@widgets/dashboard/hosts/edit-many-hosts-drawer'
 import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 import { CreateHostModalWidget } from '@widgets/dashboard/hosts/create-host-modal'
 import { HostsSpotlightWidget } from '@widgets/dashboard/hosts/hosts-spotlight'
@@ -155,6 +156,7 @@ export default function HostsPageComponent(props: IProps) {
             <HostsSpotlightWidget configProfiles={configProfiles ?? []} hosts={hosts ?? []} />
 
             <EditHostModalWidget key="edit-host-modal" />
+            <EditManyHostsDrawer key="edit-many-hosts-drawer" />
             <CreateHostModalWidget key="create-host-modal" />
 
             <MultiSelectHostsFeature
