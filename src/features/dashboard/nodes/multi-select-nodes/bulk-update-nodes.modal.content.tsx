@@ -9,7 +9,8 @@ import {
     Select,
     Stack,
     TagsInput,
-    Text
+    Text,
+    Textarea
 } from '@mantine/core'
 import { BulkNodesUpdateCommand, GetAllNodesCommand } from '@remnawave/backend-contract'
 import { TbCheck, TbMapPin, TbMinus, TbPackage, TbPlus } from 'react-icons/tb'
@@ -31,6 +32,7 @@ import {
 } from '@shared/api/hooks'
 import { COUNTRIES } from '@shared/ui/forms/nodes/base-node-form/constants'
 import { LoaderModalShared } from '@shared/ui/loader-modal'
+import { TagInputPill } from '@shared/ui/tag-input-pill'
 import { queryClient } from '@shared/api/query-client'
 import { SectionCard } from '@shared/ui/section-card'
 
@@ -62,7 +64,8 @@ export const BulkUpdateNodesModalContent = (props: IProps) => {
                 countryCode: undefined,
                 consumptionMultiplier: undefined,
                 providerUuid: undefined,
-                activePluginUuid: undefined
+                activePluginUuid: undefined,
+                note: undefined
             }
         }
     })
@@ -150,7 +153,7 @@ export const BulkUpdateNodesModalContent = (props: IProps) => {
                             clearable
                             data={tags?.tags || []}
                             key={form.key('fields.tags')}
-                            label="Tags"
+                            label={t('use-nodes-table-widget.tags')}
                             leftSection={<PiTagDuotone size="16px" />}
                             maxTags={10}
                             placeholder="Enter tags (comma, space, semicolon)"
@@ -162,6 +165,19 @@ export const BulkUpdateNodesModalContent = (props: IProps) => {
                                     .map((key) => form.errors[key])
                                     .join(', ') || form.getInputProps('fields.tags').error
                             }
+                            renderPill={({ value, onRemove }) => (
+                                <TagInputPill onRemove={onRemove} value={value} />
+                            )}
+                        />
+
+                        <Textarea
+                            key={form.key('fields.note')}
+                            label={t('node-tracking-and-billing.card.note')}
+                            resize="vertical"
+                            {...form.getInputProps('fields.note')}
+                            styles={{
+                                label: { fontWeight: 500 }
+                            }}
                         />
                     </Stack>
                 </SectionCard.Section>

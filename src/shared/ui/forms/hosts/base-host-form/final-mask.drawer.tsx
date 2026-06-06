@@ -1,4 +1,8 @@
-import { CreateHostCommand, UpdateHostCommand } from '@remnawave/backend-contract'
+import {
+    CreateHostCommand,
+    UpdateHostCommand,
+    UpdateManyHostsCommand
+} from '@remnawave/backend-contract'
 import { Anchor, Button, Drawer, JsonInput, Stack, Text } from '@mantine/core'
 import { Trans, useTranslation } from 'react-i18next'
 import { UseFormReturnType } from '@mantine/form'
@@ -21,13 +25,17 @@ const FINAL_MASK_PLACEHOLDER = {
     ],
     quicParams: {}
 }
-interface IProps<T extends CreateHostCommand.Request | UpdateHostCommand.Request> {
+interface IProps<
+    T extends CreateHostCommand.Request | UpdateHostCommand.Request | UpdateManyHostsCommand.Request
+> {
     close: () => void
     form: UseFormReturnType<T>
     opened: boolean
 }
 
-export const FinalMaskDrawer = <T extends CreateHostCommand.Request | UpdateHostCommand.Request>({
+export const FinalMaskDrawer = <
+    T extends CreateHostCommand.Request | UpdateHostCommand.Request | UpdateManyHostsCommand.Request
+>({
     close,
     opened,
     form

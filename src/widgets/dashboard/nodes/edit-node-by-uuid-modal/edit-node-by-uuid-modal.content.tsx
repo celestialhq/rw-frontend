@@ -31,6 +31,11 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
     const form = useForm<UpdateNodeCommand.Request>({
         name: 'edit-node-form',
         mode: 'uncontrolled',
+        onValuesChange: (values) => {
+            if (typeof values.proxyUrl === 'string' && values.proxyUrl === '') {
+                form.setFieldValue('proxyUrl', null)
+            }
+        },
         validate: zodResolver(UpdateNodeCommand.RequestSchema.omit({ uuid: true }))
     })
 
@@ -76,7 +81,7 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
                 notifyPercent: fetchedNode.notifyPercent ?? undefined,
                 consumptionMultiplier: fetchedNode.consumptionMultiplier ?? undefined,
                 tags: fetchedNode.tags ?? undefined,
-
+                proxyUrl: fetchedNode.proxyUrl ?? undefined,
                 configProfile: {
                     activeConfigProfileUuid:
                         fetchedNode.configProfile.activeConfigProfileUuid ?? '',
@@ -86,7 +91,8 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
                 },
 
                 providerUuid: fetchedNode.providerUuid ?? undefined,
-                activePluginUuid: fetchedNode.activePluginUuid ?? undefined
+                activePluginUuid: fetchedNode.activePluginUuid ?? undefined,
+                note: fetchedNode.note ?? undefined
             })
         }
     }, [fetchedNode])

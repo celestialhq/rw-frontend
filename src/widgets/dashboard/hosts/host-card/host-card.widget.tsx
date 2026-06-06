@@ -20,9 +20,14 @@ import {
     TbMask,
     TbStar
 } from 'react-icons/tb'
-import { PiLock, PiNetwork, PiProhibit, PiPulse, PiTag } from 'react-icons/pi'
-import { CSSProperties, useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import {
+    GetAllHostsCommand,
+    GetAllNodesCommand,
+    GetConfigProfilesCommand
+} from '@remnawave/backend-contract'
+import { createSearchParams, useNavigate } from 'react-router-dom'
+import { PiNetwork, PiProhibit, PiPulse } from 'react-icons/pi'
+import { CSSProperties, useState } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { useTranslation } from 'react-i18next'
 import { RiDraggable } from 'react-icons/ri'
@@ -33,12 +38,23 @@ import cx from 'clsx'
 import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
 import { SEARCH_PARAMS } from '@shared/constants/search-params'
-import { useHostsStoreFilters } from '@entities/dashboard'
+import { openOrNavigate } from '@shared/utils/open-or-navigate'
 import { XrayLogo } from '@shared/ui/logos'
 import { useIsMobile } from '@shared/hooks'
+import { ROUTES } from '@shared/constants'
 
 import classes from './HostCard.module.css'
-import { IProps } from './interfaces'
+
+export interface IProps {
+    configProfiles: GetConfigProfilesCommand.Response['response']['configProfiles'] | undefined
+    isDragOverlay?: boolean
+    isSelected?: boolean
+    item: GetAllHostsCommand.Response['response'][number]
+    nodesByUuid: Map<string, GetAllNodesCommand.Response['response'][number]>
+    onSelect?: () => void
+    openExternal?: boolean
+    viewOnly?: boolean
+}
 
 export function HostCardWidget(props: IProps) {
     const {
@@ -48,14 +64,12 @@ export function HostCardWidget(props: IProps) {
         isSelected,
         onSelect,
         isDragOverlay = false,
-        isHighlighted = false
+        viewOnly = false,
+        openExternal = false
     } = props
 
     const { t } = useTranslation()
-
-    const [searchParams, setSearchParams] = useSearchParams()
-
-    const filters = useHostsStoreFilters()
+    const navigate = useNavigate()
 
     const openModalWithData = useModalsStoreOpenWithData()
 
@@ -70,14 +84,9 @@ export function HostCardWidget(props: IProps) {
         (inbound) => inbound.uuid === item.inbound.configProfileInboundUuid
     )?.tag
 
-    const isFiltered =
-        (!!filters.configProfileUuid && configProfile?.uuid !== filters.configProfileUuid) ||
-        (!!filters.inboundUuid && item.inbound.configProfileInboundUuid !== filters.inboundUuid) ||
-        (!!filters.hostTag && item.tag !== filters.hostTag)
-
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
         id: item.uuid,
-        disabled: isDragOverlay || isFiltered
+        disabled: isDragOverlay
     })
 
     const style: CSSProperties = {
@@ -89,17 +98,19 @@ export function HostCardWidget(props: IProps) {
     }
 
     const handleEdit = () => {
+        if (openExternal) {
+            openOrNavigate(
+                `${ROUTES.DASHBOARD.MANAGEMENT.HOSTS}?${createSearchParams({
+                    [SEARCH_PARAMS.HOST]: item.uuid
+                })}`,
+                navigate
+            )
+
+            return
+        }
+
         openModalWithData(MODALS.EDIT_HOST_MODAL, item)
     }
-
-    useEffect(() => {
-        if (searchParams.get(SEARCH_PARAMS.HOST) === item.uuid) {
-            handleEdit()
-
-            searchParams.delete(SEARCH_PARAMS.HOST)
-            setSearchParams(searchParams)
-        }
-    }, [searchParams])
 
     if (!configProfiles) {
         return null
@@ -128,9 +139,7 @@ export function HostCardWidget(props: IProps) {
         return (
             <Box
                 className={cx(classes.item, classes.mobileItem, {
-                    [classes.highlightedItem]: isHighlighted,
                     [classes.itemDragging]: isDragging || isHovered,
-                    [classes.filteredItem]: isFiltered,
                     [classes.selectedItem]: isSelected,
                     [classes.danglingItem]: !configProfile?.uuid
                 })}
@@ -140,44 +149,29 @@ export function HostCardWidget(props: IProps) {
             >
                 <Stack gap="sm">
                     <Group justify="space-between" wrap="nowrap">
-                        <Group gap="sm" wrap="nowrap">
-                            <Checkbox
-                                checked={isSelected}
-                                onChange={(e) => {
-                                    e.stopPropagation()
-                                    onSelect?.()
-                                }}
-                                size="md"
-                                styles={{
-                                    input: { cursor: 'pointer' }
-                                }}
-                            />
-                            <Box
-                                {...(isDragOverlay ? {} : attributes)}
-                                {...(isDragOverlay ? {} : listeners)}
-                                className={classes.mobileDragHandle}
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                {!isFiltered && <RiDraggable size={px('1.2rem')} />}
-                                {isFiltered && (
-                                    <PiLock className={classes.lockedIcon} size={px('1.2rem')} />
-                                )}
-                            </Box>
-                        </Group>
-
-                        <Group gap="xs">
-                            {item.tag && (
-                                <Badge
-                                    autoContrast
-                                    color={ch.hex(item.tag)}
-                                    leftSection={<TbStar size={12} />}
+                        {!viewOnly && (
+                            <Group gap="sm" wrap="nowrap">
+                                <Checkbox
+                                    checked={isSelected}
+                                    onChange={(e) => {
+                                        e.stopPropagation()
+                                        onSelect?.()
+                                    }}
                                     size="md"
-                                    variant="outline"
+                                    styles={{
+                                        input: { cursor: 'pointer' }
+                                    }}
+                                />
+                                <Box
+                                    {...(isDragOverlay ? {} : attributes)}
+                                    {...(isDragOverlay ? {} : listeners)}
+                                    className={classes.mobileDragHandle}
+                                    onClick={(e) => e.stopPropagation()}
                                 >
-                                    {item.tag}
-                                </Badge>
-                            )}
-                        </Group>
+                                    <RiDraggable size={px('1.2rem')} />
+                                </Box>
+                            </Group>
+                        )}
 
                         {!isHostActive && (
                             <ActionIcon
@@ -243,23 +237,70 @@ export function HostCardWidget(props: IProps) {
                                             <TbAlertCircle size={12} />
                                         )
                                     }
-                                    size="sm"
-                                    variant="light"
+                                    size="md"
+                                    style={{
+                                        paddingLeft: 0
+                                    }}
+                                    variant="transparent"
                                 >
                                     {configProfile?.name || 'DANGLING'}
+                                    {item.inbound.configProfileInboundUuid && (
+                                        <>
+                                            <span style={{ margin: '0 6px', opacity: 0.5 }}>›</span>
+                                            <span style={{ opacity: 0.75 }}>
+                                                {inboundTag || 'UNKNOWN'}
+                                            </span>
+                                        </>
+                                    )}
                                 </Badge>
 
-                                <Badge
-                                    autoContrast
-                                    color={ch.hex(
-                                        item.inbound.configProfileInboundUuid || 'dangling'
+                                <OverflowList
+                                    data={item.tags.sort((a, b) => a.localeCompare(b))}
+                                    gap={0}
+                                    maxRows={1}
+                                    maxVisibleItems={2}
+                                    renderItem={(tag) => (
+                                        <Badge
+                                            autoContrast
+                                            color={ch.hex(tag)}
+                                            key={tag}
+                                            leftSection={<TbStar size={12} />}
+                                            size="md"
+                                            style={{
+                                                paddingLeft: 0
+                                            }}
+                                            variant="transparent"
+                                        >
+                                            {tag}
+                                        </Badge>
                                     )}
-                                    leftSection={<PiTag size={12} />}
-                                    size="sm"
-                                    variant="outline"
-                                >
-                                    {inboundTag || 'UNKNOWN'}
-                                </Badge>
+                                    renderOverflow={(items) => (
+                                        <Tooltip
+                                            label={
+                                                <Stack gap="xs">
+                                                    {items.map((tag) => (
+                                                        <Badge
+                                                            color={ch.hex(tag)}
+                                                            fullWidth
+                                                            key={tag}
+                                                            leftSection={<TbStar size={12} />}
+                                                            size="md"
+                                                            variant="transparent"
+                                                        >
+                                                            {tag}
+                                                        </Badge>
+                                                    ))}
+                                                </Stack>
+                                            }
+                                            multiline
+                                            position="top"
+                                        >
+                                            <Badge color="gray" size="md" variant="transparent">
+                                                +{items.length}
+                                            </Badge>
+                                        </Tooltip>
+                                    )}
+                                />
                             </Stack>
                         </Stack>
                     </Box>
@@ -272,29 +313,26 @@ export function HostCardWidget(props: IProps) {
         <Box
             className={cx(classes.item, {
                 [classes.itemDragging]: isDragging || isHovered,
-                [classes.filteredItem]: isFiltered,
                 [classes.selectedItem]: isSelected,
-                [classes.danglingItem]: !configProfile?.uuid,
-                [classes.highlightedItem]: isHighlighted
+                [classes.danglingItem]: !configProfile?.uuid
             })}
             data-dnd-overlay={isDragOverlay}
             ref={isDragOverlay ? undefined : setNodeRef}
             style={style}
         >
             <Group gap="md" w="100%" wrap="nowrap">
-                <Group gap="xs" wrap="nowrap">
-                    <Checkbox checked={isSelected} onChange={onSelect} size="md" />
-                    <Box
-                        {...(isDragOverlay ? {} : attributes)}
-                        {...(isDragOverlay ? {} : listeners)}
-                        className={classes.dragHandle}
-                    >
-                        {!isFiltered && <RiDraggable color="white" size="24px" />}
-                        {isFiltered && (
-                            <PiLock className={classes.lockedIcon} color="white" size="24px" />
-                        )}
-                    </Box>
-                </Group>
+                {!viewOnly && (
+                    <Group gap="xs" wrap="nowrap">
+                        <Checkbox checked={isSelected} onChange={onSelect} size="md" />
+                        <Box
+                            {...(isDragOverlay ? {} : attributes)}
+                            {...(isDragOverlay ? {} : listeners)}
+                            className={classes.dragHandle}
+                        >
+                            <RiDraggable color="white" size="24px" />
+                        </Box>
+                    </Group>
+                )}
 
                 <Stack
                     className={classes.contentArea}
@@ -440,6 +478,9 @@ export function HostCardWidget(props: IProps) {
                                     )
                                 }
                                 size="md"
+                                style={{
+                                    paddingLeft: 0
+                                }}
                                 variant="transparent"
                             >
                                 {configProfile?.name || 'DANGLING'}
@@ -453,17 +494,50 @@ export function HostCardWidget(props: IProps) {
                                 )}
                             </Badge>
 
-                            {item.tag && (
-                                <Badge
-                                    autoContrast
-                                    color={ch.hex(item.tag)}
-                                    leftSection={<TbStar size={12} />}
-                                    size="md"
-                                    variant="transparent"
-                                >
-                                    {item.tag}
-                                </Badge>
-                            )}
+                            <OverflowList
+                                data={item.tags.sort((a, b) => a.localeCompare(b))}
+                                gap={0}
+                                maxRows={1}
+                                maxVisibleItems={2}
+                                renderItem={(tag) => (
+                                    <Badge
+                                        autoContrast
+                                        color={ch.hex(tag)}
+                                        key={tag}
+                                        leftSection={<TbStar size={12} />}
+                                        size="md"
+                                        variant="transparent"
+                                    >
+                                        {tag}
+                                    </Badge>
+                                )}
+                                renderOverflow={(items) => (
+                                    <Tooltip
+                                        label={
+                                            <Stack gap="xs">
+                                                {items.map((tag) => (
+                                                    <Badge
+                                                        color={ch.hex(tag)}
+                                                        fullWidth
+                                                        key={tag}
+                                                        leftSection={<TbStar size={12} />}
+                                                        size="md"
+                                                        variant="transparent"
+                                                    >
+                                                        {tag}
+                                                    </Badge>
+                                                ))}
+                                            </Stack>
+                                        }
+                                        multiline
+                                        position="top"
+                                    >
+                                        <Badge color="gray" size="md" variant="transparent">
+                                            +{items.length}
+                                        </Badge>
+                                    </Tooltip>
+                                )}
+                            />
 
                             {serverDescription && (
                                 <Badge

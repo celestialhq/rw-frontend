@@ -60,7 +60,8 @@
         "nothing-found": "Ничего не найдено",
         "name": "Имя",
         "clone": "Клонировать",
-        "event-sent": "Запрос отправлен"
+        "event-sent": "Запрос отправлен",
+        "open": "Открыть"
     },
     "bandwidth-metrics": {
         "current-year": "Текущий год",
@@ -470,7 +471,7 @@
         "runtime-info": {
             "title": "Справка по метрикам Runtime",
             "subtitle": "Что означает каждый значение в карточках runtime",
-            "intro": "Each card shows a live snapshot of a single <highlight>Remnawave process</highlight>. Use this guide to understand what each metric measures and when to worry about it.",
+            "intro": "Каждая карта показывает текущее состояние одного процесса <highlight>Remnawave</highlight>. Используйте это руководство, чтобы понять, что означает каждая метрика и когда беспокоиться о ней.",
             "instance-types-title": "Типы процессов",
             "instance-types-description": "Remnawave разделен на несколько специализированных процессов. Каждый из них выполняет свою задачу, имеет свою память и свой цикл обработки событий.",
             "api-description": "Обрабатывает все HTTP-запросы с панели и подписки. Это <highlight>main user-facing process</highlight>— им обрабатывается практически каждый запрос к панели и подписке.",
@@ -630,8 +631,15 @@
             "set-port": "Установить порт",
             "port": "Порт",
             "clear-selection": "Очистить выбор",
-            "select-all": "Выбрать все"
+            "select-all": "Выбрать все",
+            "dangling-hosts-skipped": "{{count}} dangling host(s) were skipped and not cloned."
         }
+    },
+    "edit-many-hosts-drawer": {
+        "confirm-title": "Confirm bulk update",
+        "confirm-description": "The following fields will be updated for {{count}} host(s):",
+        "no-changes-title": "Nothing to update",
+        "no-changes-description": "You haven't changed any fields."
     },
     "bulk-user-actions-drawer": {
         "widget": {
@@ -1268,6 +1276,17 @@
             "address": "Поиск по адресу...",
             "filter-by-tags": "Фильтр по тегам"
         }
+    },
+    "disclaimer-overlay": {
+        "title": "Дисклеймер",
+        "subtitle": "Пожалуйста, прочтите это уведомление прежде чем продолжить.",
+        "intro": "Remnawave — это <highlight>решение с открытым исходным кодом для самостоятельного размещения</highlight>, предназначенное для управления прокси и пользователями. Программное обеспечение предоставляется <warning>«как есть», без каких-либо гарантий</warning>, явных или подразумеваемых.",
+        "responsibility": "Вы несёте полную ответственность за то, как вы развертываете и используете это программное обеспечение.",
+        "compliance": "Вы обязаны соблюдать все законы и правила, действующие в вашей юрисдикции.",
+        "liability": "Разработчики и контрибьюторы проекта не несут никакой ответственности за любое неправомерное использование, ущерб или потерю данных.",
+        "license-acknowledgement": "Продолжая, вы подтверждаете, что прочитали и согласны с <anchor>условиями лицензии</anchor>.",
+        "accept-button": "Я понимаю и принимаю",
+        "shown-once": "Это уведомление отображается только один раз."
     },
     "mobile-warning-overlay": {
         "mobile-device-detected": "Обнаружен смартфон",
@@ -1997,7 +2016,9 @@
             "plugin": "Плагин",
             "review-documentation-for-more-information": "Просмотрите документацию для более подробной информации.",
             "nothing-found": "Ничего не найдено...",
-            "select-plugin": "Выбрать плагин"
+            "select-plugin": "Выбрать плагин",
+            "proxy-url": "Адрес прокси",
+            "proxy-url-description": "Необязательно. Если указано, внутреннее API-соединение между панелью и узлом будет осуществляться через этот прокси сервер."
         }
     },
     "node-plugin-card": {
@@ -2140,6 +2161,39 @@
         "widget": {
             "history": "История",
             "providers": "Провайдеры"
+        }
+    },
+    "prime-modal": {
+        "shared": {
+            "description": "Поддержите проект и станьте частью его ближайшего окружения — будьте ближе к команде, плану развития и самой работе.",
+            "priority-support-title": "Приоритетная поддержка",
+            "priority-support-description": "Избегайте очередей — на ваши вопросы ответят в первую очередь непосредственно сотрудники команды.",
+            "private-community-title": "Частное сообщество",
+            "private-community-description": "Приватный круг членов Prime.",
+            "shape-the-roadmap-title": "Сформируйте дорожную карту",
+            "shape-the-roadmap-description": "Проголосуйте за будущие нововведения, и помогите определить дальнейшее направление проекта.",
+            "direct-developer-access-title": "Прямой доступ для разработчиков",
+            "direct-developer-access-description": "Прямая связь с разработчиком — никаких заявок, никаких посредников.",
+            "join-button": "Присоединиться к RW Prime"
+        }
+    },
+    "hosts-datatable": {
+        "widget": {
+            "reset-sort": "Сброс сортировки"
+        }
+    },
+    "columns-visibility-popover": {
+        "show-all": "Показать все",
+        "hide-all": "Cкрыть все"
+    },
+    "use-hosts-table-widget": {
+        "disabled": "Выключено",
+        "enabled": "Включено",
+        "hidden": "Скрыто"
+    },
+    "node-tracking-and-billing": {
+        "card": {
+            "note": "Заметка"
         }
     }
 }

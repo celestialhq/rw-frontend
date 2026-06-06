@@ -1,5 +1,6 @@
 import {
     ActionIcon,
+    Box,
     Code,
     Divider,
     Group,
@@ -11,10 +12,11 @@ import {
     Text,
     Tooltip
 } from '@mantine/core'
-import { TbCalendar, TbChartArcs, TbServerCog, TbUser, TbWifi } from 'react-icons/tb'
+import { TbCalendar, TbChartArcs, TbJson, TbServerCog, TbUser, TbWifi } from 'react-icons/tb'
 import { GetUserByUuidCommand, USERS_STATUS } from '@remnawave/backend-contract'
 import { ForwardRefComponent, HTMLMotionProps, Variants } from 'motion/react'
 import { PiLinkDuotone, PiQrCode, PiUserCircle } from 'react-icons/pi'
+import { githubDarkTheme, JsonEditor } from 'json-edit-react'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import { useTranslation } from 'react-i18next'
 import { useDisclosure } from '@mantine/hooks'
@@ -35,6 +37,7 @@ import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { CopyableCodeBlock } from '@shared/ui/copyable-code-block'
 import { QrCodeBuilder } from '@shared/ui/qr-code-builder'
+import { useGetUserMetadata } from '@shared/api/hooks'
 import { prettyBytesUtil } from '@shared/utils/bytes'
 import { SectionCard } from '@shared/ui/section-card'
 
@@ -68,6 +71,10 @@ export const UserIdentificationCard = memo((props: IProps) => {
     const [trafficStatisticsModalOpened, trafficStatisticsModalHandlers] = useDisclosure(false)
 
     const MotionWrapper = motionWrapper
+
+    const { data: metadata, isLoading: isMetadataLoading } = useGetUserMetadata({
+        route: { uuid: user.uuid }
+    })
 
     const actions = useUserModalStoreActions()
     const openModalWithData = useModalsStoreOpenWithData()
@@ -184,6 +191,46 @@ export const UserIdentificationCard = memo((props: IProps) => {
                             </Tooltip>
 
                             <GetUserSubscriptionLinksFeature uuid={user.uuid} />
+
+                            <Tooltip label="Metadata">
+                                <ActionIcon
+                                    color="teal"
+                                    disabled={!metadata}
+                                    loading={isMetadataLoading}
+                                    onClick={() => {
+                                        if (!metadata) return
+                                        modals.open({
+                                            centered: true,
+                                            size: 'auto',
+                                            title: (
+                                                <BaseOverlayHeader
+                                                    iconColor="teal"
+                                                    IconComponent={TbJson}
+                                                    iconVariant="soft"
+                                                    title="Metadata"
+                                                />
+                                            ),
+                                            children: (
+                                                <Box>
+                                                    <JsonEditor
+                                                        collapse={3}
+                                                        data={metadata.metadata as object}
+                                                        indent={4}
+                                                        maxWidth="100%"
+                                                        rootName=""
+                                                        theme={githubDarkTheme}
+                                                        viewOnly
+                                                    />
+                                                </Box>
+                                            )
+                                        })
+                                    }}
+                                    size="lg"
+                                    variant="soft"
+                                >
+                                    <TbJson size={22} />
+                                </ActionIcon>
+                            </Tooltip>
                         </Group>
 
                         <Divider opacity={0.3} orientation="vertical" />

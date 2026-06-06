@@ -4,7 +4,7 @@ import {
     GetPubKeyCommand,
     UpdateNodeCommand
 } from '@remnawave/backend-contract'
-import { TbCertificate, TbMapPin, TbPackage, TbUserCheck, TbWorld } from 'react-icons/tb'
+import { TbCertificate, TbMapPin, TbNetwork, TbPackage, TbUserCheck, TbWorld } from 'react-icons/tb'
 import { ForwardRefComponent, HTMLMotionProps, Variants } from 'motion/react'
 import { Group, NumberInput, Select, Stack, TextInput } from '@mantine/core'
 import { UseFormReturnType } from '@mantine/form'
@@ -135,6 +135,15 @@ export const NodeVitalsCard = <T extends CreateNodeCommand.Request | UpdateNodeC
                             styles={{
                                 label: { fontWeight: 500 }
                             }}
+                        />
+
+                        <TextInput
+                            key={form.key('proxyUrl')}
+                            label={t('node-vitals.card.proxy-url')}
+                            {...form.getInputProps('proxyUrl')}
+                            description={t('node-vitals.card.proxy-url-description')}
+                            leftSection={<TbNetwork size={16} />}
+                            placeholder="socks5://user:pass@address:port"
                         />
                     </Stack>
                 </SectionCard.Section>
