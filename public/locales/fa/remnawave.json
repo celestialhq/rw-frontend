@@ -154,7 +154,8 @@
         "internal-squads": "اسکوادهای داخلی",
         "first-connected-at": "اولین اتصال",
         "sub-last-opened-at": "آخرین دریافت اشتراک",
-        "tag": "برچسب"
+        "tag": "برچسب",
+        "used-traffic": "Used Traffic (%)"
     },
     "header-buttons": {
         "feature": {}
@@ -1525,7 +1526,8 @@
         "copy-the": "محتوای",
         "content-for-the-remnawave-node-below": "زیر را برای نود کپی کنید.",
         "learn-more": "اطلاعات بیشتر.",
-        "domain-or-ip": "دامنه یا آیپی"
+        "domain-or-ip": "دامنه یا آیپی",
+        "additional-options": "Additional options"
     },
     "create-node-step-3-status": {
         "establishing-mtls-connection": "درحال برقراری اتصال mTLS",

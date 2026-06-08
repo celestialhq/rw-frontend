@@ -154,7 +154,8 @@
         "internal-squads": "Внутренние сквады",
         "first-connected-at": "Первое подключение",
         "sub-last-opened-at": "Последний запрос подписки",
-        "tag": "Tag"
+        "tag": "Tag",
+        "used-traffic": "Использованный трафик (%)"
     },
     "header-buttons": {
         "feature": {}
@@ -632,14 +633,14 @@
             "port": "Порт",
             "clear-selection": "Очистить выбор",
             "select-all": "Выбрать все",
-            "dangling-hosts-skipped": "{{count}} dangling host(s) were skipped and not cloned."
+            "dangling-hosts-skipped": "{{count}} хостов было пропущено при клонировании."
         }
     },
     "edit-many-hosts-drawer": {
-        "confirm-title": "Confirm bulk update",
-        "confirm-description": "The following fields will be updated for {{count}} host(s):",
-        "no-changes-title": "Nothing to update",
-        "no-changes-description": "You haven't changed any fields."
+        "confirm-title": "Подтвердите массовое обновление",
+        "confirm-description": "Следующие поля будут обновлены для {{count}} хостов:",
+        "no-changes-title": "Обновлять нечего",
+        "no-changes-description": "Вы не изменили ни одного поля."
     },
     "bulk-user-actions-drawer": {
         "widget": {
@@ -1525,7 +1526,8 @@
         "copy-the": "Скопируйте",
         "content-for-the-remnawave-node-below": "содержимое для Remnawave node ниже.",
         "learn-more": "Дополнительная информация.",
-        "domain-or-ip": "Домен или IP"
+        "domain-or-ip": "Домен или IP",
+        "additional-options": "Additional options"
     },
     "create-node-step-3-status": {
         "establishing-mtls-connection": "Установка mTLS соединения...",
