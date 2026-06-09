@@ -3,7 +3,8 @@ import { ActionIcon, Button, CloseButton, Switch } from '@mantine/core'
 export default {
     ActionIcon: ActionIcon.extend({
         defaultProps: {
-            radius: 'md'
+            radius: 'md',
+            variant: 'outline'
         }
     }),
     Button: Button.extend({
