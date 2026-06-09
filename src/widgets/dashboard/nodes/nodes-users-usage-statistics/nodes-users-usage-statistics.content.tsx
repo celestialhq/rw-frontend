@@ -11,6 +11,7 @@ import { ITopLeaderboardItem, TopLeaderboardCardShared } from '@shared/ui/leader
 import { useGetStatsNodesUsersUsage, useResolveUser } from '@shared/api/hooks'
 import { openOrNavigate } from '@shared/utils/open-or-navigate'
 import { SEARCH_PARAMS } from '@shared/constants/search-params'
+import { getDefaultDateRange } from '@shared/utils/time-utils'
 import { ROUTES } from '@shared/constants/routes'
 
 interface IProps {
@@ -30,22 +31,18 @@ const TOP_USERS_LIMIT_OPTIONS = [
 
 const DEFAULT_TOP_USERS_LIMIT = 100
 
-const DEFAULT_DATE_RANGE = {
-    start: dayjs.utc().subtract(6, 'day').format('YYYY-MM-DD'),
-    end: dayjs.utc().format('YYYY-MM-DD')
-}
-
 export const NodesUsersUsageStatisticsContent = (props: IProps) => {
     const { nodeUuids } = props
+    const defaultRange = getDefaultDateRange()
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
 
     const [topUsersLimit, setTopUsersLimit] = useState<number>(DEFAULT_TOP_USERS_LIMIT)
     const [rawRange, setRawRange] = useState<[null | string, null | string]>([
-        DEFAULT_DATE_RANGE.start,
-        DEFAULT_DATE_RANGE.end
+        defaultRange.start,
+        defaultRange.end
     ])
-    const [queryRange, setQueryRange] = useState<{ end: string; start: string }>(DEFAULT_DATE_RANGE)
+    const [queryRange, setQueryRange] = useState<{ end: string; start: string }>(defaultRange)
 
     const { mutateAsync: resolveUser } = useResolveUser()
     const {
@@ -84,8 +81,8 @@ export const NodesUsersUsageStatisticsContent = (props: IProps) => {
 
     const handleDateRangeChange = (value: DatesRangeValue<string>) => {
         if (value[0] === null && value[1] === null) {
-            setRawRange([DEFAULT_DATE_RANGE.start, DEFAULT_DATE_RANGE.end])
-            setQueryRange(DEFAULT_DATE_RANGE)
+            setRawRange([defaultRange.start, defaultRange.end])
+            setQueryRange(defaultRange)
             return
         }
 
