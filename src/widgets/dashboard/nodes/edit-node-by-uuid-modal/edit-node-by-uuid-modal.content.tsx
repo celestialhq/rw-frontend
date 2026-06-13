@@ -80,6 +80,7 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
                 trafficResetDay: fetchedNode.trafficResetDay ?? undefined,
                 notifyPercent: fetchedNode.notifyPercent ?? undefined,
                 consumptionMultiplier: fetchedNode.consumptionMultiplier ?? undefined,
+                nodeConsumptionMultiplier: fetchedNode.nodeConsumptionMultiplier ?? undefined,
                 tags: fetchedNode.tags ?? undefined,
                 proxyUrl: fetchedNode.proxyUrl ?? undefined,
                 configProfile: {

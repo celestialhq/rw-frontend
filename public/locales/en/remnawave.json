@@ -61,7 +61,8 @@
         "name": "Name",
         "clone": "Clone",
         "event-sent": "Event sent",
-        "open": "Open"
+        "open": "Open",
+        "color": "Color"
     },
     "bandwidth-metrics": {
         "current-year": "Current year",
@@ -442,7 +443,6 @@
         "internal-name-placeholder": "e.g. US-NY-Node-01",
         "address": "Address",
         "e-g-example-com": "e.g. example.com",
-        "consumption-multiplier": "Consumption multiplier",
         "traffic-tracking": "Track traffic usage",
         "limit": "Limit",
         "reset-day": "Reset day",
@@ -2195,6 +2195,19 @@
     "node-tracking-and-billing": {
         "card": {
             "note": "Note"
+        }
+    },
+    "node-consumption": {
+        "card": {
+            "node-consumption-multiplier-1": "Applies selected multiplier to Node traffic (1.0 = normal, 0.5 = half, 2.0 = double).",
+            "node-consumption-multiplier-2": "Mainly used for accurate display of usage limits when traffic tracking is enabled. The node consumption multiplier does not affect detailed statistics display (on graphs).",
+            "node-consumption-multiplier": "Node Consumption Multiplier",
+            "user-consumption-multiplier": "User Consumption Multiplier"
+        }
+    },
+    "keypair-generator": {
+        "widget": {
+            "generate": "Generate"
         }
     }
 }
