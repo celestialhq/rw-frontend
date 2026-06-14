@@ -57,7 +57,7 @@ export const CardTitle = forwardRef<HTMLDivElement, CardTitleProps>(
                                     className={classes.actionIcon}
                                     color="cyan"
                                     size="input-md"
-                                    variant="light"
+                                    variant="soft"
                                     {...iconProps}
                                 >
                                     {icon}

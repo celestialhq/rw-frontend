@@ -116,10 +116,11 @@ export const UserActionGroupFeature = (props: IProps) => {
 
                     <Tooltip label={t('action-group.feature.clear-filters')} withArrow>
                         <ActionIcon
+                            color="gray"
                             loading={isLoading}
                             onClick={handleClearFilters}
                             size="input-md"
-                            variant="default"
+                            variant="soft"
                         >
                             <TbFilterOff size="24px" />
                         </ActionIcon>
@@ -127,10 +128,11 @@ export const UserActionGroupFeature = (props: IProps) => {
 
                     <Tooltip label={t('action-group.feature.reset-table')} withArrow>
                         <ActionIcon
+                            color="gray"
                             loading={isLoading}
                             onClick={handleResetTable}
                             size="input-md"
-                            variant="default"
+                            variant="soft"
                         >
                             <TbRestore size="24px" />
                         </ActionIcon>
