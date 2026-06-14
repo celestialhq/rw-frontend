@@ -1,5 +1,5 @@
 import { Center, Loader, Stack, Text, Title, Transition } from '@mantine/core'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router'
 import { TOAuth2ProvidersKeys } from '@remnawave/backend-contract'
 import { notifications } from '@mantine/notifications'
 import { CSSProperties, useEffect } from 'react'

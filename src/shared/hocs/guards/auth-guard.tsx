@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router'
 import { useLayoutEffect } from 'react'
 
 import { useUpdatesStoreActions } from '@entities/dashboard/updates-store'
