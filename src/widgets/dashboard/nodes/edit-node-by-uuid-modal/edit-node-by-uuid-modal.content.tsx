@@ -1,8 +1,8 @@
 import { UpdateNodeCommand } from '@remnawave/backend-contract'
 import { zodResolver } from 'mantine-form-zod-resolver'
+import { useEffect, useRef } from 'react'
 import { useForm } from '@mantine/form'
 import { motion } from 'motion/react'
-import { useEffect } from 'react'
 
 import {
     configProfilesQueryKeys,
@@ -27,6 +27,8 @@ interface IProps {
 
 export const EditNodeByUuidModalContent = (props: IProps) => {
     const { nodeUuid, onClose } = props
+
+    const isFormInitialized = useRef(false)
 
     const form = useForm<UpdateNodeCommand.Request>({
         name: 'edit-node-form',
@@ -60,15 +62,13 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
                 queryClient.refetchQueries({
                     queryKey: configProfilesQueryKeys.getConfigProfiles.queryKey
                 })
-                queryClient.refetchQueries({
-                    queryKey: nodesQueryKeys.getAllNodes.queryKey
-                })
             }
         }
     })
 
     useEffect(() => {
-        if (fetchedNode) {
+        if (fetchedNode && !isFormInitialized.current) {
+            isFormInitialized.current = true
             form.initialize({
                 uuid: fetchedNode.uuid,
                 countryCode: fetchedNode.countryCode,
