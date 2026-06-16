@@ -30,7 +30,7 @@ export function GetHwidUserDevicesFeature(props: IProps) {
                             />
                         ),
                         centered: true,
-                        size: 'min(1300px, 90vw)',
+                        size: 'min(1500px, 90vw)',
                         fullScreen: isMobile,
                         styles: {
                             body: {
