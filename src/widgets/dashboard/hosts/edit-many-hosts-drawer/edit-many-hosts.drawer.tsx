@@ -7,7 +7,6 @@ import { PiListChecks } from 'react-icons/pi'
 import { modals } from '@mantine/modals'
 import { useForm } from '@mantine/form'
 import { memo, useState } from 'react'
-import consola from 'consola/browser'
 
 import {
     QueryKeys,
@@ -21,6 +20,7 @@ import {
 import { MODALS, useModalClose, useModalState } from '@entities/dashboard/modal-store'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { BaseHostForm } from '@shared/ui/forms/hosts/base-host-form'
+import { parseJsonField } from '@shared/utils/misc'
 import { queryClient } from '@shared/api'
 
 export const EditManyHostsDrawer = memo(() => {
@@ -92,19 +92,6 @@ export const EditManyHostsDrawer = memo(() => {
     const handleSubmit = form.onSubmit(async (values) => {
         if (!uuids) {
             return
-        }
-
-        const parseJsonField = (value: unknown) => {
-            if (value === '') {
-                return null
-            }
-
-            try {
-                return JSON.parse(value as string)
-            } catch (error) {
-                consola.error(error)
-                return null
-            }
         }
 
         const dirtyValues = Object.fromEntries(

@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { PiListChecks } from 'react-icons/pi'
 import { useForm } from '@mantine/form'
 import { Drawer } from '@mantine/core'
-import consola from 'consola/browser'
 
 import {
     QueryKeys,
@@ -18,6 +17,7 @@ import {
 } from '@shared/api/hooks'
 import { MODALS, useModalClose, useModalState } from '@entities/dashboard/modal-store'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
+import { parseJsonField, stringifyJsonField } from '@shared/utils/misc'
 import { BaseHostForm } from '@shared/ui/forms/hosts/base-host-form'
 import { queryClient } from '@shared/api'
 
@@ -71,36 +71,8 @@ export const EditHostModalWidget = memo(() => {
 
     useEffect(() => {
         if (host && configProfiles) {
-            let xHttpExtraParamsParsed: null | object | string
-            let muxParamsParsed: null | object | string
-            let sockoptParamsParsed: null | object | string
-            let finalMaskParsed: null | object | string
-
-            if (typeof host.xHttpExtraParams === 'object' && host.xHttpExtraParams !== null) {
-                xHttpExtraParamsParsed = JSON.stringify(host.xHttpExtraParams, null, 2)
-            } else {
-                xHttpExtraParamsParsed = ''
-            }
-
-            if (typeof host.muxParams === 'object' && host.muxParams !== null) {
-                muxParamsParsed = JSON.stringify(host.muxParams, null, 2)
-            } else {
-                muxParamsParsed = ''
-            }
-
-            if (typeof host.sockoptParams === 'object' && host.sockoptParams !== null) {
-                sockoptParamsParsed = JSON.stringify(host.sockoptParams, null, 2)
-            } else {
-                sockoptParamsParsed = ''
-            }
-
-            if (typeof host.finalMask === 'object' && host.finalMask !== null) {
-                finalMaskParsed = JSON.stringify(host.finalMask, null, 2)
-            } else {
-                finalMaskParsed = ''
-            }
-
-            form.setValues({
+            form.initialize({
+                uuid: host.uuid,
                 remark: host.remark,
                 address: host.address,
                 port: host.port,
@@ -109,18 +81,17 @@ export const EditHostModalWidget = memo(() => {
                 sni: host.sni ?? undefined,
                 host: host.host ?? undefined,
                 path: host.path ?? undefined,
-                alpn: (host.alpn as UpdateHostCommand.Request['alpn']) ?? undefined,
-                fingerprint:
-                    (host.fingerprint as UpdateHostCommand.Request['fingerprint']) ?? undefined,
+                alpn: host.alpn ?? undefined,
+                fingerprint: host.fingerprint ?? undefined,
                 inbound: {
                     configProfileUuid: host.inbound.configProfileUuid ?? '',
                     configProfileInboundUuid: host.inbound.configProfileInboundUuid ?? ''
                 },
                 serverDescription: host.serverDescription ?? undefined,
-                xHttpExtraParams: xHttpExtraParamsParsed,
-                muxParams: muxParamsParsed,
-                sockoptParams: sockoptParamsParsed,
-                finalMask: finalMaskParsed,
+                xHttpExtraParams: stringifyJsonField(host.xHttpExtraParams),
+                muxParams: stringifyJsonField(host.muxParams),
+                sockoptParams: stringifyJsonField(host.sockoptParams),
+                finalMask: stringifyJsonField(host.finalMask),
                 tags: host.tags ?? undefined,
                 isHidden: host.isHidden,
                 overrideSniFromAddress: host.overrideSniFromAddress,
@@ -161,68 +132,15 @@ export const EditHostModalWidget = memo(() => {
             return
         }
 
-        let xHttpExtraParams
-        let muxParams
-        let sockoptParams
-        let finalMask
-
-        try {
-            if (values.xHttpExtraParams === '') {
-                xHttpExtraParams = null
-            } else {
-                xHttpExtraParams = JSON.parse(values.xHttpExtraParams as unknown as string)
-            }
-        } catch (error) {
-            consola.error(error)
-            xHttpExtraParams = null
-            // silence
-        }
-
-        try {
-            if (values.muxParams === '') {
-                muxParams = null
-            } else {
-                muxParams = JSON.parse(values.muxParams as unknown as string)
-            }
-        } catch (error) {
-            consola.error(error)
-            muxParams = null
-            // silence
-        }
-
-        try {
-            if (values.sockoptParams === '') {
-                sockoptParams = null
-            } else {
-                sockoptParams = JSON.parse(values.sockoptParams as unknown as string)
-            }
-        } catch (error) {
-            consola.error(error)
-            sockoptParams = null
-            // silence
-        }
-
-        try {
-            if (values.finalMask === '') {
-                finalMask = null
-            } else {
-                finalMask = JSON.parse(values.finalMask as unknown as string)
-            }
-        } catch (error) {
-            consola.error(error)
-            finalMask = null
-            // silence
-        }
-
         updateHost({
             variables: {
                 ...values,
                 isDisabled: !values.isDisabled,
                 uuid: host.uuid,
-                xHttpExtraParams,
-                muxParams,
-                sockoptParams,
-                finalMask
+                xHttpExtraParams: parseJsonField(values.xHttpExtraParams),
+                muxParams: parseJsonField(values.muxParams),
+                sockoptParams: parseJsonField(values.sockoptParams),
+                finalMask: parseJsonField(values.finalMask)
             }
         })
     })
