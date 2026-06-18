@@ -970,7 +970,7 @@ export const BaseHostForm = <
                                         >
                                             <Button
                                                 color="gray"
-                                                disabled={!isXhttpExtraButtonDisabled()}
+                                                disabled={isXhttpExtraButtonDisabled()}
                                                 leftSection={<PiPencilDuotone />}
                                                 onClick={() => {
                                                     modals.open({
