@@ -1257,7 +1257,12 @@
             "payments-in": "{{month}} 的付款",
             "total-payments-made": "已完成付款总数",
             "total-spent": "总支出",
-            "lifetime-spending": "累计支出"
+            "lifetime-spending": "累计支出",
+            "overdue": "已过期",
+            "payment-overdue": "付款已过期",
+            "all-up-to-date": "全部已更新",
+            "next-payment": "下次付款日期",
+            "no-upcoming-payments": "没有即将进行的付款"
         }
     },
     "edit-node-by-uuid-modal": {
@@ -1321,8 +1326,8 @@
     "restart-node-button": {
         "feature": {
             "restart": "重新启动",
-            "restart-description-line-1": "ensures that the node completely restarts the Xray core. It is recommended option.",
-            "restart-description-line-2": "will send a request to this node to restart Xray, but request can be unfulfilled if the node hash is the same as the current one."
+            "restart-description-line-1": "确保节点完全重启Xra核心。建议选中。",
+            "restart-description-line-2": "将向所有节点发送请求以重启 Xray。 但如果节点哈希与当前的哈希相同，则请求可能无法实现。 这是默认的选项。"
         }
     },
     "node-details-card": {
@@ -2152,7 +2157,9 @@
             "billing-nodes": "计费节点",
             "upcoming": "即将到来",
             "per-month": "每月",
-            "total-spent": "合计花费"
+            "total-spent": "合计花费",
+            "overdue": "已过期",
+            "no-upcoming": "没有即将到来的"
         }
     },
     "mobile-providers-list": {

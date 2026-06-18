@@ -155,7 +155,7 @@ export function CreateInfraBillingNodeModalWidget() {
                         minDate={dayjs().subtract(1, 'day').toDate()}
                     />
 
-                    <Button loading={isCreateInfraBillingNodePending} type="submit">
+                    <Button loading={isCreateInfraBillingNodePending} type="submit" variant="soft">
                         {t('common.create')}
                     </Button>
                 </Stack>

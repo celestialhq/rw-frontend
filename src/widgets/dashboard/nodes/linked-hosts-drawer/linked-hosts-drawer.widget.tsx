@@ -1,12 +1,14 @@
-import { Center, Drawer, Stack, Text } from '@mantine/core'
+import { Center, Drawer, Stack, Text, ThemeIcon } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import { PiListChecks } from 'react-icons/pi'
+import { TbListCheck } from 'react-icons/tb'
 import { memo, useMemo } from 'react'
 
 import { MODALS, useModalClose, useModalState } from '@entities/dashboard/modal-store'
 import { HostCardWidget } from '@widgets/dashboard/hosts/host-card/host-card.widget'
 import { useGetConfigProfiles, useGetHosts, useGetNodes } from '@shared/api/hooks'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
+import { SectionCard } from '@shared/ui/section-card'
 import { LoadingScreen } from '@shared/ui'
 
 export const LinkedHostsDrawer = memo(() => {
@@ -70,11 +72,25 @@ export const LinkedHostsDrawer = memo(() => {
         >
             <Stack gap={0}>
                 {linkedHosts.length === 0 && (
-                    <Center>
-                        <Text c="dimmed">
-                            {t('linked-hosts-drawer.widget.no-hosts-assigned-to-this-node')}
-                        </Text>
-                    </Center>
+                    <SectionCard.Root p="xl">
+                        <SectionCard.Section>
+                            <Center py="xl">
+                                <Stack align="center" gap="lg">
+                                    <ThemeIcon color="gray" radius="xl" size={64} variant="soft">
+                                        <TbListCheck size={32} />
+                                    </ThemeIcon>
+
+                                    <Stack align="center" gap="xs">
+                                        <Text c="dimmed" fw={600} size="md" ta="center">
+                                            {t(
+                                                'linked-hosts-drawer.widget.no-hosts-assigned-to-this-node'
+                                            )}
+                                        </Text>
+                                    </Stack>
+                                </Stack>
+                            </Center>
+                        </SectionCard.Section>
+                    </SectionCard.Root>
                 )}
 
                 {linkedHosts.map((host) => {

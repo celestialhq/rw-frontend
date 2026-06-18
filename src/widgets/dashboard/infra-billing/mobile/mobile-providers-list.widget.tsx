@@ -1,12 +1,15 @@
 import {
     ActionIcon,
     Avatar,
+    Badge,
     Center,
     Group,
     MantineStyleProp,
+    OverflowList,
     Stack,
     Text,
-    ThemeIcon
+    ThemeIcon,
+    Tooltip
 } from '@mantine/core'
 import { GetInfraProvidersCommand } from '@remnawave/backend-contract'
 import { TbCloud, TbEdit, TbLink, TbTrash } from 'react-icons/tb'
@@ -15,9 +18,9 @@ import { modals } from '@mantine/modals'
 
 import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 import { faviconResolver, formatCurrencyWithIntl } from '@shared/utils/misc'
+import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { QueryKeys, useDeleteInfraProvider } from '@shared/api/hooks'
-import { CountryFlag } from '@shared/ui/get-country-flag'
 import { SectionCard } from '@shared/ui/section-card'
 import { queryClient } from '@shared/api'
 
@@ -109,6 +112,7 @@ export function MobileProvidersListWidget(props: IProps) {
                                 IconComponent={TbCloud}
                                 iconVariant="soft"
                                 title={provider.name}
+                                truncateTitle
                             />
 
                             <Group gap={4} wrap="nowrap">
@@ -179,21 +183,53 @@ export function MobileProvidersListWidget(props: IProps) {
 
                     {provider.billingNodes.length > 0 && (
                         <SectionCard.Section>
-                            <Group gap="xs">
-                                {provider.billingNodes.slice(0, 3).map((node, index) => (
-                                    <Group gap={4} key={`${node.nodeUuid}-${index}`}>
-                                        <CountryFlag countryCode={node.countryCode} />
-                                        <Text c="white" fw={500} size="xs">
-                                            {node.name}
-                                        </Text>
-                                    </Group>
-                                ))}
-                                {provider.billingNodes.length > 3 && (
-                                    <Text c="dimmed" fw={500} size="xs">
-                                        +{provider.billingNodes.length - 3}
-                                    </Text>
+                            <OverflowList
+                                data={provider.billingNodes}
+                                gap={4}
+                                maxRows={1}
+                                maxVisibleItems={3}
+                                renderItem={(node) => (
+                                    <Badge
+                                        autoContrast
+                                        color="gray"
+                                        key={`${node.nodeUuid}`}
+                                        leftSection={resolveCountryCode(node.countryCode, 18)}
+                                        size="md"
+                                        style={{ cursor: 'pointer' }}
+                                        variant="soft"
+                                    >
+                                        {node.name}
+                                    </Badge>
                                 )}
-                            </Group>
+                                renderOverflow={(items) => (
+                                    <Tooltip
+                                        label={
+                                            <Stack gap="xs">
+                                                {items.map((node) => (
+                                                    <Badge
+                                                        color="gray"
+                                                        fullWidth
+                                                        key={`${node.nodeUuid}`}
+                                                        leftSection={resolveCountryCode(
+                                                            node.countryCode,
+                                                            18
+                                                        )}
+                                                        variant="soft"
+                                                    >
+                                                        {node.name}
+                                                    </Badge>
+                                                ))}
+                                            </Stack>
+                                        }
+                                        multiline
+                                        position="top"
+                                    >
+                                        <Badge color="gray" size="md" variant="soft">
+                                            +{items.length}
+                                        </Badge>
+                                    </Tooltip>
+                                )}
+                            />
                         </SectionCard.Section>
                     )}
                 </SectionCard.Root>

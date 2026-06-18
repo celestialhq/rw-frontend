@@ -44,10 +44,7 @@ export function CreateInfraBillingRecordDrawerWidget() {
             mutationFns: {
                 onSuccess: () => {
                     queryClient.refetchQueries({
-                        queryKey: QueryKeys.infraBilling.getInfraBillingHistoryRecords({
-                            start: 0,
-                            size: 50
-                        }).queryKey
+                        queryKey: QueryKeys.infraBilling.getInfraBillingHistoryRecords._def
                     })
 
                     queryClient.refetchQueries({
@@ -153,7 +150,11 @@ export function CreateInfraBillingRecordDrawerWidget() {
                         {...form.getInputProps('amount')}
                     />
 
-                    <Button loading={isCreateInfraBillingRecordPending} type="submit">
+                    <Button
+                        loading={isCreateInfraBillingRecordPending}
+                        type="submit"
+                        variant="soft"
+                    >
                         {t('common.create')}
                     </Button>
                 </Stack>
