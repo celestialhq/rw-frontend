@@ -1,8 +1,10 @@
-import { Box, Center, Loader, MantineStyleProp, ThemeIcon } from '@mantine/core'
+import { Box, Center, Loader, MantineStyleProp, Stack, Text, ThemeIcon } from '@mantine/core'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useTranslation } from 'react-i18next'
 import { TbCreditCard } from 'react-icons/tb'
+
+import { SectionCard } from '@shared/ui/section-card'
 
 import { BillingRecord, groupRecordsByMonth } from './group-records-by-month'
 import { useDeleteBillingRecord } from './use-delete-billing-record'
@@ -30,7 +32,7 @@ interface IProps {
 
 export function VirtualizedRecordsList(props: IProps) {
     const { height, isLoadingMore, onReachBottom, records, refetchRecords, style } = props
-    const { i18n } = useTranslation()
+    const { i18n, t } = useTranslation()
 
     const handleDelete = useDeleteBillingRecord(refetchRecords)
 
@@ -91,11 +93,23 @@ export function VirtualizedRecordsList(props: IProps) {
 
     if (records.length === 0) {
         return (
-            <Center h={height} style={style}>
-                <ThemeIcon color="gray" radius="xl" size={64} variant="soft">
-                    <TbCreditCard size={32} />
-                </ThemeIcon>
-            </Center>
+            <SectionCard.Root p="xl" style={style}>
+                <SectionCard.Section>
+                    <Center py="xl">
+                        <Stack align="center" gap="lg">
+                            <ThemeIcon color="gray" radius="xl" size={64} variant="soft">
+                                <TbCreditCard size={32} />
+                            </ThemeIcon>
+
+                            <Stack align="center" gap="xs">
+                                <Text c="dimmed" fw={600} size="md" ta="center">
+                                    {t('infra-billing-records-table.widget.no-billing-records-found')}
+                                </Text>
+                            </Stack>
+                        </Stack>
+                    </Center>
+                </SectionCard.Section>
+            </SectionCard.Root>
         )
     }
 
