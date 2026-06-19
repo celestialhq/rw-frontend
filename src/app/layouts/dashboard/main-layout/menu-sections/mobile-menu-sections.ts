@@ -1,6 +1,7 @@
 import {
     TbChartArcs,
     TbCirclesRelation,
+    TbCreditCard,
     TbDeviceAnalytics,
     TbFlame,
     TbFolder,
@@ -16,21 +17,21 @@ import {
     PiCpu,
     PiListChecks,
     PiStarDuotone,
-    PiUsersDuotone
+    PiUsers
 } from 'react-icons/pi'
 import { SUBSCRIPTION_TEMPLATE_TYPE } from '@remnawave/backend-contract'
-import { HiChartPie, HiCurrencyDollar, HiServer } from 'react-icons/hi'
+import { HiChartPie, HiServer } from 'react-icons/hi'
 import { useTranslation } from 'react-i18next'
 import { useHotkeys } from '@mantine/hooks'
 import { useState } from 'react'
 
-import { HappLogo, MihomoLogo, SingboxLogo, StashLogo, XrayLogo } from '@shared/ui/logos'
+import { MihomoLogo, SingboxLogo, StashLogo, XrayLogo } from '@shared/ui/logos'
 import { ROUTES } from '@shared/constants'
 import { Logo } from '@shared/ui'
 
 import { MenuItem } from './interfaces'
 
-export const useMenuSections = (): MenuItem[] => {
+export const useMobileMenuSections = (): MenuItem[] => {
     const { t } = useTranslation()
     const [showDevMenu, setShowDevMenu] = useState(false)
 
@@ -56,7 +57,7 @@ export const useMenuSections = (): MenuItem[] => {
                 {
                     name: t('constants.users'),
                     href: ROUTES.DASHBOARD.MANAGEMENT.USERS,
-                    icon: PiUsersDuotone,
+                    icon: PiUsers,
                     id: 'users'
                 },
                 {
@@ -111,7 +112,7 @@ export const useMenuSections = (): MenuItem[] => {
                         {
                             name: t('constants.infra-billing'),
                             href: ROUTES.DASHBOARD.CRM.INFRA_BILLING,
-                            icon: HiCurrencyDollar,
+                            icon: TbCreditCard,
                             id: 'infra-billing'
                         },
                         {
@@ -229,19 +230,6 @@ export const useMenuSections = (): MenuItem[] => {
                     href: ROUTES.DASHBOARD.TOOLS.TORRENT_BLOCKER_REPORTS,
                     icon: TbFlame,
                     id: 'torrent-blocker-reports'
-                }
-            ]
-        },
-        {
-            header: t('constants.utils'),
-            id: 'utils',
-            section: [
-                {
-                    name: t('constants.happ-routing-builder'),
-                    href: 'https://utils.docs.rw/happ-rb',
-                    icon: HappLogo,
-                    id: 'happ-routing-builder',
-                    newTab: true
                 }
             ]
         }
