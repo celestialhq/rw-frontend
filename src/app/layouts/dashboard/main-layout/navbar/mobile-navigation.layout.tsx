@@ -2,18 +2,18 @@ import { Box, Divider, NavLink, Stack, Title } from '@mantine/core'
 import { NavLink as RouterLink, useLocation } from 'react-router'
 import { PiArrowRight } from 'react-icons/pi'
 
-import { useMenuSections } from '../menu-sections/menu-sections'
-import classes from './Navigation.module.css'
+import { useMobileMenuSections } from '../menu-sections/mobile-menu-sections'
+import classes from './mobile-navigation.module.css'
 
-interface NavigationProps {
-    isMobile?: boolean
+interface IProps {
     onClose?: () => void
 }
 
-export const Navigation = ({ isMobile, onClose }: NavigationProps) => {
+export const MobileNavigation = (props: IProps) => {
+    const { onClose } = props
     const { pathname } = useLocation()
 
-    const menu = useMenuSections()
+    const menu = useMobileMenuSections()
 
     return (
         <Stack gap="md" pb="md" pt="md">
@@ -50,7 +50,7 @@ export const Navigation = ({ isMobile, onClose }: NavigationProps) => {
                                                     <PiArrowRight />
                                                 )
                                             }
-                                            onClick={isMobile ? onClose : undefined}
+                                            onClick={onClose}
                                             to={dropdownItem.href}
                                             variant="subtle"
                                         />
@@ -64,7 +64,7 @@ export const Navigation = ({ isMobile, onClose }: NavigationProps) => {
                                     key={subItem.id}
                                     label={subItem.name}
                                     leftSection={subItem.icon && <subItem.icon />}
-                                    onClick={isMobile ? onClose : undefined}
+                                    onClick={onClose}
                                     to={subItem.href}
                                     variant="subtle"
                                     {...(subItem.newTab

@@ -1,26 +1,20 @@
-import { useClickOutside, useDisclosure, useHeadroom, useMediaQuery } from '@mantine/hooks'
 import { AppShell, Box, Burger, Container, Group, ScrollArea } from '@mantine/core'
-import { Outlet } from 'react-router'
+import { useClickOutside, useDisclosure, useMediaQuery } from '@mantine/hooks'
+import { Outlet, ScrollRestoration } from 'react-router'
 import clsx from 'clsx'
 
-import {
-    useAppshellStoreActions,
-    useAppshellStoreDesktopSidebarOpen
-} from '@entities/dashboard/appshell'
 import { useIsLoadingRemnawaveUpdates, useRemnawaveInfo } from '@entities/dashboard/updates-store'
-import { ScrollToTopWrapper } from '@shared/hocs/scroll-to-top/scroll-to-top'
 import { SidebarTitleShared } from '@shared/ui/sidebar/sidebar-title'
 import { SidebarLogoShared } from '@shared/ui/sidebar/sidebar-logo'
 import { HeaderControls } from '@shared/ui/header-buttons'
 import { HelpDrawerShared } from '@shared/ui/help-drawer'
 
-import { Navigation } from './navbar/navigation.layout'
+import { DesktopNavigation } from './navbar/desktop-navigation.layout'
+import { MobileNavigation } from './navbar/mobile-navigation.layout'
 import classes from './Main.module.css'
 
 export function MainLayout() {
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
-
-    const pinned = useHeadroom({ fixedAt: 120 })
 
     const isMobile = useMediaQuery(`(max-width: 64rem)`, undefined, {
         getInitialValueInEffect: false
@@ -29,13 +23,8 @@ export function MainLayout() {
         getInitialValueInEffect: false
     })
 
-    const isDesktopSidebarOpen = useAppshellStoreDesktopSidebarOpen()
-    const { toggleDesktopSidebar } = useAppshellStoreActions()
-
     const remnawaveInfo = useRemnawaveInfo()
     const isLoadingUpdates = useIsLoadingRemnawaveUpdates()
-
-    const isMediaQueryReady = isMobile !== undefined && isSocialButton !== undefined
 
     const ref = useClickOutside(() => {
         if (isMobile && mobileOpened) {
@@ -43,112 +32,144 @@ export function MainLayout() {
         }
     })
 
+    const isMediaQueryReady = isMobile !== undefined && isSocialButton !== undefined
+
     if (!isMediaQueryReady) {
         return <div style={{ height: '100vh' }}></div>
     }
 
+    const headerControls = (
+        <HeaderControls
+            githubLink="https://github.com/remnawave/panel"
+            isGithubLoading={isLoadingUpdates}
+            stars={remnawaveInfo.starsCount || undefined}
+            telegramLink="https://t.me/remnawave"
+            withGithub={!isSocialButton}
+            withPrime
+            withRecap={!isSocialButton}
+            withRefresh={!isSocialButton}
+            withSupport={!isSocialButton}
+            withTelegram={!isSocialButton}
+        />
+    )
+
+    if (isMobile) {
+        return (
+            <AppShell
+                header={{ height: 64, collapsed: false, offset: false }}
+                layout="alt"
+                navbar={{
+                    width: 300,
+                    breakpoint: 'lg',
+                    collapsed: { mobile: !mobileOpened, desktop: true }
+                }}
+                padding="md"
+                transitionDuration={500}
+                transitionTimingFunction="ease-in-out"
+            >
+                <AppShell.Header className={classes.header} withBorder={false}>
+                    <Container fluid px="lg" py="xs">
+                        <Group justify="space-between" style={{ flexWrap: 'nowrap' }}>
+                            <Group style={{ flex: 1, justifyContent: 'flex-start' }}>
+                                <Burger onClick={toggleMobile} opened={mobileOpened} size="md" />
+                            </Group>
+                            <Group style={{ flexShrink: 0 }}>{headerControls}</Group>
+                        </Group>
+                    </Container>
+                </AppShell.Header>
+
+                <AppShell.Navbar
+                    className={clsx(classes.sidebarWrapper, {
+                        [classes.sidebarWrapperClosedMobile]: !mobileOpened
+                    })}
+                    p="md"
+                    pb={0}
+                    ref={ref}
+                    w={300}
+                    withBorder={false}
+                >
+                    <AppShell.Section className={classes.logoSection}>
+                        <Box style={{ position: 'absolute', left: '0' }}>
+                            <Burger
+                                hiddenFrom="lg"
+                                onClick={toggleMobile}
+                                opened={mobileOpened}
+                                size="sm"
+                            />
+                        </Box>
+
+                        <Group gap="xs" justify="center" wrap="nowrap">
+                            <SidebarLogoShared />
+                            <SidebarTitleShared />
+                        </Group>
+                    </AppShell.Section>
+
+                    <AppShell.Section
+                        className={classes.scrollArea}
+                        component={ScrollArea}
+                        flex={1}
+                        scrollbarSize="0.2rem"
+                    >
+                        <MobileNavigation onClose={toggleMobile} />
+                    </AppShell.Section>
+
+                    <AppShell.Section className={classes.footerSection}>
+                        {isSocialButton && (
+                            <Group justify="center" mt="md" style={{ flexShrink: 0 }}>
+                                <HeaderControls
+                                    githubLink="https://github.com/remnawave/panel"
+                                    isGithubLoading={isLoadingUpdates}
+                                    stars={remnawaveInfo.starsCount || undefined}
+                                    telegramLink="https://t.me/remnawave"
+                                    withLanguage={false}
+                                    withLogout={false}
+                                    withRefresh={false}
+                                    withVersion={false}
+                                />
+                            </Group>
+                        )}
+                    </AppShell.Section>
+                </AppShell.Navbar>
+
+                <AppShell.Main
+                    pb="var(--mantine-spacing-md)"
+                    pt="calc(var(--app-shell-header-height) + 10px)"
+                >
+                    <Outlet />
+                    <ScrollRestoration />
+                    <HelpDrawerShared />
+                </AppShell.Main>
+            </AppShell>
+        )
+    }
+
     return (
         <AppShell
-            className={isMobile ? undefined : classes.appShellFadeIn}
-            header={{ height: 64, collapsed: isMobile ? false : !pinned, offset: false }}
-            layout="alt"
-            navbar={{
-                width: 300,
-                breakpoint: 'lg',
-                collapsed: { mobile: !mobileOpened, desktop: !isDesktopSidebarOpen }
-            }}
-            padding={isMobile ? 'md' : 'xl'}
-            transitionDuration={500}
-            transitionTimingFunction="ease-in-out"
+            className={classes.appShellFadeIn}
+            header={{ height: 116, offset: false }}
+            padding="xl"
         >
-            <AppShell.Header className={classes.header} withBorder={false}>
-                <Container fluid px="lg" py="xs">
-                    <Group justify="space-between" style={{ flexWrap: 'nowrap' }}>
-                        <Group style={{ flex: 1, justifyContent: 'flex-start' }}>
-                            <Burger
-                                onClick={isMobile ? toggleMobile : toggleDesktopSidebar}
-                                opened={isMobile ? mobileOpened : isDesktopSidebarOpen}
-                                size="md"
-                            />
-                        </Group>
-                        <Group style={{ flexShrink: 0 }}>
-                            <HeaderControls
-                                githubLink="https://github.com/remnawave/panel"
-                                isGithubLoading={isLoadingUpdates}
-                                stars={remnawaveInfo.starsCount || undefined}
-                                telegramLink="https://t.me/remnawave"
-                                withGithub={!isSocialButton}
-                                withPrime
-                                withRecap={!isSocialButton}
-                                withRefresh={!isSocialButton}
-                                withSupport={!isSocialButton}
-                                withTelegram={!isSocialButton}
-                            />
-                        </Group>
-                    </Group>
-                </Container>
-            </AppShell.Header>
-            <AppShell.Navbar
-                className={clsx(classes.sidebarWrapper, {
-                    [classes.sidebarWrapperClosedDesktop]: !isMobile && !isDesktopSidebarOpen,
-                    [classes.sidebarWrapperClosedMobile]: isMobile && !mobileOpened
-                })}
-                p="md"
-                pb={0}
-                ref={ref}
-                w={300}
-                withBorder={false}
-            >
-                <AppShell.Section className={classes.logoSection}>
-                    <Box style={{ position: 'absolute', left: '0' }}>
-                        <Burger
-                            hiddenFrom="lg"
-                            onClick={isMobile ? toggleMobile : toggleDesktopSidebar}
-                            opened={isMobile ? mobileOpened : isDesktopSidebarOpen}
-                            size="sm"
-                        />
-                    </Box>
-
-                    <Group gap="xs" justify="center" wrap="nowrap">
+            <AppShell.Header className={classes.header}>
+                <div className={classes.brandRow}>
+                    <Group gap="xs" wrap="nowrap">
                         <SidebarLogoShared />
                         <SidebarTitleShared />
                     </Group>
-                </AppShell.Section>
-                <AppShell.Section
-                    className={classes.scrollArea}
-                    component={ScrollArea}
-                    flex={1}
-                    scrollbarSize="0.2rem"
-                >
-                    <Navigation isMobile={isMobile} onClose={toggleMobile} />
-                </AppShell.Section>
+                    <Group gap="xs" style={{ flexShrink: 0 }} wrap="nowrap">
+                        {headerControls}
+                    </Group>
+                </div>
+                <div className={classes.navRowDesktop}>
+                    <DesktopNavigation />
+                </div>
+            </AppShell.Header>
 
-                <AppShell.Section className={classes.footerSection}>
-                    {isSocialButton && (
-                        <Group justify="center" mt="md" style={{ flexShrink: 0 }}>
-                            <HeaderControls
-                                githubLink="https://github.com/remnawave/panel"
-                                isGithubLoading={isLoadingUpdates}
-                                stars={remnawaveInfo.starsCount || undefined}
-                                telegramLink="https://t.me/remnawave"
-                                withLanguage={false}
-                                withLogout={false}
-                                withRefresh={false}
-                                withVersion={false}
-                            />
-                        </Group>
-                    )}
-                </AppShell.Section>
-            </AppShell.Navbar>
-            <AppShell.Main
-                pb="var(--mantine-spacing-md)"
-                pt="calc(var(--app-shell-header-height) + 10px)"
-            >
-                <ScrollToTopWrapper>
-                    <Outlet />
-                </ScrollToTopWrapper>
-                <HelpDrawerShared />
+            <AppShell.Main pt="calc(var(--app-shell-header-height) + var(--mantine-spacing-md))">
+                <Outlet />
+                <ScrollRestoration />
             </AppShell.Main>
+
+            <HelpDrawerShared />
         </AppShell>
     )
 }
