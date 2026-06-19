@@ -69,7 +69,11 @@ export const UserSubscriptionRequestsTable = (props: IProps) => {
                         time: row.original.requestAt,
                         template: 'TIME_FIRST_DATETIME',
                         language: i18n.language
-                    })
+                    }),
+                mantineTableBodyCellProps: {
+                    align: 'center',
+                    ff: 'monospace'
+                }
             }
         ],
         [t, i18n.language]
@@ -99,7 +103,7 @@ export const UserSubscriptionRequestsTable = (props: IProps) => {
         enableSortingRemoval: true,
         initialState: {
             showGlobalFilter: true,
-            density: 'xs',
+            density: 'xxs',
             sorting: [{ id: 'requestAt', desc: true }],
             pagination: {
                 pageIndex: 0,

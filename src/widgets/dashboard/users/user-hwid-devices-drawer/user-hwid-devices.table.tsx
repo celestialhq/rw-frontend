@@ -108,21 +108,25 @@ export const UserHwidDevicesTable = (props: IProps) => {
             {
                 accessorKey: 'userAgent',
                 header: t('get-hwid-user-devices.feature.user-agent'),
-
+                size: 170,
                 enableClickToCopy: true,
                 accessorFn: (row) => row.userAgent || '–'
             },
             {
                 accessorKey: 'createdAt',
                 header: t('get-hwid-user-devices.feature.added'),
-
                 sortingFn: 'datetime',
                 Cell: ({ row }) =>
                     formatTimeUtil({
                         time: row.original.createdAt,
                         template: 'TIME_FIRST_DATETIME',
                         language: i18n.language
-                    })
+                    }),
+                mantineTableBodyCellProps: {
+                    align: 'left',
+                    ff: 'monospace'
+                },
+                minSize: 250
             },
             {
                 accessorKey: 'updatedAt',
@@ -133,7 +137,12 @@ export const UserHwidDevicesTable = (props: IProps) => {
                         time: row.original.updatedAt,
                         template: 'TIME_FIRST_DATETIME',
                         language: i18n.language
-                    })
+                    }),
+                mantineTableBodyCellProps: {
+                    align: 'left',
+                    ff: 'monospace'
+                },
+                minSize: 250
             }
         ],
         [t, i18n.language]
@@ -164,7 +173,7 @@ export const UserHwidDevicesTable = (props: IProps) => {
         enableSortingRemoval: true,
         initialState: {
             showGlobalFilter: true,
-            density: 'xs',
+            density: 'xxs',
             sorting: [{ id: 'createdAt', desc: true }],
             pagination: {
                 pageIndex: 0,

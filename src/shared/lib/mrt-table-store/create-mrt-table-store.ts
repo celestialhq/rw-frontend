@@ -47,8 +47,17 @@ const BASE_DEFAULTS: MrtTableState = {
     showColumnFilters: false
 }
 
-const apply = <T,>(updater: Updater<T>, prev: T): T =>
+const apply = <T>(updater: Updater<T>, prev: T): T =>
     typeof updater === 'function' ? (updater as (p: T) => T)(prev) : updater
+
+const isEmptyFilterValue = (value: unknown): boolean =>
+    value === undefined ||
+    value === null ||
+    value === '' ||
+    (Array.isArray(value) && value.length === 0)
+
+const normalizeColumnFilters = (filters: MRT_ColumnFiltersState): MRT_ColumnFiltersState =>
+    filters.filter((filter) => !isEmptyFilterValue(filter.value))
 
 export interface CreateMrtTableStoreConfig {
     defaults?: Partial<MrtTableState>
@@ -56,11 +65,7 @@ export interface CreateMrtTableStoreConfig {
     version: number
 }
 
-export const createMrtTableStore = ({
-    name,
-    version,
-    defaults
-}: CreateMrtTableStoreConfig) => {
+export const createMrtTableStore = ({ name, version, defaults }: CreateMrtTableStoreConfig) => {
     const initial: MrtTableState = { ...BASE_DEFAULTS, ...defaults }
 
     return create<MrtTableStore>()(
@@ -70,9 +75,10 @@ export const createMrtTableStore = ({
                 actions: {
                     resetState: () => set({ ...initial }),
                     setColumnFilter: (u) =>
-                        set((s) => ({ columnFilter: apply(u, s.columnFilter) })),
-                    setColumnOrder: (u) =>
-                        set((s) => ({ columnOrder: apply(u, s.columnOrder) })),
+                        set((s) => ({
+                            columnFilter: normalizeColumnFilters(apply(u, s.columnFilter))
+                        })),
+                    setColumnOrder: (u) => set((s) => ({ columnOrder: apply(u, s.columnOrder) })),
                     setColumnPinning: (u) =>
                         set((s) => ({ columnPinning: apply(u, s.columnPinning) })),
                     setColumnSize: (u) => set((s) => ({ columnSize: apply(u, s.columnSize) })),
@@ -97,7 +103,15 @@ export const createMrtTableStore = ({
                     paginationState: state.paginationState,
                     showColumnFilters: state.showColumnFilters
                 }),
-                migrate: () => initial
+                migrate: () => initial,
+                // Strip empty filters left over in already-persisted state (e.g. cleared
+                // multi-selects saved as `[]`) so they don't read as active on load.
+                onRehydrateStorage: () => (state) => {
+                    if (state) {
+                        // eslint-disable-next-line no-param-reassign
+                        state.columnFilter = normalizeColumnFilters(state.columnFilter)
+                    }
+                }
             }
         )
     )
