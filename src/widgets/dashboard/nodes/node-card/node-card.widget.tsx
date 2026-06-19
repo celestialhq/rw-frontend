@@ -8,7 +8,7 @@ import {
     PiMemoryDuotone,
     PiUsersDuotone
 } from 'react-icons/pi'
-import { Avatar, Badge, Box, Flex, Grid, Progress, Stack, Text, Tooltip } from '@mantine/core'
+import { Avatar, Badge, Box, Flex, Progress, Stack, Text, Tooltip } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { CSSProperties, memo, useMemo } from 'react'
 import ReactCountryFlag from 'react-country-flag'
@@ -196,8 +196,8 @@ export const NodeCardWidget = memo((props: IProps) => {
 
             {!isMobile && (
                 <>
-                    <Grid align="center" className={classes.desktopGrid} gap="md">
-                        <Grid.Col span={{ base: 12, sm: 5.5 }}>
+                    <div className={classes.desktopGrid}>
+                        <div>
                             <Flex align="center" gap="sm">
                                 {isConfigMissing ? (
                                     <Badge
@@ -246,6 +246,10 @@ export const NodeCardWidget = memo((props: IProps) => {
                                                 <Avatar
                                                     alt={node.provider.name}
                                                     color="initials"
+                                                    imageProps={{
+                                                        decoding: 'async',
+                                                        loading: 'lazy'
+                                                    }}
                                                     name={node.provider.name}
                                                     onLoad={(event) => {
                                                         const img = event.target as HTMLImageElement
@@ -276,9 +280,9 @@ export const NodeCardWidget = memo((props: IProps) => {
                                     )}
                                 </Flex>
                             </Flex>
-                        </Grid.Col>
+                        </div>
 
-                        <Grid.Col span={{ base: 12, sm: 2.5 }}>
+                        <div>
                             <Flex align="center" gap="xs">
                                 <PiGlobeSimple className={classes.icon} size={14} />
                                 <Text
@@ -290,9 +294,9 @@ export const NodeCardWidget = memo((props: IProps) => {
                                     {node.address}
                                 </Text>
                             </Flex>
-                        </Grid.Col>
+                        </div>
 
-                        <Grid.Col span={{ base: 12, sm: 2 }}>
+                        <div>
                             <Box>
                                 <Flex direction="column" gap={4}>
                                     <Flex align="center" justify="space-between">
@@ -313,9 +317,9 @@ export const NodeCardWidget = memo((props: IProps) => {
                                     />
                                 </Flex>
                             </Box>
-                        </Grid.Col>
+                        </div>
 
-                        <Grid.Col span={{ base: 12, sm: 2 }}>
+                        <div>
                             <Flex align="center" gap="xs" justify="space-between">
                                 {node.isTrafficTrackingActive ? (
                                     <Flex align="center" gap={4}>
@@ -345,8 +349,8 @@ export const NodeCardWidget = memo((props: IProps) => {
                                     </Flex>
                                 )}
                             </Flex>
-                        </Grid.Col>
-                    </Grid>
+                        </div>
+                    </div>
 
                     <Flex align="center" gap="md" mt={8}>
                         <Flex align="center" gap={6} style={{ flex: 1, maxWidth: 200 }}>
@@ -497,6 +501,7 @@ export const NodeCardWidget = memo((props: IProps) => {
                                         <Avatar
                                             alt={node.provider.name}
                                             color="initials"
+                                            imageProps={{ decoding: 'async', loading: 'lazy' }}
                                             name={node.provider.name}
                                             onLoad={(event) => {
                                                 const img = event.target as HTMLImageElement
@@ -526,6 +531,7 @@ export const NodeCardWidget = memo((props: IProps) => {
                                         <Avatar
                                             alt="Unknown"
                                             color="initials"
+                                            imageProps={{ decoding: 'async', loading: 'lazy' }}
                                             name="Unknown"
                                             radius="sm"
                                             size={16}

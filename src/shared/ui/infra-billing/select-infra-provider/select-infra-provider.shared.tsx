@@ -19,6 +19,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
                 <Avatar
                     alt={name}
                     color="initials"
+                    imageProps={{ decoding: 'async', loading: 'lazy' }}
                     name={name}
                     onLoad={(event) => {
                         const img = event.target as HTMLImageElement
