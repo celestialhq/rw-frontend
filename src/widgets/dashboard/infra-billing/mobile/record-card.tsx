@@ -27,6 +27,7 @@ export function RecordCard(props: RecordCardProps) {
                             <Avatar
                                 alt={record.provider.name}
                                 color="initials"
+                                imageProps={{ decoding: 'async', loading: 'lazy' }}
                                 name={record.provider.name}
                                 onLoad={(event) => {
                                     const img = event.target as HTMLImageElement

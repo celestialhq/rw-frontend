@@ -304,6 +304,7 @@ export function getNodesTableColumns(
                         <Avatar
                             alt={provider.name}
                             color="initials"
+                            imageProps={{ decoding: 'async', loading: 'lazy' }}
                             name={provider.name}
                             onLoad={(event) => {
                                 const img = event.target as HTMLImageElement

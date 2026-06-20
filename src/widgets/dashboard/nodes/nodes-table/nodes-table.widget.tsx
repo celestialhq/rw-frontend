@@ -210,7 +210,8 @@ export const NodesTableWidget = memo((props: IProps) => {
                                                     transform: `translateY(${
                                                         virtualItem.start -
                                                         virtualizer.options.scrollMargin
-                                                    }px)`
+                                                    }px)`,
+                                                    willChange: 'transform'
                                                 }}
                                             >
                                                 <div className={styles.nodeFadeIn}>

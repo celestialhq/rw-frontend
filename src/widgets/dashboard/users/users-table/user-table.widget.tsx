@@ -11,6 +11,7 @@ import { notifications } from '@mantine/notifications'
 import { PiUsersDuotone } from 'react-icons/pi'
 import { useSearchParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
+import { Badge } from '@mantine/core'
 
 import {
     useBulkUsersActionsStoreActions,
@@ -130,11 +131,25 @@ export function UserTableWidget() {
                 clearable: value !== undefined && value !== null && value !== ''
             }
         },
+        mantineFilterMultiSelectProps: ({ column }) => {
+            const value = column.getFilterValue()
+            const count = Array.isArray(value) ? value.length : 0
+            return {
+                clearable: count > 0,
+                renderPill: () => null,
+                ...(count > 0 && {
+                    leftSection: <Badge variant="soft">{count}</Badge>,
+                    placeholder: '',
+                    clearSectionMode: 'clear'
+                })
+            }
+        },
         icons: {
             /* eslint-disable @typescript-eslint/no-explicit-any */
             IconFilter: (props: any) => <TbSearch size={24} {...props} />,
             IconFilterOff: (props: any) => <TbSearchOff size={24} {...props} />
         },
+        // mantineTableBodyCellProps: { style: { padding: '2px 6px' } },
         enableFullScreenToggle: true,
         enableSortingRemoval: true,
         enableGlobalFilter: false,
@@ -143,9 +158,10 @@ export function UserTableWidget() {
         enableColumnOrdering: true,
         columnFilterModeOptions: ['contains'],
         initialState: {
-            density: 'xs',
+            density: 'xxs',
             pagination: DEFAULT_PAGINATION_STATE
         },
+        enableDensityToggle: true,
         manualFiltering: true,
         manualPagination: true,
         manualSorting: true,

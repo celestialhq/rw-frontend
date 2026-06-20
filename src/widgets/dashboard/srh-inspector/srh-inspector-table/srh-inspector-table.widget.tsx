@@ -73,7 +73,7 @@ export function SrhInspectorTableWidget() {
         enableColumnOrdering: true,
         columnFilterModeOptions: ['contains'],
         initialState: {
-            density: 'xs',
+            density: 'xxs',
             pagination: DEFAULT_PAGINATION_STATE
         },
         manualFiltering: true,

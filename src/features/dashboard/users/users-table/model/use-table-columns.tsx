@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* eslint-disable @stylistic/indent */
 
 import {
     GetAllNodesCommand,
@@ -6,27 +7,50 @@ import {
     GetExternalSquadsCommand,
     GetInternalSquadsCommand
 } from '@remnawave/backend-contract'
-import { Badge, OverflowList, Stack, Text, Tooltip } from '@mantine/core'
+import {
+    Badge,
+    ComboboxItem,
+    Group,
+    OverflowList,
+    SelectProps,
+    Stack,
+    Text,
+    Tooltip
+} from '@mantine/core'
 import { MRT_ColumnDef } from '@kastov/mantine-react-table-open'
 import { useTranslation } from 'react-i18next'
 import { useMemo } from 'react'
-import dayjs from 'dayjs'
 
 import { ConnectedNodeColumnEntity } from '@entities/dashboard/users/ui/table-columns/connected-node'
 import { UsernameColumnEntity } from '@entities/dashboard/users/ui/table-columns/username'
 import { StatusColumnEntity } from '@entities/dashboard/users/ui/table-columns/status'
 import { DataUsageColumnEntity } from '@entities/dashboard/users/ui'
 import { prettyBytesToAnyUtil } from '@shared/utils/bytes'
+import { formatTimeUtil } from '@shared/utils/time-utils'
 import { formatInt } from '@shared/utils/misc'
 
 import { NodeSelectItem, NodeSelectItemProps } from './node-select-item'
+
+const renderSelectOption: SelectProps['renderOption'] = ({ option }) => {
+    const item = option as ComboboxItem & { membersCount: number }
+    return (
+        <Group flex="1" gap="xs" w="100%" wrap="nowrap">
+            <Text size="sm" truncate="end">
+                {item.label}
+            </Text>
+            <Badge color="gray" ml="auto" size="sm" style={{ flexShrink: 0 }} variant="light">
+                {formatInt(item?.membersCount ?? 0)}
+            </Badge>
+        </Group>
+    )
+}
 
 export const useUserTableColumns = (
     internalSquads?: GetInternalSquadsCommand.Response['response'],
     externalSquads?: GetExternalSquadsCommand.Response['response'],
     nodes?: GetAllNodesCommand.Response['response']
 ) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
     return useMemo<MRT_ColumnDef<GetAllUsersCommand.Response['response']['users'][number]>[]>(
         () => [
@@ -79,9 +103,11 @@ export const useUserTableColumns = (
                 filterVariant: 'select',
                 mantineFilterSelectProps: {
                     comboboxProps: {
-                        transitionProps: { transition: 'fade', duration: 200 }
+                        transitionProps: { transition: 'fade', duration: 200 },
+                        width: 'fit-content'
                     },
                     checkIconPosition: 'left',
+                    clearSectionMode: 'clear',
                     data:
                         nodes?.map((node) => ({
                             label: node.name,
@@ -202,12 +228,12 @@ export const useUserTableColumns = (
                 filterVariant: 'multi-select',
                 mantineFilterSelectProps: {
                     comboboxProps: {
-                        transitionProps: { transition: 'fade', duration: 200 }
+                        transitionProps: { transition: 'fade', duration: 200 },
+                        width: 'fit-content'
                     },
                     checkIconPosition: 'left'
                 }
             },
-
             {
                 accessorKey: 'activeInternalSquads',
                 header: t('use-table-columns.internal-squads'),
@@ -215,11 +241,17 @@ export const useUserTableColumns = (
                 enableColumnFilterModes: false,
                 enableSorting: false,
                 mantineFilterSelectProps: {
+                    clearSectionMode: 'clear',
+                    comboboxProps: {
+                        width: 'fit-content'
+                    },
                     data:
                         internalSquads?.internalSquads.map((squad) => ({
-                            label: `${squad.name} (${formatInt(squad.info.membersCount)})`,
-                            value: squad.uuid
-                        })) ?? []
+                            label: squad.name,
+                            value: squad.uuid,
+                            membersCount: squad.info.membersCount
+                        })) ?? [],
+                    renderOption: renderSelectOption
                 },
                 Cell: ({ cell }) => {
                     const squads = cell.row.original.activeInternalSquads
@@ -315,20 +347,22 @@ export const useUserTableColumns = (
                 header: t('use-table-columns.first-connected-at'),
                 accessorFn: (originalRow) => {
                     if (originalRow.userTraffic && originalRow.userTraffic.firstConnectedAt) {
-                        return dayjs(originalRow.userTraffic.firstConnectedAt).format(
-                            'DD/MM/YYYY, HH:mm'
-                        )
+                        return formatTimeUtil({
+                            time: originalRow.userTraffic.firstConnectedAt,
+                            template: 'TIME_FIRST_DATETIME',
+                            language: i18n.language
+                        })
                     }
                     return '–'
                 },
                 minSize: 250,
-                size: 400,
-
+                size: 250,
                 enableColumnFilterModes: false,
                 enableColumnFilter: false,
 
                 mantineTableBodyCellProps: {
-                    align: 'center'
+                    align: 'left',
+                    ff: 'monospace'
                 }
             },
 
@@ -337,17 +371,20 @@ export const useUserTableColumns = (
                 header: t('use-table-columns.traffic-reset'),
                 accessorFn: (originalRow) =>
                     originalRow.lastTrafficResetAt
-                        ? dayjs(originalRow.lastTrafficResetAt).format('DD/MM/YYYY, HH:mm')
+                        ? formatTimeUtil({
+                              time: originalRow.userTraffic.firstConnectedAt,
+                              template: 'TIME_FIRST_DATETIME',
+                              language: i18n.language
+                          })
                         : t('use-table-columns.never'),
-                minSize: 170,
-                maxSize: 400,
-                size: 170,
+                minSize: 250,
+                size: 250,
                 enableClickToCopy: false,
-
                 enableColumnFilterModes: false,
                 enableColumnFilter: false,
                 mantineTableBodyCellProps: {
-                    align: 'center'
+                    align: 'left',
+                    ff: 'monospace'
                 }
             },
             {
@@ -355,15 +392,19 @@ export const useUserTableColumns = (
                 header: t('use-table-columns.online-at'),
                 accessorFn: (originalRow) =>
                     originalRow.userTraffic && originalRow.userTraffic.onlineAt
-                        ? dayjs(originalRow.userTraffic.onlineAt).format('DD/MM/YYYY, HH:mm')
+                        ? formatTimeUtil({
+                              time: originalRow.userTraffic.onlineAt,
+                              template: 'TIME_FIRST_DATETIME',
+                              language: i18n.language
+                          })
                         : t('use-table-columns.never'),
-                minSize: 170,
-                maxSize: 400,
-                size: 170,
+                minSize: 250,
+                size: 250,
                 enableColumnFilterModes: false,
                 enableColumnFilter: false,
                 mantineTableBodyCellProps: {
-                    align: 'center'
+                    align: 'left',
+                    ff: 'monospace'
                 }
             },
 
@@ -388,29 +429,37 @@ export const useUserTableColumns = (
                 header: t('use-table-columns.sub-link-revoked-at'),
                 accessorFn: (originalRow) =>
                     originalRow.subRevokedAt
-                        ? dayjs(originalRow.subRevokedAt).format('DD/MM/YYYY, HH:mm')
+                        ? formatTimeUtil({
+                              time: originalRow.subRevokedAt,
+                              template: 'TIME_FIRST_DATETIME',
+                              language: i18n.language
+                          })
                         : t('use-table-columns.never'),
-                minSize: 170,
-                maxSize: 170,
-                size: 170,
+                minSize: 250,
+                size: 250,
                 enableColumnFilterModes: false,
                 enableColumnFilter: false,
                 mantineTableBodyCellProps: {
-                    align: 'center'
+                    align: 'left',
+                    ff: 'monospace'
                 }
             },
             {
                 accessorKey: 'createdAt',
                 header: t('use-table-columns.created-at'),
                 accessorFn: (originalRow) =>
-                    dayjs(originalRow.createdAt).format('DD/MM/YYYY, HH:mm'),
-                minSize: 170,
-                maxSize: 170,
-                size: 170,
+                    formatTimeUtil({
+                        time: originalRow.createdAt,
+                        template: 'TIME_FIRST_DATETIME',
+                        language: i18n.language
+                    }),
+                minSize: 250,
+                size: 250,
                 enableColumnFilterModes: false,
                 enableColumnFilter: false,
                 mantineTableBodyCellProps: {
-                    align: 'center'
+                    align: 'left',
+                    ff: 'monospace'
                 }
             },
             {
@@ -468,6 +517,6 @@ export const useUserTableColumns = (
                 }
             }
         ],
-        [t, nodes, internalSquads, externalSquads]
+        [t, nodes, internalSquads, externalSquads, i18n.language]
     )
 }

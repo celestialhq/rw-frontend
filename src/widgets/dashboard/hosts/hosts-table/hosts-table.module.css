@@ -1,4 +1,4 @@
-.nodeFadeIn {
+.hostFadeIn {
     animation: fadeIn 0.2s ease-out;
     -webkit-animation: fadeIn 0.2s ease-out;
     -webkit-backface-visibility: hidden;

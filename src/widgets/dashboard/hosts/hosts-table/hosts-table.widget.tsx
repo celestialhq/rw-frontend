@@ -16,13 +16,13 @@ import { GetAllHostsCommand } from '@remnawave/backend-contract'
 import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { Box, Container, Stack } from '@mantine/core'
-import { motion } from 'framer-motion'
 
 import { HostCardWidget } from '@widgets/dashboard/hosts/host-card'
 import { EmptyPageLayout } from '@shared/ui/layouts/empty-page'
 import { useGetNodes } from '@shared/api/hooks'
 import { useIsMobile } from '@shared/hooks'
 
+import classes from './hosts-table.module.css'
 import { IProps } from './interfaces'
 
 export const HostsTableWidget = memo((props: IProps) => {
@@ -46,7 +46,7 @@ export const HostsTableWidget = memo((props: IProps) => {
     const virtualizer = useWindowVirtualizer({
         count: state.length,
         estimateSize: () => (isMobile ? 202 : 88),
-        overscan: 5,
+        overscan: 7,
         scrollMargin,
         getItemKey: (index) => state[index].uuid
     })
@@ -162,15 +162,11 @@ export const HostsTableWidget = memo((props: IProps) => {
                                                         transform: `translateY(${
                                                             virtualItem.start -
                                                             virtualizer.options.scrollMargin
-                                                        }px)`
+                                                        }px)`,
+                                                        willChange: 'transform'
                                                     }}
                                                 >
-                                                    <motion.div
-                                                        animate={{ opacity: 1 }}
-                                                        exit={{ opacity: 0 }}
-                                                        initial={{ opacity: 0 }}
-                                                        transition={{ duration: 0.1 }}
-                                                    >
+                                                    <div className={classes.hostFadeIn}>
                                                         <HostCardWidget
                                                             configProfiles={configProfiles}
                                                             isSelected={selectedHosts.includes(
@@ -182,7 +178,7 @@ export const HostsTableWidget = memo((props: IProps) => {
                                                                 toggleHostSelection(item.uuid)
                                                             }
                                                         />
-                                                    </motion.div>
+                                                    </div>
                                                 </Box>
                                             )
                                         })}

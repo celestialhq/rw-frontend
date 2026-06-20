@@ -94,7 +94,7 @@ export function TorrentBlockerReportsTableWidget() {
         enableColumnOrdering: true,
         columnFilterModeOptions: ['contains', 'equals'],
         initialState: {
-            density: 'xs',
+            density: 'xxs',
             pagination: DEFAULT_PAGINATION_STATE
         },
         manualFiltering: true,
