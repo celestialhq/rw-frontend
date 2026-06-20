@@ -1,8 +1,9 @@
 import type { editor } from 'monaco-editor'
 
-import { Box, Button, Card, Code, Group, Loader, Paper, Text } from '@mantine/core'
+import { Box, Button, Card, Code, Group, Loader, Paper } from '@mantine/core'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Editor, { Monaco, useMonaco } from '@monaco-editor/react'
+import { TbAlertTriangle } from 'react-icons/tb'
 import { useTranslation } from 'react-i18next'
 import { useBlocker } from 'react-router'
 import { modals } from '@mantine/modals'
@@ -10,6 +11,7 @@ import { modals } from '@mantine/modals'
 import { ConfigEditorActionsFeature } from '@features/dashboard/config-profiles/config-editor-actions'
 import { ConfigValidationFeature } from '@features/dashboard/config-profiles/config-validation'
 import { MonacoSetupFeature } from '@features/dashboard/config-profiles/monaco-setup'
+import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { monacoTheme } from '@shared/constants/monaco-theme/monaco-theme'
 import { preventBackScroll } from '@shared/utils/misc'
 
@@ -79,13 +81,17 @@ export function ConfigEditorWidget(props: IProps) {
     useEffect(() => {
         if (blocker.state === 'blocked') {
             modals.openConfirmModal({
-                title: t('config-editor.widget.unsaved-changes'),
-                children: (
-                    <Text c="dimmed" size="md">
-                        {t(
-                            'config-editor.widget.your-changes-will-be-lost-if-you-leave-this-page-without-saving'
-                        )}
-                    </Text>
+                title: (
+                    <BaseOverlayHeader
+                        iconColor="red"
+                        IconComponent={TbAlertTriangle}
+                        iconSize={20}
+                        iconVariant="soft"
+                        title={t('config-editor.widget.unsaved-changes')}
+                    />
+                ),
+                children: t(
+                    'config-editor.widget.your-changes-will-be-lost-if-you-leave-this-page-without-saving'
                 ),
                 centered: true,
                 labels: {
@@ -95,7 +101,7 @@ export function ConfigEditorWidget(props: IProps) {
 
                 confirmProps: {
                     color: 'red',
-                    variant: 'light'
+                    variant: 'soft'
                 },
                 cancelProps: {
                     variant: 'light'
