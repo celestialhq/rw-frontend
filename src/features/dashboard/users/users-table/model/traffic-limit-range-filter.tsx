@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
+import { Group, NativeSelect, NumberInput } from '@mantine/core'
 import { GetAllUsersCommand } from '@remnawave/backend-contract'
 import { MRT_Column } from '@kastov/mantine-react-table-open'
-import { Group, NumberInput, Select } from '@mantine/core'
 import { useEffect, useRef, useState } from 'react'
 import { useDebouncedValue } from '@mantine/hooks'
 
@@ -14,9 +14,7 @@ import {
 } from '@shared/utils/bytes'
 
 type TUser = GetAllUsersCommand.Response['response']['users'][number]
-
 type TRange = [null | string, null | string]
-
 type TValues = [number | string, number | string]
 
 interface IProps {
@@ -99,13 +97,12 @@ export const TrafficLimitRangeFilter = ({ column }: IProps) => {
                 thousandSeparator=","
                 value={values[1]}
             />
-            <Select
-                allowDeselect={false}
-                comboboxProps={{ width: 'fit-content' }}
+            <NativeSelect
+                aria-label="Unit"
                 data={IEC_UNITS}
-                flex="0 0 auto"
-                onChange={(value) => value && setUnit(value as TIecUnit)}
+                onChange={(event) => setUnit(event.currentTarget.value as TIecUnit)}
                 size="xs"
+                styles={{ input: { fontWeight: 600 } }}
                 value={unit}
                 w={72}
             />
