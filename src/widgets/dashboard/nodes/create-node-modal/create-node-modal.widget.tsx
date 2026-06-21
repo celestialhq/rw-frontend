@@ -9,7 +9,6 @@ import { TbCpu } from 'react-icons/tb'
 import { useNodesStoreActions, useNodesStoreCreateModalIsOpen } from '@entities/dashboard/nodes'
 import { configProfilesQueryKeys, useCreateNode, useGetPubKey } from '@shared/api/hooks'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
-import { gibToBytesUtil } from '@shared/utils/bytes'
 import { useIsMobile } from '@shared/hooks'
 import { queryClient } from '@shared/api'
 
@@ -68,8 +67,7 @@ export const CreateNodeModalWidget = () => {
             variables: {
                 ...values,
                 name: values.name.trim(),
-                address: values.address.trim(),
-                trafficLimitBytes: gibToBytesUtil(values.trafficLimitBytes)
+                address: values.address.trim()
             }
         })
     }

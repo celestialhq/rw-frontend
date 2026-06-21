@@ -13,7 +13,6 @@ import {
     useUpdateNode
 } from '@shared/api/hooks'
 import { BaseNodeForm } from '@shared/ui/forms/nodes/base-node-form/base-node-form'
-import { bytesToGibUtil, gibToBytesUtil } from '@shared/utils/bytes'
 import { LoaderModalShared } from '@shared/ui/loader-modal'
 import { queryClient } from '@shared/api'
 
@@ -78,7 +77,7 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
                 address: fetchedNode.address,
                 port: fetchedNode.port ?? undefined,
                 isTrafficTrackingActive: fetchedNode.isTrafficTrackingActive ?? undefined,
-                trafficLimitBytes: bytesToGibUtil(fetchedNode.trafficLimitBytes ?? undefined),
+                trafficLimitBytes: fetchedNode.trafficLimitBytes ?? undefined,
                 trafficResetDay: fetchedNode.trafficResetDay ?? undefined,
                 notifyPercent: fetchedNode.notifyPercent ?? undefined,
                 consumptionMultiplier: fetchedNode.consumptionMultiplier ?? undefined,
@@ -110,7 +109,7 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
                 ...values,
                 name: values.name?.trim(),
                 address: values.address?.trim(),
-                trafficLimitBytes: gibToBytesUtil(values.trafficLimitBytes),
+                trafficLimitBytes: values.trafficLimitBytes,
                 configProfile: {
                     activeConfigProfileUuid: values.configProfile?.activeConfigProfileUuid ?? '',
                     activeInbounds: values.configProfile?.activeInbounds ?? []

@@ -56,7 +56,8 @@ export function UserTableWidget() {
 
     const defaultFilterFns: Record<string, string> = {
         hwidDeviceLimit: 'equals',
-        tag: 'equals'
+        tag: 'equals',
+        trafficLimitBytes: 'between'
     }
 
     const [columnFilterFns, setColumnFilterFns] = useState<MRT_ColumnFilterFnsState>(() =>
@@ -80,7 +81,11 @@ export function UserTableWidget() {
     const params = {
         start: persistedTableState.pagination.pageIndex * persistedTableState.pagination.pageSize,
         size: persistedTableState.pagination.pageSize,
-        filters: persistedTableState.columnFilters,
+        filters: persistedTableState.columnFilters.filter(({ value }) =>
+            Array.isArray(value)
+                ? value.some((bound) => bound !== null && bound !== undefined && bound !== '')
+                : value !== null && value !== undefined && value !== ''
+        ),
         filterModes: columnFilterFns,
         sorting
     }

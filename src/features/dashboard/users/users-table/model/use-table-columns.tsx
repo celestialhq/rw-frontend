@@ -24,12 +24,13 @@ import { useMemo } from 'react'
 import { ConnectedNodeColumnEntity } from '@entities/dashboard/users/ui/table-columns/connected-node'
 import { UsernameColumnEntity } from '@entities/dashboard/users/ui/table-columns/username'
 import { StatusColumnEntity } from '@entities/dashboard/users/ui/table-columns/status'
+import { prettyBytesToAnyUtil, prettyBytesUtil } from '@shared/utils/bytes'
 import { DataUsageColumnEntity } from '@entities/dashboard/users/ui'
-import { prettyBytesToAnyUtil } from '@shared/utils/bytes'
 import { formatTimeUtil } from '@shared/utils/time-utils'
 import { formatInt } from '@shared/utils/misc'
 
 import { NodeSelectItem, NodeSelectItemProps } from './node-select-item'
+import { TrafficLimitRangeFilter } from './traffic-limit-range-filter'
 
 const renderSelectOption: SelectProps['renderOption'] = ({ option }) => {
     const item = option as ComboboxItem & { membersCount: number }
@@ -171,6 +172,24 @@ export const useUserTableColumns = (
                 enableColumnFilter: false,
                 maxSize: 700,
                 size: 180
+            },
+            {
+                accessorKey: 'trafficLimitBytes',
+                header: 'Traffic Limit',
+                Cell: ({ cell }) => {
+                    const limitBytes = cell.row.original.trafficLimitBytes ?? 0
+                    return limitBytes === 0 ? '∞' : prettyBytesUtil(limitBytes) || '0 B'
+                },
+                mantineTableBodyCellProps: {
+                    align: 'center'
+                },
+                filterVariant: 'range',
+                Filter: ({ column, rangeFilterIndex }) =>
+                    rangeFilterIndex === 0 ? <TrafficLimitRangeFilter column={column} /> : null,
+                minSize: 230,
+                enableColumnFilterModes: false,
+                enableColumnFilter: true,
+                size: 230
             },
             {
                 accessorKey: 'shortUuid',

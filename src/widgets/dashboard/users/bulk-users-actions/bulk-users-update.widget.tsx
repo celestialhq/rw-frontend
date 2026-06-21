@@ -13,7 +13,6 @@ import { useBulkUpdateUsers, useGetExternalSquads, useGetUserTags } from '@share
 import { BulkManyFormsUsersShared } from '@shared/ui/forms/users/bulk-many-forms-components'
 import { handleFormErrors } from '@shared/utils/misc'
 import { ModalFooter } from '@shared/ui/modal-footer'
-import { gibToBytesUtil } from '@shared/utils/bytes'
 
 const MotionWrapper = motion.div
 const MotionStack = motion.create(Stack)
@@ -96,7 +95,7 @@ export const BulkUsersUpdateWidget = (props: IProps) => {
                     uuids: actions.getUuids(),
                     fields: {
                         ...values.fields,
-                        trafficLimitBytes: gibToBytesUtil(values.fields.trafficLimitBytes),
+                        trafficLimitBytes: values.fields.trafficLimitBytes,
                         telegramId:
                             // @ts-expect-error - TODO: fix ZOD schema
                             values.fields.telegramId === '' ? null : values.fields.telegramId,

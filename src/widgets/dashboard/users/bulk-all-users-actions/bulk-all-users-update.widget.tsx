@@ -11,7 +11,6 @@ import { useBulkAllUpdateUsers, useGetExternalSquads, useGetUserTags } from '@sh
 import { BulkFormsUsersShared } from '@shared/ui/forms/users/bulk-forms-components'
 import { handleFormErrors } from '@shared/utils/misc'
 import { ModalFooter } from '@shared/ui/modal-footer'
-import { gibToBytesUtil } from '@shared/utils/bytes'
 
 const MotionWrapper = motion.div
 const MotionStack = motion.create(Stack)
@@ -82,7 +81,7 @@ export const BulkAllUsersUpdateWidget = (props: IProps) => {
             {
                 variables: {
                     ...values,
-                    trafficLimitBytes: gibToBytesUtil(values.trafficLimitBytes),
+                    trafficLimitBytes: values.trafficLimitBytes,
                     // @ts-expect-error - TODO: fix ZOD schema
                     telegramId: values.telegramId === '' ? null : values.telegramId,
                     email: values.email === '' ? null : values.email,

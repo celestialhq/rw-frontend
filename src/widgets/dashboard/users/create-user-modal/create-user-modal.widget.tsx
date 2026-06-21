@@ -29,7 +29,6 @@ import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { LoaderModalShared } from '@shared/ui/loader-modal'
 import { handleFormErrors } from '@shared/utils/misc'
 import { ModalFooter } from '@shared/ui/modal-footer'
-import { gibToBytesUtil } from '@shared/utils/bytes'
 import { useIsMobile } from '@shared/hooks'
 
 const MotionWrapper = motion.div
@@ -124,7 +123,7 @@ export const CreateUserModalWidget = () => {
                 variables: {
                     username: values.username,
                     trafficLimitStrategy: values.trafficLimitStrategy,
-                    trafficLimitBytes: gibToBytesUtil(values.trafficLimitBytes),
+                    trafficLimitBytes: values.trafficLimitBytes,
                     // @ts-expect-error - TODO: fix ZOD schema
                     expireAt: dayjs(values.expireAt).toISOString(),
                     status: values.status,

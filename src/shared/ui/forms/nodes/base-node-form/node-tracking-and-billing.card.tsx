@@ -1,7 +1,7 @@
 import {
+    Box,
     Button,
     Collapse,
-    Divider,
     Group,
     NumberInput,
     Stack,
@@ -10,9 +10,9 @@ import {
     Text,
     Textarea
 } from '@mantine/core'
+import { TbBell, TbChartBar, TbChartLine, TbClock, TbExternalLink } from 'react-icons/tb'
 import { CreateNodeCommand, UpdateNodeCommand } from '@remnawave/backend-contract'
 import { ForwardRefComponent, HTMLMotionProps, Variants } from 'motion/react'
-import { TbChartBar, TbChartLine, TbExternalLink } from 'react-icons/tb'
 import { UseFormReturnType } from '@mantine/form'
 import { useTranslation } from 'react-i18next'
 import { PiTagDuotone } from 'react-icons/pi'
@@ -20,9 +20,12 @@ import { useState } from 'react'
 
 import { SelectInfraProviderShared } from '@shared/ui/infra-billing/select-infra-provider/select-infra-provider.shared'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
+import { TrafficLimitInput } from '@shared/ui/forms/traffic-limit-input'
 import { TagInputPill } from '@shared/ui/tag-input-pill'
 import { SectionCard } from '@shared/ui/section-card'
 import { useGetNodesTags } from '@shared/api/hooks'
+
+import classes from './node-tracking-and-billing.card.module.css'
 
 const URL_REGEX = /https?:\/\/[^\s]+/i
 
@@ -88,8 +91,12 @@ export const NodeTrackingAndBillingCard = <
                             }}
                         />
 
-                        <Stack gap={0}>
-                            <Group gap="xs" justify="space-between">
+                        <Box className={classes.trackingCard}>
+                            <Group
+                                className={classes.trackingHeader}
+                                gap="xs"
+                                justify="space-between"
+                            >
                                 <Group gap="xs">
                                     <TbChartLine
                                         size={18}
@@ -115,37 +122,21 @@ export const NodeTrackingAndBillingCard = <
                             </Group>
 
                             <Collapse expanded={advancedOpened}>
-                                <Stack gap="sm" mt="sm">
-                                    <Divider size="xs" />
+                                <Stack className={classes.trackingBody} gap="sm">
                                     <Group gap="md" grow justify="space-between" w="100%">
-                                        <NumberInput
-                                            allowDecimal={false}
-                                            decimalScale={0}
-                                            defaultValue={0}
+                                        <TrafficLimitInput
                                             hideControls
                                             key={form.key('trafficLimitBytes')}
                                             label={t('base-node-form.limit')}
-                                            leftSection={
-                                                <>
-                                                    <Text
-                                                        display="flex"
-                                                        size="0.75rem"
-                                                        style={{ justifyContent: 'center' }}
-                                                        ta="center"
-                                                        w={26}
-                                                    >
-                                                        GiB
-                                                    </Text>
-                                                    <Divider orientation="vertical" />
-                                                </>
-                                            }
-                                            thousandSeparator=","
+                                            leftSection={<TbChartLine size={16} />}
                                             {...form.getInputProps('trafficLimitBytes')}
                                             styles={{
                                                 label: { fontWeight: 500 }
                                             }}
                                         />
+                                    </Group>
 
+                                    <Group gap="md" grow justify="space-between" w="100%">
                                         <NumberInput
                                             key={form.key('trafficResetDay')}
                                             label={t('base-node-form.reset-day')}
@@ -155,6 +146,7 @@ export const NodeTrackingAndBillingCard = <
                                             clampBehavior="strict"
                                             decimalScale={0}
                                             hideControls
+                                            leftSection={<TbClock size={16} />}
                                             max={31}
                                             min={1}
                                             placeholder={t('base-node-form.e-g-1-31')}
@@ -172,6 +164,7 @@ export const NodeTrackingAndBillingCard = <
                                             clampBehavior="strict"
                                             decimalScale={0}
                                             hideControls
+                                            leftSection={<TbBell size={16} />}
                                             max={100}
                                             placeholder={t('base-node-form.e-g-50')}
                                             styles={{
@@ -185,7 +178,7 @@ export const NodeTrackingAndBillingCard = <
                                     </Group>
                                 </Stack>
                             </Collapse>
-                        </Stack>
+                        </Box>
 
                         <TagsInput
                             clearable
