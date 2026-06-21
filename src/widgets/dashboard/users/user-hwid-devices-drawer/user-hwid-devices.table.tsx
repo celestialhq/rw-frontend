@@ -173,7 +173,7 @@ export const UserHwidDevicesTable = (props: IProps) => {
         enableSortingRemoval: true,
         initialState: {
             showGlobalFilter: true,
-            density: 'xxs',
+            density: 'xs',
             sorting: [{ id: 'createdAt', desc: true }],
             pagination: {
                 pageIndex: 0,
@@ -192,11 +192,6 @@ export const UserHwidDevicesTable = (props: IProps) => {
             style: { minWidth: '350px' },
             variant: 'default',
             leftSection: <TbSearch size={16} />
-        },
-        mantineTopToolbarProps: {
-            style: {
-                '--mrt-base-background-color': 'rgba(255, 255, 255, 0.02)'
-            }
         },
         renderRowActions: ({ row }) => (
             <ActionIcon
