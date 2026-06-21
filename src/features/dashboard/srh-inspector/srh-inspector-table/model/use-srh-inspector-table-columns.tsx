@@ -45,7 +45,7 @@ export const useSrhInspectorTableColumns = () => {
                 enableColumnFilterModes: false,
                 enableColumnFilter: false,
                 mantineTableBodyCellProps: {
-                    align: 'center',
+                    align: 'left',
                     ff: 'monospace'
                 }
             },
