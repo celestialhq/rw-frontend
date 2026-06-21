@@ -22,7 +22,7 @@ export const ScopeEndpointItem = memo(({ checked, endpoint, onToggle, readOnly }
             onClick={readOnly ? undefined : () => onToggle?.(endpoint.key)}
         >
             <Group gap="sm" wrap="nowrap">
-                <Checkbox checked={checked} radius="sm" readOnly size="xs" tabIndex={-1} />
+                {!readOnly && <Checkbox checked={checked} radius="sm" size="xs" tabIndex={-1} />}
 
                 <Badge
                     className={classes.methodBadge}
