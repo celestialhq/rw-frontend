@@ -95,19 +95,19 @@ export const CreateHostModalWidget = () => {
             return null
         }
 
-        let xHttpExtraParams
+        let xhttpExtraParams
         let muxParams
         let sockoptParams
         let finalMask
 
         try {
-            if (values.xHttpExtraParams === '') {
-                xHttpExtraParams = null
+            if (values.xhttpExtraParams === '') {
+                xhttpExtraParams = null
             } else {
-                xHttpExtraParams = JSON.parse(values.xHttpExtraParams as unknown as string)
+                xhttpExtraParams = JSON.parse(values.xhttpExtraParams as unknown as string)
             }
         } catch {
-            xHttpExtraParams = null
+            xhttpExtraParams = null
             // silence
         }
 
@@ -150,7 +150,7 @@ export const CreateHostModalWidget = () => {
                 isDisabled: !values.isDisabled,
                 sockoptParams,
                 muxParams,
-                xHttpExtraParams,
+                xhttpExtraParams,
                 finalMask,
                 inbound: {
                     configProfileInboundUuid: values.inbound.configProfileInboundUuid,

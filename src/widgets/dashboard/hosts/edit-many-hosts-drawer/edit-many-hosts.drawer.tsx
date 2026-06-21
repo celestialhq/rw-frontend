@@ -101,8 +101,8 @@ export const EditManyHostsDrawer = memo(() => {
         if (form.isDirty('isDisabled')) {
             dirtyValues.isDisabled = !values.isDisabled
         }
-        if (form.isDirty('xHttpExtraParams')) {
-            dirtyValues.xHttpExtraParams = parseJsonField(values.xHttpExtraParams)
+        if (form.isDirty('xhttpExtraParams')) {
+            dirtyValues.xhttpExtraParams = parseJsonField(values.xhttpExtraParams)
         }
         if (form.isDirty('muxParams')) {
             dirtyValues.muxParams = parseJsonField(values.muxParams)

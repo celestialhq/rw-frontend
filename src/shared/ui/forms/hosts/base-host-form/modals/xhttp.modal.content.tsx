@@ -23,15 +23,15 @@ interface IProps {
 export const XhttpModalContent = ({ form }: IProps) => {
     const { t } = useTranslation()
 
-    const inputProps = form.getInputProps('xHttpExtraParams')
+    const inputProps = form.getInputProps('xhttpExtraParams')
 
     const [value, setValue] = useState<string>(
-        (form.getValues().xHttpExtraParams as unknown as string) ?? ''
+        (form.getValues().xhttpExtraParams as unknown as string) ?? ''
     )
 
     const handleChange = (next: string) => {
         setValue(next)
-        form.setFieldValue('xHttpExtraParams', next)
+        form.setFieldValue('xhttpExtraParams', next)
     }
 
     return (

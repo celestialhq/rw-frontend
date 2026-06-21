@@ -282,10 +282,10 @@ export const HOST_BOOLEAN_FIELDS: HostBooleanFieldConfig[] = [
         label: () => 'Sockopt Params'
     },
     {
-        accessor: 'xHttpExtraParams',
-        getValue: (host) => Boolean(host.xHttpExtraParams),
+        accessor: 'xhttpExtraParams',
+        getValue: (host) => Boolean(host.xhttpExtraParams),
         hiddenByDefault: true,
-        key: 'xHttpExtraParams',
+        key: 'xhttpExtraParams',
         label: (t) => t('base-host-form.extra-xhttp')
     }
 ]

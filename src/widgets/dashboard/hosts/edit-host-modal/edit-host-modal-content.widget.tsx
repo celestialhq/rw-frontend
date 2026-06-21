@@ -74,7 +74,7 @@ export const EditHostModalContentWidget = memo(({ host, onClose }: Props) => {
                     configProfileInboundUuid: host.inbound.configProfileInboundUuid ?? ''
                 },
                 serverDescription: host.serverDescription ?? undefined,
-                xHttpExtraParams: stringifyJsonField(host.xHttpExtraParams),
+                xhttpExtraParams: stringifyJsonField(host.xhttpExtraParams),
                 muxParams: stringifyJsonField(host.muxParams),
                 sockoptParams: stringifyJsonField(host.sockoptParams),
                 finalMask: stringifyJsonField(host.finalMask),
@@ -119,7 +119,7 @@ export const EditHostModalContentWidget = memo(({ host, onClose }: Props) => {
                 ...values,
                 isDisabled: !values.isDisabled,
                 uuid: host.uuid,
-                xHttpExtraParams: parseJsonField(values.xHttpExtraParams),
+                xhttpExtraParams: parseJsonField(values.xhttpExtraParams),
                 muxParams: parseJsonField(values.muxParams),
                 sockoptParams: parseJsonField(values.sockoptParams),
                 finalMask: parseJsonField(values.finalMask)
