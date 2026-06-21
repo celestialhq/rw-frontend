@@ -252,7 +252,7 @@ export const useDesktopMenuSections = (): MenuItem[] => {
             ]
         },
         {
-            header: 'Settings',
+            header: t('constants.subscription-settings'),
             id: 'settings',
             icon: Logo,
             section: [
