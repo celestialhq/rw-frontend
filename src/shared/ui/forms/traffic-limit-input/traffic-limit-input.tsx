@@ -58,7 +58,7 @@ export const TrafficLimitInput = ({ defaultValue, onChange, value, ...rest }: IP
             />
             <NativeSelect
                 aria-label="Unit"
-                data={[...IEC_UNITS]}
+                data={IEC_UNITS}
                 onChange={(event) => handleUnitChange(event.currentTarget.value as TIecUnit)}
                 size={rest.size}
                 styles={{ input: { fontWeight: 500 } }}

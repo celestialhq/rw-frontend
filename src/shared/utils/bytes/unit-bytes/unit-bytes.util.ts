@@ -25,7 +25,7 @@ export function unitToBytesUtil(
 export function bytesToUnitUtil(
     bytes: null | number | undefined,
     unit: TIecUnit,
-    fractionDigits = 3
+    fractionDigits = 2
 ): number | undefined {
     if (bytes === undefined || bytes === null) return undefined
 
