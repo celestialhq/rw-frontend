@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useMemo } from 'react'
 
 import { getNodeResetPeriodUtil } from '@shared/utils/time-utils/get-node-reset-days'
-import { prettyBytesUtil } from '@shared/utils/bytes'
+import { prettifyBytesUtil } from '@shared/utils/bytes'
 
 export const useBandwidthTableColumns = () => {
     const { t } = useTranslation()
@@ -50,7 +50,7 @@ export const useBandwidthTableColumns = () => {
                     return (
                         <Flex direction="column" gap={4}>
                             <Text c="dimmed" ff="monospace" fw={600} size="md">
-                                {prettyBytesUtil(node.trafficUsedBytes || 0) || '0 GiB'}
+                                {prettifyBytesUtil(node.trafficUsedBytes || 0) || '0 GiB'}
                             </Text>
                             <Progress
                                 color={getProgressColor(percentage)}
@@ -69,7 +69,7 @@ export const useBandwidthTableColumns = () => {
                 sortable: true,
                 renderCell: (node) => (
                     <Text ff="monospace">
-                        {prettyBytesUtil(node.trafficLimitBytes || 0) || '0 GiB'}
+                        {prettifyBytesUtil(node.trafficLimitBytes || 0) || '0 GiB'}
                     </Text>
                 ),
                 textAlign: 'left'

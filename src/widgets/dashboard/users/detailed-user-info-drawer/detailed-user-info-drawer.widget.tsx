@@ -21,8 +21,8 @@ import { CopyableFieldShared } from '@shared/ui/copyable-field/copyable-field'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { SectionCardRoot } from '@shared/ui/section-card/section-card.root'
 import { LoaderModalShared } from '@shared/ui/loader-modal'
-import { prettyBytesToAnyUtil } from '@shared/utils/bytes'
 import { formatTimeUtil } from '@shared/utils/time-utils'
+import { prettifyBytesUtil } from '@shared/utils/bytes'
 
 import { UserStatusBadge } from '../user-status-badge/user-status-badge.widget'
 
@@ -167,9 +167,7 @@ export const DetailedUserInfoDrawerWidget = () => {
                                 <CopyableFieldShared
                                     label={t('detailed-user-info-drawer.widget.used-traffic')}
                                     value={
-                                        prettyBytesToAnyUtil(
-                                            user.userTraffic.usedTrafficBytes || 0
-                                        ) || '—'
+                                        prettifyBytesUtil(user.userTraffic.usedTrafficBytes) || '—'
                                     }
                                 />
                                 <CopyableFieldShared
@@ -177,14 +175,14 @@ export const DetailedUserInfoDrawerWidget = () => {
                                         'detailed-user-info-drawer.widget.lifetime-used-traffic'
                                     )}
                                     value={
-                                        prettyBytesToAnyUtil(
-                                            user.userTraffic.lifetimeUsedTrafficBytes || 0
+                                        prettifyBytesUtil(
+                                            user.userTraffic.lifetimeUsedTrafficBytes
                                         ) || '—'
                                     }
                                 />
                                 <CopyableFieldShared
                                     label={t('detailed-user-info-drawer.widget.traffic-limit')}
-                                    value={prettyBytesToAnyUtil(user.trafficLimitBytes || 0) || '—'}
+                                    value={prettifyBytesUtil(user.trafficLimitBytes) || '—'}
                                 />
                                 <CopyableFieldShared
                                     label={t(

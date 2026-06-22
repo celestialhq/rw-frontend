@@ -24,9 +24,9 @@ import { useMemo } from 'react'
 import { ConnectedNodeColumnEntity } from '@entities/dashboard/users/ui/table-columns/connected-node'
 import { UsernameColumnEntity } from '@entities/dashboard/users/ui/table-columns/username'
 import { StatusColumnEntity } from '@entities/dashboard/users/ui/table-columns/status'
-import { prettyBytesToAnyUtil, prettyBytesUtil } from '@shared/utils/bytes'
 import { DataUsageColumnEntity } from '@entities/dashboard/users/ui'
 import { formatTimeUtil } from '@shared/utils/time-utils'
+import { prettifyBytesUtil } from '@shared/utils/bytes'
 import { formatInt } from '@shared/utils/misc'
 
 import { NodeSelectItem, NodeSelectItemProps } from './node-select-item'
@@ -178,7 +178,7 @@ export const useUserTableColumns = (
                 header: t('traffic-limits-card.traffic-limit'),
                 Cell: ({ cell }) => {
                     const limitBytes = cell.row.original.trafficLimitBytes ?? 0
-                    return limitBytes === 0 ? '∞' : prettyBytesUtil(limitBytes) || '0 B'
+                    return limitBytes === 0 ? '∞' : prettifyBytesUtil(limitBytes) || '0 B'
                 },
                 mantineTableBodyCellProps: {
                     align: 'center'
@@ -432,7 +432,7 @@ export const useUserTableColumns = (
                 header: t('use-table-columns.lifetime-used'),
                 accessorFn: (originalRow) =>
                     originalRow.userTraffic && originalRow.userTraffic.lifetimeUsedTrafficBytes
-                        ? prettyBytesToAnyUtil(originalRow.userTraffic.lifetimeUsedTrafficBytes)
+                        ? prettifyBytesUtil(originalRow.userTraffic.lifetimeUsedTrafficBytes)
                         : '–',
                 minSize: 170,
                 maxSize: 300,

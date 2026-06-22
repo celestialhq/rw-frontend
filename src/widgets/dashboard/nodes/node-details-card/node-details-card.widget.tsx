@@ -31,7 +31,7 @@ import { GetNodeLinkedHostsFeature } from '@features/ui/dashboard/nodes/get-node
 import { GetNodeUsersUsageFeature } from '@features/ui/dashboard/nodes/get-node-users-usage'
 import { getNodeResetDaysUtil, getXrayUptimeUtil } from '@shared/utils/time-utils'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
-import { prettyBytesToAnyUtil } from '@shared/utils/bytes'
+import { prettifyBytesUtil } from '@shared/utils/bytes'
 import { SectionCard } from '@shared/ui/section-card'
 import { XrayLogo } from '@shared/ui/logos'
 import { queryClient } from '@shared/api'
@@ -107,10 +107,10 @@ export const NodeDetailsCardWidget = memo((props: IProps) => {
         let maxData = '∞'
         let percentage = 0
 
-        const prettyUsedData = prettyBytesToAnyUtil(node.trafficUsedBytes || 0) || '0 B'
+        const prettyUsedData = prettifyBytesUtil(node.trafficUsedBytes || 0) || '0 B'
 
         if (node.isTrafficTrackingActive) {
-            maxData = prettyBytesToAnyUtil(node.trafficLimitBytes || 0) || '∞'
+            maxData = prettifyBytesUtil(node.trafficLimitBytes || 0) || '∞'
             if (node.trafficLimitBytes === 0) {
                 percentage = 100
             } else {

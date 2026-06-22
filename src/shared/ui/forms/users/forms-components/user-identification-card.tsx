@@ -39,8 +39,8 @@ import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { CopyableCodeBlock } from '@shared/ui/copyable-code-block'
 import { QrCodeBuilder } from '@shared/ui/qr-code-builder'
+import { prettifyBytesUtil } from '@shared/utils/bytes'
 import { useGetUserMetadata } from '@shared/api/hooks'
-import { prettyBytesUtil } from '@shared/utils/bytes'
 import { SectionCard } from '@shared/ui/section-card'
 
 interface IProps {
@@ -89,9 +89,9 @@ export const UserIdentificationCard = memo((props: IProps) => {
     const isUnlimited = limitBytes === 0
     const percentage = isUnlimited ? 0 : Math.floor((usedBytes * 100) / limitBytes)
 
-    const prettyUsedData = prettyBytesUtil(usedBytes) || '0 B'
-    const prettyLifetimeData = prettyBytesUtil(lifetimeBytes) || '0 B'
-    const maxData = isUnlimited ? '∞' : prettyBytesUtil(limitBytes) || '∞'
+    const prettyUsedData = prettifyBytesUtil(usedBytes) || '0 B'
+    const prettyLifetimeData = prettifyBytesUtil(lifetimeBytes) || '0 B'
+    const maxData = isUnlimited ? '∞' : prettifyBytesUtil(limitBytes) || '∞'
 
     const getProgressColor = () => {
         if (isUnlimited) return 'teal'

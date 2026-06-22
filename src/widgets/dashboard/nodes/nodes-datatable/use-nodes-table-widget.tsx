@@ -17,7 +17,11 @@ import ReactCountryFlag from 'react-country-flag'
 import { TFunction } from 'i18next'
 import sortBy from 'lodash/sortBy'
 
-import { prettyBytesUtil, prettySiBytesUtil, prettySiRealtimeBytesUtil } from '@shared/utils/bytes'
+import {
+    prettifyBytesUtil,
+    prettySiBytesUtil,
+    prettySiRealtimeBytesUtil
+} from '@shared/utils/bytes'
 import { formatDurationUtil } from '@shared/utils/time-utils'
 import { faviconResolver } from '@shared/utils/misc'
 
@@ -208,7 +212,7 @@ export function getNodesTableColumns(
             accessor: 'trafficUsedBytes',
             sortable: true,
             title: t('use-nodes-table-widget.traffic-used'),
-            render: ({ trafficUsedBytes }) => prettyBytesUtil(trafficUsedBytes, false)
+            render: ({ trafficUsedBytes }) => prettifyBytesUtil(trafficUsedBytes, false)
         },
         {
             accessor: 'configProfile.activeConfigProfileUuid',
@@ -369,19 +373,22 @@ export function getNodesTableColumns(
             accessor: 'system.stats.memoryFree',
             sortable: true,
             title: 'Free RAM',
-            render: ({ system }) => (system ? prettyBytesUtil(system.stats.memoryFree, false) : '-')
+            render: ({ system }) =>
+                system ? prettifyBytesUtil(system.stats.memoryFree, false) : '-'
         },
         {
             accessor: 'system.stats.memoryUsed',
             sortable: true,
             title: 'Used RAM',
-            render: ({ system }) => (system ? prettyBytesUtil(system.stats.memoryUsed, false) : '-')
+            render: ({ system }) =>
+                system ? prettifyBytesUtil(system.stats.memoryUsed, false) : '-'
         },
         {
             accessor: 'system.info.memoryTotal',
             sortable: true,
             title: t('use-nodes-table-widget.total-ram'),
-            render: ({ system }) => (system ? prettyBytesUtil(system.info.memoryTotal, false) : '-')
+            render: ({ system }) =>
+                system ? prettifyBytesUtil(system.info.memoryTotal, false) : '-'
         },
         {
             accessor: 'system.info.cpuModel',

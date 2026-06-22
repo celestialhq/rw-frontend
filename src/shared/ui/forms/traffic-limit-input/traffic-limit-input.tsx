@@ -1,5 +1,5 @@
 import { Group, NativeSelect, NumberInput, NumberInputProps } from '@mantine/core'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import {
     bestFitIecUnitUtil,
@@ -32,14 +32,17 @@ export const TrafficLimitInput = ({ defaultValue, onChange, value, ...rest }: IP
         () => bytesToUnitUtil(initialBytes, initialUnit) ?? ''
     )
 
+    const bytesRef = useRef<number | undefined>(initialBytes)
+
     const handleValueChange = (next: number | string) => {
         setDisplay(next)
-        onChange(unitToBytesUtil(next, unit))
+        bytesRef.current = unitToBytesUtil(next, unit)
+        onChange(bytesRef.current)
     }
 
     const handleUnitChange = (next: TIecUnit) => {
         setUnit(next)
-        onChange(unitToBytesUtil(display, next))
+        setDisplay(bytesToUnitUtil(bytesRef.current, next) ?? '')
     }
 
     return (

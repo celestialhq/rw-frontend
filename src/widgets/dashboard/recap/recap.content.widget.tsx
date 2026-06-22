@@ -18,7 +18,7 @@ import dayjs from 'dayjs'
 
 import { copyScreenshotToClipboard, downloadScreenshot } from '@shared/utils/copy-screenshot.util'
 import { useGetRecap } from '@shared/api/hooks/system/system.query.hooks'
-import { prettyBytesToAnyUtil } from '@shared/utils/bytes'
+import { prettifyBytesUtil } from '@shared/utils/bytes'
 import { Logo } from '@shared/ui/logo'
 
 import type { BgStyle, MaskableField } from './recap.constants'
@@ -254,7 +254,7 @@ export function RecapContent() {
                                 <div className={classes.statValue}>
                                     {m(
                                         'totalTraffic',
-                                        prettyBytesToAnyUtil(recap.total.traffic, true)
+                                        prettifyBytesUtil(recap.total.traffic, true)
                                     )}
                                 </div>
                                 <div className={classes.statLabel}>traffic</div>
@@ -280,7 +280,7 @@ export function RecapContent() {
                                         <div className={classes.monthValue}>
                                             {m(
                                                 'monthTraffic',
-                                                prettyBytesToAnyUtil(recap.thisMonth.traffic)
+                                                prettifyBytesUtil(recap.thisMonth.traffic)
                                             )}
                                         </div>
                                         <div className={classes.monthLabel}>traffic</div>
@@ -315,7 +315,7 @@ export function RecapContent() {
                                         <div className={classes.infraValue}>
                                             {m(
                                                 'ram',
-                                                prettyBytesToAnyUtil(recap.total.nodesRam, true)
+                                                prettifyBytesUtil(recap.total.nodesRam, true)
                                             )}
                                         </div>
                                         <div className={classes.infraLabel}>RAM</div>

@@ -7,7 +7,7 @@ import { motion } from 'motion/react'
 import { useMemo } from 'react'
 
 import {
-    prettyBytesToAnyUtil,
+    prettifyBytesUtil,
     prettySiBytesUtil,
     prettySiRealtimeBytesUtil
 } from '@shared/utils/bytes'
@@ -63,7 +63,7 @@ export function NodesRealtimeUsageMetrics(props: IProps) {
         {
             IconComponent: TbSum,
             title: t('nodes-quick-stats.widget.cumulative-traffic'),
-            value: prettyBytesToAnyUtil(
+            value: prettifyBytesUtil(
                 nodes?.reduce((acc, curr) => acc + (curr.trafficUsedBytes ?? 0), 0) ?? 0,
                 true
             ),
@@ -74,7 +74,7 @@ export function NodesRealtimeUsageMetrics(props: IProps) {
         {
             IconComponent: PiArrowDownDuotone,
             title: t('nodes-realtime-metrics.widget.download-speed'),
-            value: prettySiRealtimeBytesUtil(aggregated?.rxSpeed ?? 0, true, true) || '0 B/s',
+            value: prettySiRealtimeBytesUtil(aggregated?.rxSpeed, true, true) || '0 B/s',
             iconVariant: 'soft',
             iconColor: 'teal',
             subtitle: t('node-system-card.widget.interface')
@@ -90,7 +90,7 @@ export function NodesRealtimeUsageMetrics(props: IProps) {
         {
             IconComponent: PiArrowDownDuotone,
             title: t('nodes-realtime-metrics.widget.download-total'),
-            value: prettySiBytesUtil(aggregated?.rxTotal ?? 0, true) || '0 B',
+            value: prettySiBytesUtil(aggregated?.rxTotal, true) || '0 B',
             iconVariant: 'soft',
             iconColor: 'teal',
             subtitle: t('node-system-card.widget.interface')
@@ -98,7 +98,7 @@ export function NodesRealtimeUsageMetrics(props: IProps) {
         {
             IconComponent: TbServer2,
             title: t('nodes-realtime-metrics.widget.ram-usage'),
-            value: prettyBytesToAnyUtil(aggregated?.memoryUsed ?? 0, true) || '0 B',
+            value: prettifyBytesUtil(aggregated?.memoryUsed, true) || '0 B',
             iconVariant: 'soft',
             iconColor: 'indigo',
             subtitle: t('nodes-realtime-metrics.widget.for-all-nodes')

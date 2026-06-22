@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { TbCamera } from 'react-icons/tb'
 
 import {
-    prettyBytesToAnyUtil,
+    prettifyBytesUtil,
     prettySiBytesUtil,
     prettySiRealtimeBytesUtil
 } from '@shared/utils/bytes'
@@ -66,9 +66,9 @@ export const NodeSystemCardWidget = memo((props: IProps) => {
         else if (percentage > 70) color = 'yellow'
 
         return {
-            total: prettyBytesToAnyUtil(total) || '0 B',
-            free: prettyBytesToAnyUtil(free) || '0 B',
-            used: prettyBytesToAnyUtil(used) || '0 B',
+            total: prettifyBytesUtil(total) || '0 B',
+            free: prettifyBytesUtil(free) || '0 B',
+            used: prettifyBytesUtil(used) || '0 B',
             percentage,
             color
         }

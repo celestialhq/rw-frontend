@@ -3,7 +3,7 @@ import { Box, Group, Progress, Text } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 
 import { IProps } from '@entities/dashboard/users/ui/table-columns/username/interface'
-import { prettyBytesUtil } from '@shared/utils/bytes'
+import { prettifyBytesUtil } from '@shared/utils/bytes'
 
 export function DataUsageColumnEntity(props: IProps) {
     const { t } = useTranslation()
@@ -24,9 +24,9 @@ export function DataUsageColumnEntity(props: IProps) {
         [RESET_PERIODS.NO_RESET]: '∞'
     }[user.trafficLimitStrategy]
 
-    const prettyUsedData = prettyBytesUtil(usedBytes) || '0 B'
-    const prettyLifetimeData = prettyBytesUtil(lifetimeBytes) || '0 B'
-    const maxData = isUnlimited ? '∞' : prettyBytesUtil(limitBytes) || '∞'
+    const prettyUsedData = prettifyBytesUtil(usedBytes) || '0 B'
+    const prettyLifetimeData = prettifyBytesUtil(lifetimeBytes) || '0 B'
+    const maxData = isUnlimited ? '∞' : prettifyBytesUtil(limitBytes) || '∞'
 
     const getProgressColor = () => {
         if (isUnlimited) return 'teal'

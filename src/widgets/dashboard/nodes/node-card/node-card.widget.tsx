@@ -19,7 +19,7 @@ import { useClipboard } from '@mantine/hooks'
 import { CSS } from '@dnd-kit/utilities'
 import clsx from 'clsx'
 
-import { prettyBytesToAnyUtil, prettySiRealtimeBytesUtil } from '@shared/utils/bytes'
+import { prettifyBytesUtil, prettySiRealtimeBytesUtil } from '@shared/utils/bytes'
 import { getNodeResetDaysUtil, getXrayUptimeUtil } from '@shared/utils/time-utils'
 import { faviconResolver } from '@shared/utils/misc'
 import { XrayLogo } from '@shared/ui/logos'
@@ -82,9 +82,9 @@ export const NodeCardWidget = memo((props: IProps) => {
         zIndex: isDragging ? 1000 : 'auto'
     }
 
-    const prettyUsedData = prettyBytesToAnyUtil(node.trafficUsedBytes || 0) || '0 B'
+    const prettyUsedData = prettifyBytesUtil(node.trafficUsedBytes || 0) || '0 B'
     const maxData = node.isTrafficTrackingActive
-        ? prettyBytesToAnyUtil(node.trafficLimitBytes || 0) || '∞'
+        ? prettifyBytesUtil(node.trafficLimitBytes || 0) || '∞'
         : '∞'
 
     const calcPercentage = () => {
