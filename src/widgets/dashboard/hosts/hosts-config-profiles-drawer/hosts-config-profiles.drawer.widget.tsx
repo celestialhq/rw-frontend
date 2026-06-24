@@ -53,6 +53,16 @@ export const HostsConfigProfilesDrawer = (props: IProps) => {
         new Set(activeConfigProfileUuid ? [activeConfigProfileUuid] : [])
     )
 
+    const [prevOpened, setPrevOpened] = useState(opened)
+    if (opened !== prevOpened) {
+        setPrevOpened(opened)
+        if (opened) {
+            setSelectedInbound(activeConfigProfileInbound || null)
+            setSelectedProfileUuid(activeConfigProfileUuid || null)
+            setOpenAccordions(new Set(activeConfigProfileUuid ? [activeConfigProfileUuid] : []))
+        }
+    }
+
     const filteredProfiles = useMemo(() => {
         if (!configProfiles || !configProfiles.configProfiles) return []
 
