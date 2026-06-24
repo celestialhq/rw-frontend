@@ -3,7 +3,6 @@ import {
     ActionIcon,
     Badge,
     Box,
-    Button,
     CopyButton,
     Drawer,
     Group,
@@ -233,11 +232,9 @@ export const InternalSquadsDrawerWithStore = () => {
                     p="md"
                     shadow="sm"
                     style={{
-                        background:
-                            'linear-gradient(135deg, var(--mantine-color-dark-6) 0%, var(--mantine-color-dark-7) 100%)',
-                        border: '1px solid var(--mantine-color-dark-4)'
+                        border: '1px solid rgb(255, 255, 255, 0.08)',
+                        background: 'rgb(255, 255, 255, 0.02)'
                     }}
-                    withBorder
                 >
                     <Stack gap="md">
                         <Group align="center" justify="space-between" wrap="nowrap">
@@ -247,6 +244,9 @@ export const InternalSquadsDrawerWithStore = () => {
                                     className={classes.icon}
                                     color={internalSquad.info.membersCount > 0 ? 'teal' : 'gray'}
                                     size="xl"
+                                    style={{
+                                        cursor: 'default'
+                                    }}
                                     variant={
                                         internalSquad.info.membersCount > 0 ? 'light' : 'subtle'
                                     }
@@ -257,12 +257,12 @@ export const InternalSquadsDrawerWithStore = () => {
 
                             <Stack gap={6} style={{ flex: 1, minWidth: 0 }}>
                                 <Text
-                                    className={classes.title}
                                     ff="monospace"
                                     fw={700}
                                     lineClamp={2}
                                     size="lg"
                                     title={internalSquad.name}
+                                    truncate="end"
                                 >
                                     {internalSquad.name}
                                 </Text>
@@ -276,6 +276,7 @@ export const InternalSquadsDrawerWithStore = () => {
                                                     ? 'teal'
                                                     : 'gray'
                                             }
+                                            ff="monospace"
                                             leftSection={<PiUsers size={12} />}
                                             size="lg"
                                             variant="light"
@@ -288,6 +289,7 @@ export const InternalSquadsDrawerWithStore = () => {
                                     <Tooltip label={t('internal-squads-grid.widget.inbounds')}>
                                         <Badge
                                             color="blue"
+                                            ff="monospace"
                                             leftSection={<PiTag size={12} />}
                                             size="lg"
                                             variant="light"
@@ -316,23 +318,21 @@ export const InternalSquadsDrawerWithStore = () => {
                                     </CopyButton>
                                 </Group>
                             </Stack>
-                        </Group>
 
-                        <Button
-                            color="teal"
-                            disabled={selectedInbounds.size === 0}
-                            fullWidth
-                            leftSection={<TbDeviceFloppy size="1.2rem" />}
-                            loading={isUpdatingInternalSquad}
-                            onClick={handleUpdateInternalSquad}
-                            size="md"
-                            style={{
-                                transition: 'all 0.2s ease'
-                            }}
-                            variant="light"
-                        >
-                            {t('common.save')}
-                        </Button>
+                            <ActionIcon
+                                color="teal"
+                                disabled={selectedInbounds.size === 0}
+                                loading={isUpdatingInternalSquad}
+                                onClick={handleUpdateInternalSquad}
+                                size="xl"
+                                style={{
+                                    transition: 'color 0.2s ease'
+                                }}
+                                variant="soft"
+                            >
+                                <TbDeviceFloppy size={24} />
+                            </ActionIcon>
+                        </Group>
                     </Stack>
                 </Paper>
 

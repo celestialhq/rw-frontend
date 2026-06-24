@@ -64,11 +64,11 @@ export const InboundCheckboxCardShared = (props: IProps) => {
                 </Group>
 
                 <Group gap="xs" wrap="nowrap">
-                    <Badge color="gray" size="xs" variant="outline">
+                    <Badge color="gray" ff="monospace" size="xs" variant="soft">
                         {inbound.type}
                     </Badge>
                     {inbound.port && (
-                        <Badge color="teal" size="xs" variant="outline">
+                        <Badge color="teal" ff="monospace" size="xs" variant="soft">
                             {inbound.port}
                         </Badge>
                     )}
@@ -82,6 +82,7 @@ export const InboundCheckboxCardShared = (props: IProps) => {
 
                             handleShowInboundJson(inbound)
                         }}
+                        variant="soft"
                     >
                         <TbCode size={16} />
                     </ActionIcon>

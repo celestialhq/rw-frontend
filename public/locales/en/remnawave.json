@@ -1245,11 +1245,10 @@
                 "unknown-inbound": "Unknown inbound",
                 "selected": "selected",
                 "no-inbound-selected": "No inbound selected",
-                "choose-an-inbound-to-apply-to-the-host": "Choose an inbound to apply to the host.",
-                "apply-changes": "Apply changes",
                 "search-profiles-or-inbounds": "Search profiles or inbounds...",
                 "no-profiles-or-inbounds-found": "No profiles or inbounds found",
-                "no-config-profiles-available": "No config profiles available"
+                "no-config-profiles-available": "No config profiles available",
+                "assign-an-inbound-to-the-host": "Assign an inbound to the host"
             }
         }
     },
@@ -1353,8 +1352,6 @@
                 "config-profiles": "Config Profiles",
                 "no-profile-selected": "No profile selected",
                 "no-inbounds-selected": "No inbounds selected",
-                "choose-config-profile-to-apply-to-the-node": "Choose Config Profile to apply to the node.",
-                "apply-changes": "Apply changes",
                 "search-profiles-or-inbounds": "Search profiles or inbounds...",
                 "no-profiles-or-inbounds-found": "No profiles or inbounds found",
                 "no-config-profiles-available": "No config profiles available"
