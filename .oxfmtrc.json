@@ -1,6 +1,15 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["dist", "node_modules", "plop", "plopfile.js", "**/*.cjs"],
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "plop",
+    "plopfile.js",
+    "**/*.cjs",
+    "public/locales/fa/**",
+    "public/locales/ru/**",
+    "public/locales/zh/**"
+  ],
   "printWidth": 100,
   "tabWidth": 4,
   "useTabs": false,
