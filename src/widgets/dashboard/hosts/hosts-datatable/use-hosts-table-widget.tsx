@@ -1,9 +1,9 @@
 import { ActionIcon, Group, MultiSelect, Text } from '@mantine/core'
 import { GetAllHostsCommand } from '@remnawave/backend-contract'
-import { TbEdit, TbEyeOff, TbSearch } from 'react-icons/tb'
-import { PiProhibit, PiPulse } from 'react-icons/pi'
-import { DataTableColumn } from 'mantine-datatable'
 import { TFunction } from 'i18next'
+import { DataTableColumn } from 'mantine-datatable'
+import { PiProhibit, PiPulse } from 'react-icons/pi'
+import { TbEdit, TbEyeOff, TbSearch } from 'react-icons/tb'
 
 import {
     BooleanCell,
@@ -282,10 +282,10 @@ export const HOST_BOOLEAN_FIELDS: HostBooleanFieldConfig[] = [
         label: () => 'Sockopt Params'
     },
     {
-        accessor: 'xHttpExtraParams',
-        getValue: (host) => Boolean(host.xHttpExtraParams),
+        accessor: 'xhttpExtraParams',
+        getValue: (host) => Boolean(host.xhttpExtraParams),
         hiddenByDefault: true,
-        key: 'xHttpExtraParams',
+        key: 'xhttpExtraParams',
         label: (t) => t('base-host-form.extra-xhttp')
     }
 ]

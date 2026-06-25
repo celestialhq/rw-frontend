@@ -1,7 +1,7 @@
 import { Box, Group, Text } from '@mantine/core'
 import { ReactNode } from 'react'
 
-import { prettyBytesToAnyUtil } from '@shared/utils/bytes'
+import { prettifyBytesUtil } from '@shared/utils/bytes'
 
 import styles from './leaderboard-item-card.module.css'
 
@@ -56,7 +56,7 @@ export const LeaderboardItemCardShared = (props: IProps) => {
                     </Text>
                 </Group>
                 <Text fw={600} size="sm" style={{ flexShrink: 0 }}>
-                    {formatValue ? formatValue(total) : prettyBytesToAnyUtil(total)}
+                    {formatValue ? formatValue(total) : prettifyBytesUtil(total)}
                 </Text>
             </Group>
         </Box>

@@ -1,3 +1,4 @@
+import { notifications } from '@mantine/notifications'
 import {
     LoginCommand,
     OAuth2AuthorizeCommand,
@@ -5,7 +6,6 @@ import {
     RegisterCommand,
     VerifyPasskeyAuthenticationCommand
 } from '@remnawave/backend-contract'
-import { notifications } from '@mantine/notifications'
 import { z } from 'zod'
 
 import { setToken } from '@entities/auth/session-store'

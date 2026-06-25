@@ -11,18 +11,19 @@ import {
     ThemeIcon,
     Tooltip
 } from '@mantine/core'
-import { GetInfraProvidersCommand } from '@remnawave/backend-contract'
-import { TbCloud, TbEdit, TbLink, TbTrash } from 'react-icons/tb'
-import { useTranslation } from 'react-i18next'
 import { modals } from '@mantine/modals'
+import { GetInfraProvidersCommand } from '@remnawave/backend-contract'
+import { useTranslation } from 'react-i18next'
+import { TbCloud, TbEdit, TbLink, TbServer, TbTrash } from 'react-icons/tb'
 
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
+import { queryClient } from '@shared/api'
+import { QueryKeys, useDeleteInfraProvider } from '@shared/api/hooks'
+import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
+import { SectionCard } from '@shared/ui/section-card'
 import { faviconResolver, formatCurrencyWithIntl } from '@shared/utils/misc'
 import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
-import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
-import { QueryKeys, useDeleteInfraProvider } from '@shared/api/hooks'
-import { SectionCard } from '@shared/ui/section-card'
-import { queryClient } from '@shared/api'
+
+import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 
 interface IProps {
     providers: GetInfraProvidersCommand.Response['response']['providers']
@@ -193,10 +194,15 @@ export function MobileProvidersListWidget(props: IProps) {
                                     <Badge
                                         autoContrast
                                         color="gray"
-                                        key={`${node.nodeUuid}`}
-                                        leftSection={resolveCountryCode(node.countryCode, 18)}
+                                        key={`${node.details ? node.details.nodeUuid : node.name}`}
+                                        leftSection={
+                                            node.details ? (
+                                                resolveCountryCode(node.details.countryCode, 18)
+                                            ) : (
+                                                <TbServer size={18} />
+                                            )
+                                        }
                                         size="md"
-                                        style={{ cursor: 'pointer' }}
                                         variant="soft"
                                     >
                                         {node.name}
@@ -210,11 +216,17 @@ export function MobileProvidersListWidget(props: IProps) {
                                                     <Badge
                                                         color="gray"
                                                         fullWidth
-                                                        key={`${node.nodeUuid}`}
-                                                        leftSection={resolveCountryCode(
-                                                            node.countryCode,
-                                                            18
-                                                        )}
+                                                        key={`${node.details ? node.details.nodeUuid : node.name}`}
+                                                        leftSection={
+                                                            node.details ? (
+                                                                resolveCountryCode(
+                                                                    node.details.countryCode,
+                                                                    18
+                                                                )
+                                                            ) : (
+                                                                <TbServer size={18} />
+                                                            )
+                                                        }
                                                         variant="soft"
                                                     >
                                                         {node.name}

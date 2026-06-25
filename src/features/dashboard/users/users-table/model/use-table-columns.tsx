@@ -1,12 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable @stylistic/indent */
 
-import {
-    GetAllNodesCommand,
-    GetAllUsersCommand,
-    GetExternalSquadsCommand,
-    GetInternalSquadsCommand
-} from '@remnawave/backend-contract'
+import { MRT_ColumnDef } from '@kastov/mantine-react-table-open'
 import {
     Badge,
     ComboboxItem,
@@ -17,19 +12,26 @@ import {
     Text,
     Tooltip
 } from '@mantine/core'
-import { MRT_ColumnDef } from '@kastov/mantine-react-table-open'
-import { useTranslation } from 'react-i18next'
+import {
+    GetAllNodesCommand,
+    GetAllUsersCommand,
+    GetExternalSquadsCommand,
+    GetInternalSquadsCommand
+} from '@remnawave/backend-contract'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { ConnectedNodeColumnEntity } from '@entities/dashboard/users/ui/table-columns/connected-node'
-import { UsernameColumnEntity } from '@entities/dashboard/users/ui/table-columns/username'
-import { StatusColumnEntity } from '@entities/dashboard/users/ui/table-columns/status'
-import { DataUsageColumnEntity } from '@entities/dashboard/users/ui'
-import { prettyBytesToAnyUtil } from '@shared/utils/bytes'
-import { formatTimeUtil } from '@shared/utils/time-utils'
+import { prettifyBytesUtil } from '@shared/utils/bytes'
 import { formatInt } from '@shared/utils/misc'
+import { formatTimeUtil } from '@shared/utils/time-utils'
+
+import { DataUsageColumnEntity } from '@entities/dashboard/users/ui'
+import { ConnectedNodeColumnEntity } from '@entities/dashboard/users/ui/table-columns/connected-node'
+import { StatusColumnEntity } from '@entities/dashboard/users/ui/table-columns/status'
+import { UsernameColumnEntity } from '@entities/dashboard/users/ui/table-columns/username'
 
 import { NodeSelectItem, NodeSelectItemProps } from './node-select-item'
+import { TrafficLimitRangeFilter } from './traffic-limit-range-filter'
 
 const renderSelectOption: SelectProps['renderOption'] = ({ option }) => {
     const item = option as ComboboxItem & { membersCount: number }
@@ -171,6 +173,24 @@ export const useUserTableColumns = (
                 enableColumnFilter: false,
                 maxSize: 700,
                 size: 180
+            },
+            {
+                accessorKey: 'trafficLimitBytes',
+                header: t('traffic-limits-card.traffic-limit'),
+                Cell: ({ cell }) => {
+                    const limitBytes = cell.row.original.trafficLimitBytes ?? 0
+                    return limitBytes === 0 ? '∞' : prettifyBytesUtil(limitBytes) || '0 B'
+                },
+                mantineTableBodyCellProps: {
+                    align: 'center'
+                },
+                filterVariant: 'range',
+                Filter: ({ column, rangeFilterIndex }) =>
+                    rangeFilterIndex === 0 ? <TrafficLimitRangeFilter column={column} /> : null,
+                minSize: 230,
+                enableColumnFilterModes: false,
+                enableColumnFilter: true,
+                size: 230
             },
             {
                 accessorKey: 'shortUuid',
@@ -413,7 +433,7 @@ export const useUserTableColumns = (
                 header: t('use-table-columns.lifetime-used'),
                 accessorFn: (originalRow) =>
                     originalRow.userTraffic && originalRow.userTraffic.lifetimeUsedTrafficBytes
-                        ? prettyBytesToAnyUtil(originalRow.userTraffic.lifetimeUsedTrafficBytes)
+                        ? prettifyBytesUtil(originalRow.userTraffic.lifetimeUsedTrafficBytes)
                         : '–',
                 minSize: 170,
                 maxSize: 300,

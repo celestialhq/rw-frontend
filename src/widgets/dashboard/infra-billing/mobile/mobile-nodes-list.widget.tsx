@@ -11,18 +11,19 @@ import {
     Text,
     ThemeIcon
 } from '@mantine/core'
-import { TbCalendar, TbCheck, TbCpu, TbCreditCard, TbExternalLink, TbServer } from 'react-icons/tb'
 import { GetInfraBillingNodesCommand } from '@remnawave/backend-contract'
-import { useTranslation } from 'react-i18next'
-import { useMemo, useState } from 'react'
 import dayjs from 'dayjs'
+import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { TbCalendar, TbCheck, TbCpu, TbCreditCard, TbExternalLink, TbServer } from 'react-icons/tb'
+
+import { queryClient } from '@shared/api'
+import { QueryKeys, useUpdateInfraBillingNode } from '@shared/api/hooks'
+import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
+import { SectionCard } from '@shared/ui/section-card'
+import { formatTimeUtil } from '@shared/utils/time-utils'
 
 import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
-import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
-import { QueryKeys, useUpdateInfraBillingNode } from '@shared/api/hooks'
-import { formatTimeUtil } from '@shared/utils/time-utils'
-import { SectionCard } from '@shared/ui/section-card'
-import { queryClient } from '@shared/api'
 
 type BillingNode = GetInfraBillingNodesCommand.Response['response']['billingNodes'][number]
 
@@ -81,6 +82,8 @@ export function MobileNodesListWidget(props: IProps) {
     }
 
     const handleOpenNode = (node: BillingNode) => {
+        if (!node.nodeUuid) return
+
         openModalWithData(MODALS.EDIT_NODE_BY_UUID_MODAL, {
             nodeUuid: node.nodeUuid
         })
@@ -178,27 +181,41 @@ export function MobileNodesListWidget(props: IProps) {
                                                     />
                                                 )}
 
-                                                <BaseOverlayHeader
-                                                    countryCode={node.node.countryCode}
-                                                    hideIcon={true}
-                                                    iconColor="blue"
-                                                    IconComponent={TbServer}
-                                                    iconVariant="soft"
-                                                    subtitle={node.provider.name}
-                                                    title={node.node.name}
-                                                />
+                                                {node.node && (
+                                                    <BaseOverlayHeader
+                                                        countryCode={node.node.countryCode}
+                                                        hideIcon={true}
+                                                        iconColor="blue"
+                                                        IconComponent={TbServer}
+                                                        iconVariant="soft"
+                                                        subtitle={node.provider.name}
+                                                        title={node.node.name}
+                                                    />
+                                                )}
+
+                                                {!node.node && (
+                                                    <BaseOverlayHeader
+                                                        iconColor="blue"
+                                                        IconComponent={TbServer}
+                                                        iconVariant="soft"
+                                                        subtitle={node.provider.name}
+                                                        title={node.name!}
+                                                    />
+                                                )}
                                             </Group>
 
                                             {!selectMode && (
                                                 <Group gap={4} wrap="nowrap">
-                                                    <ActionIcon
-                                                        color="blue"
-                                                        onClick={() => handleOpenNode(node)}
-                                                        size="input-xs"
-                                                        variant="soft"
-                                                    >
-                                                        <TbCpu size={18} />
-                                                    </ActionIcon>
+                                                    {node.node && (
+                                                        <ActionIcon
+                                                            color="blue"
+                                                            onClick={() => handleOpenNode(node)}
+                                                            size="input-xs"
+                                                            variant="soft"
+                                                        >
+                                                            <TbCpu size={18} />
+                                                        </ActionIcon>
+                                                    )}
 
                                                     {node.provider.loginUrl && (
                                                         <ActionIcon

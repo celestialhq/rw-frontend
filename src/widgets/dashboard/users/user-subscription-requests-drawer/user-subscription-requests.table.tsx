@@ -1,14 +1,13 @@
-/* eslint-disable camelcase */
 import {
     MantineReactTable,
     type MRT_ColumnDef,
     useMantineReactTable
 } from '@kastov/mantine-react-table-open'
+import { Anchor } from '@mantine/core'
 import { GetUserSubscriptionRequestHistoryCommand } from '@remnawave/backend-contract'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbSearch } from 'react-icons/tb'
-import { Anchor } from '@mantine/core'
-import { useMemo } from 'react'
 
 import { formatTimeUtil } from '@shared/utils/time-utils'
 
@@ -28,6 +27,7 @@ export const UserSubscriptionRequestsTable = (props: IProps) => {
             {
                 accessorKey: 'id',
                 header: 'ID',
+                size: 80,
                 accessorFn: (row) => row.id
             },
             {
@@ -64,6 +64,7 @@ export const UserSubscriptionRequestsTable = (props: IProps) => {
                 accessorKey: 'requestAt',
                 header: t('get-user-subscription-request-history.feature.request-at'),
                 sortingFn: 'datetime',
+                size: 250,
                 Cell: ({ row }) =>
                     formatTimeUtil({
                         time: row.original.requestAt,
@@ -71,7 +72,7 @@ export const UserSubscriptionRequestsTable = (props: IProps) => {
                         language: i18n.language
                     }),
                 mantineTableBodyCellProps: {
-                    align: 'center',
+                    align: 'left',
                     ff: 'monospace'
                 }
             }
@@ -103,7 +104,7 @@ export const UserSubscriptionRequestsTable = (props: IProps) => {
         enableSortingRemoval: true,
         initialState: {
             showGlobalFilter: true,
-            density: 'xxs',
+            density: 'xs',
             sorting: [{ id: 'requestAt', desc: true }],
             pagination: {
                 pageIndex: 0,
@@ -120,11 +121,6 @@ export const UserSubscriptionRequestsTable = (props: IProps) => {
             style: { minWidth: '350px' },
             variant: 'default',
             leftSection: <TbSearch size={16} />
-        },
-        mantineTopToolbarProps: {
-            style: {
-                '--mrt-base-background-color': 'rgba(255, 255, 255, 0.02)'
-            }
         }
     })
 

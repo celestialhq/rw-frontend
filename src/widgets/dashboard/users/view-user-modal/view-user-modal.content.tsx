@@ -1,21 +1,19 @@
-import { UpdateUserCommand } from '@remnawave/backend-contract'
+import { DeleteUserFeature } from '@features/ui/dashboard/users/delete-user'
+import { ResetUsageUserFeature } from '@features/ui/dashboard/users/reset-usage-user'
+import { RevokeSubscriptionUserFeature } from '@features/ui/dashboard/users/revoke-subscription-user'
+import { ToggleUserStatusButtonFeature } from '@features/ui/dashboard/users/toggle-user-status-button'
 import { Button, Group, Menu, px, Stack } from '@mantine/core'
-import { zodResolver } from 'mantine-form-zod-resolver'
-import { PiFloppyDiskDuotone } from 'react-icons/pi'
-import { useTranslation } from 'react-i18next'
-import { TbDots } from 'react-icons/tb'
 import { useForm } from '@mantine/form'
+import { UpdateUserCommand } from '@remnawave/backend-contract'
+import dayjs from 'dayjs'
+import { zodResolver } from 'mantine-form-zod-resolver'
 import { motion } from 'motion/react'
 import { useEffect } from 'react'
-import dayjs from 'dayjs'
+import { useTranslation } from 'react-i18next'
+import { PiFloppyDiskDuotone } from 'react-icons/pi'
+import { TbDots } from 'react-icons/tb'
 
-import {
-    AccessSettingsCard,
-    ContactInformationCard,
-    DeviceTagSettingsCard,
-    TrafficLimitsCard,
-    UserIdentificationCard
-} from '@shared/ui/forms/users/forms-components'
+import { queryClient } from '@shared/api'
 import {
     useGetExternalSquads,
     useGetInternalSquads,
@@ -25,17 +23,19 @@ import {
     usersQueryKeys,
     useUpdateUser
 } from '@shared/api/hooks'
-import { ToggleUserStatusButtonFeature } from '@features/ui/dashboard/users/toggle-user-status-button'
-import { RevokeSubscriptionUserFeature } from '@features/ui/dashboard/users/revoke-subscription-user'
-import { useUserModalStoreActions } from '@entities/dashboard/user-modal-store/user-modal-store'
-import { ResetUsageUserFeature } from '@features/ui/dashboard/users/reset-usage-user'
-import { DeleteUserFeature } from '@features/ui/dashboard/users/delete-user'
-import { bytesToGibUtil, gibToBytesUtil } from '@shared/utils/bytes'
-import { LoaderModalShared } from '@shared/ui/loader-modal'
-import { handleFormErrors } from '@shared/utils/misc'
-import { ModalFooter } from '@shared/ui/modal-footer'
 import { useIsMobile } from '@shared/hooks'
-import { queryClient } from '@shared/api'
+import {
+    AccessSettingsCard,
+    ContactInformationCard,
+    DeviceTagSettingsCard,
+    TrafficLimitsCard,
+    UserIdentificationCard
+} from '@shared/ui/forms/users/forms-components'
+import { LoaderModalShared } from '@shared/ui/loader-modal'
+import { ModalFooter } from '@shared/ui/modal-footer'
+import { handleFormErrors } from '@shared/utils/misc'
+
+import { useUserModalStoreActions } from '@entities/dashboard/user-modal-store/user-modal-store'
 
 const MotionWrapper = motion.div
 const MotionStack = motion.create(Stack)
@@ -132,7 +132,7 @@ export const ViewUserModalContent = (props: IProps) => {
 
             form.initialize({
                 uuid: user.uuid,
-                trafficLimitBytes: bytesToGibUtil(user.trafficLimitBytes),
+                trafficLimitBytes: user.trafficLimitBytes,
                 trafficLimitStrategy: user.trafficLimitStrategy,
                 expireAt: user.expireAt,
                 activeInternalSquads,
@@ -162,7 +162,7 @@ export const ViewUserModalContent = (props: IProps) => {
                     ? values.trafficLimitStrategy
                     : undefined,
                 trafficLimitBytes: touchedFields.trafficLimitBytes
-                    ? gibToBytesUtil(values.trafficLimitBytes)
+                    ? values.trafficLimitBytes
                     : undefined,
                 // @ts-expect-error - TODO: fix ZOD schema
                 expireAt: touchedFields.expireAt ? dayjs(values.expireAt).toISOString() : undefined,

@@ -1,4 +1,13 @@
-/* eslint-disable camelcase */
+import {
+    MantineReactTable,
+    type MRT_ColumnDef,
+    useMantineReactTable
+} from '@kastov/mantine-react-table-open'
+import { ActionIcon, Anchor, Group, Text, ThemeIcon } from '@mantine/core'
+import { GetUserHwidDevicesCommand } from '@remnawave/backend-contract'
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import { PiDeviceMobile, PiLinuxLogo } from 'react-icons/pi'
 import {
     TbBrandAndroid,
     TbBrandApple,
@@ -7,16 +16,6 @@ import {
     TbSearch,
     TbTrash
 } from 'react-icons/tb'
-import {
-    MantineReactTable,
-    type MRT_ColumnDef,
-    useMantineReactTable
-} from '@kastov/mantine-react-table-open'
-import { ActionIcon, Anchor, Group, Text, ThemeIcon } from '@mantine/core'
-import { GetUserHwidDevicesCommand } from '@remnawave/backend-contract'
-import { PiDeviceMobile, PiLinuxLogo } from 'react-icons/pi'
-import { useTranslation } from 'react-i18next'
-import { useMemo } from 'react'
 
 import { formatTimeUtil } from '@shared/utils/time-utils'
 
@@ -173,7 +172,7 @@ export const UserHwidDevicesTable = (props: IProps) => {
         enableSortingRemoval: true,
         initialState: {
             showGlobalFilter: true,
-            density: 'xxs',
+            density: 'xs',
             sorting: [{ id: 'createdAt', desc: true }],
             pagination: {
                 pageIndex: 0,
@@ -192,11 +191,6 @@ export const UserHwidDevicesTable = (props: IProps) => {
             style: { minWidth: '350px' },
             variant: 'default',
             leftSection: <TbSearch size={16} />
-        },
-        mantineTopToolbarProps: {
-            style: {
-                '--mrt-base-background-color': 'rgba(255, 255, 255, 0.02)'
-            }
         },
         renderRowActions: ({ row }) => (
             <ActionIcon

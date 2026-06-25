@@ -1,14 +1,14 @@
+import { Button, JsonInput, px, Stack, Text } from '@mantine/core'
+import { UseFormReturnType } from '@mantine/form'
+import { modals } from '@mantine/modals'
 import {
     CreateHostCommand,
     UpdateHostCommand,
     UpdateManyHostsCommand
 } from '@remnawave/backend-contract'
-import { Button, JsonInput, px, Stack, Text } from '@mantine/core'
-import { UseFormReturnType } from '@mantine/form'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbArrowUp } from 'react-icons/tb'
-import { modals } from '@mantine/modals'
-import { useState } from 'react'
 
 import { BASIC_XHTTP_EXTRA_PARAMS, PASTE_BASIC_XHTTP_EXTRA_PARAMS } from '@shared/constants'
 
@@ -23,15 +23,15 @@ interface IProps {
 export const XhttpModalContent = ({ form }: IProps) => {
     const { t } = useTranslation()
 
-    const inputProps = form.getInputProps('xHttpExtraParams')
+    const inputProps = form.getInputProps('xhttpExtraParams')
 
     const [value, setValue] = useState<string>(
-        (form.getValues().xHttpExtraParams as unknown as string) ?? ''
+        (form.getValues().xhttpExtraParams as unknown as string) ?? ''
     )
 
     const handleChange = (next: string) => {
         setValue(next)
-        form.setFieldValue('xHttpExtraParams', next)
+        form.setFieldValue('xhttpExtraParams', next)
     }
 
     return (
