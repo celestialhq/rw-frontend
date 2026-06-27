@@ -1,5 +1,4 @@
-import { Box, Center, Drawer, Group, Stack } from '@mantine/core'
-import { useEffect, useState } from 'react'
+import { Box, Center, DataList, Drawer, Group, Stack } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import {
     PiArrowsDownUpDuotone,
@@ -10,8 +9,8 @@ import {
     PiUserDuotone
 } from 'react-icons/pi'
 
-import { useEncryptSubscriptionLink, useGetUserByUuid } from '@shared/api/hooks'
-import { CopyableFieldShared } from '@shared/ui/copyable-field/copyable-field'
+import { useGetUserByUuid } from '@shared/api/hooks'
+import { CopyableDataListItem } from '@shared/ui/copyable-field/copyable-data-list-item'
 import { LoaderModalShared } from '@shared/ui/loader-modal'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { SectionCardRoot } from '@shared/ui/section-card/section-card.root'
@@ -29,7 +28,6 @@ import { UserStatusBadge } from '../user-status-badge/user-status-badge.widget'
 
 export const DetailedUserInfoDrawerWidget = () => {
     const { t, i18n } = useTranslation()
-    const [encryptedSubscriptionLink, setEncryptedSubscriptionLink] = useState('')
 
     const actions = useUserModalStoreActions()
     const isDetailedUserInfoDrawerOpen = useUserModalStoreIsDetailedUserInfoDrawerOpen()
@@ -37,7 +35,6 @@ export const DetailedUserInfoDrawerWidget = () => {
 
     const cleanUpDrawer = async () => {
         actions.changeDetailedUserInfoDrawerState(false)
-        setEncryptedSubscriptionLink('')
     }
 
     const isQueryEnabled = !!selectedUser
@@ -50,21 +47,6 @@ export const DetailedUserInfoDrawerWidget = () => {
             enabled: isQueryEnabled
         }
     })
-
-    const { mutateAsync: encryptSubscriptionLink } = useEncryptSubscriptionLink()
-
-    useEffect(() => {
-        if (!user || !selectedUser) return
-        encryptSubscriptionLink({
-            variables: {
-                linkToEncrypt: user.subscriptionUrl
-            }
-        })
-            .then((result) => {
-                setEncryptedSubscriptionLink(result.encryptedLink)
-            })
-            .catch(() => {})
-    }, [selectedUser, user])
 
     return (
         <Drawer
@@ -99,7 +81,7 @@ export const DetailedUserInfoDrawerWidget = () => {
                 <Stack gap="md">
                     <SectionCardRoot>
                         <SectionCardSection>
-                            <Group align="flex-center" justify="space-between">
+                            <Group align="center" justify="space-between">
                                 <BaseOverlayHeader
                                     iconColor="blue"
                                     IconComponent={PiUserDuotone}
@@ -118,40 +100,40 @@ export const DetailedUserInfoDrawerWidget = () => {
                             </Group>
                         </SectionCardSection>
                         <SectionCardSection>
-                            <Stack gap="xs">
-                                <CopyableFieldShared label="ID" value={user.id.toString()} />
-
-                                <CopyableFieldShared
+                            <DataList withDivider orientation="vertical">
+                                <CopyableDataListItem label="ID" monospace value={user.id} />
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.uuid')}
+                                    monospace
                                     value={user.uuid}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.short-uuid')}
+                                    monospace
                                     value={user.shortUuid}
                                 />
-
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.username')}
                                     value={user.username}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.email')}
-                                    value={user.email || '—'}
+                                    value={user.email}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.telegram-id')}
-                                    value={user.telegramId || '—'}
+                                    monospace
+                                    value={user.telegramId}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.description')}
-                                    value={user.description || '—'}
+                                    value={user.description}
                                 />
-
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.tag')}
-                                    value={user.tag || '—'}
+                                    value={user.tag}
                                 />
-                            </Stack>
+                            </DataList>
                         </SectionCardSection>
                     </SectionCardRoot>
                     <SectionCardRoot>
@@ -164,34 +146,30 @@ export const DetailedUserInfoDrawerWidget = () => {
                             />
                         </SectionCardSection>
                         <SectionCardSection>
-                            <Stack gap="xs">
-                                <CopyableFieldShared
+                            <DataList withDivider orientation="vertical">
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.used-traffic')}
-                                    value={
-                                        prettifyBytesUtil(user.userTraffic.usedTrafficBytes) || '—'
-                                    }
+                                    value={prettifyBytesUtil(user.userTraffic.usedTrafficBytes)}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t(
                                         'detailed-user-info-drawer.widget.lifetime-used-traffic'
                                     )}
-                                    value={
-                                        prettifyBytesUtil(
-                                            user.userTraffic.lifetimeUsedTrafficBytes
-                                        ) || '—'
-                                    }
+                                    value={prettifyBytesUtil(
+                                        user.userTraffic.lifetimeUsedTrafficBytes
+                                    )}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.traffic-limit')}
-                                    value={prettifyBytesUtil(user.trafficLimitBytes) || '—'}
+                                    value={prettifyBytesUtil(user.trafficLimitBytes)}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t(
                                         'detailed-user-info-drawer.widget.traffic-limit-strategy'
                                     )}
                                     value={user.trafficLimitStrategy}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.last-traffic-reset')}
                                     value={formatTimeUtil({
                                         time: user.lastTrafficResetAt,
@@ -199,7 +177,7 @@ export const DetailedUserInfoDrawerWidget = () => {
                                         language: i18n.language
                                     })}
                                 />
-                            </Stack>
+                            </DataList>
                         </SectionCardSection>
                     </SectionCardRoot>
                     <SectionCardRoot>
@@ -215,16 +193,13 @@ export const DetailedUserInfoDrawerWidget = () => {
                             />
                         </SectionCardSection>
                         <SectionCardSection>
-                            <Stack gap="xs">
-                                <CopyableFieldShared
+                            <DataList withDivider orientation="vertical">
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.subscription-url')}
+                                    monospace
                                     value={user.subscriptionUrl}
                                 />
-                                <CopyableFieldShared
-                                    label="Happ Crypto Link"
-                                    value={encryptedSubscriptionLink}
-                                />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.expires-at')}
                                     value={formatTimeUtil({
                                         time: user.expireAt,
@@ -232,8 +207,7 @@ export const DetailedUserInfoDrawerWidget = () => {
                                         language: i18n.language
                                     })}
                                 />
-
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.revoked-at')}
                                     value={formatTimeUtil({
                                         time: user.subRevokedAt,
@@ -241,7 +215,7 @@ export const DetailedUserInfoDrawerWidget = () => {
                                         language: i18n.language
                                     })}
                                 />
-                            </Stack>
+                            </DataList>
                         </SectionCardSection>
                     </SectionCardRoot>
 
@@ -255,20 +229,23 @@ export const DetailedUserInfoDrawerWidget = () => {
                             />
                         </SectionCardSection>
                         <SectionCardSection>
-                            <Stack gap="xs">
-                                <CopyableFieldShared
+                            <DataList withDivider orientation="vertical">
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.trojan-password')}
+                                    monospace
                                     value={user.trojanPassword}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label="Vless/Hysteria2 UUID"
+                                    monospace
                                     value={user.vlessUuid}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.ss-password')}
+                                    monospace
                                     value={user.ssPassword}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.first-connected-at')}
                                     value={formatTimeUtil({
                                         time: user.userTraffic.firstConnectedAt,
@@ -276,7 +253,7 @@ export const DetailedUserInfoDrawerWidget = () => {
                                         language: i18n.language
                                     })}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.last-online')}
                                     value={formatTimeUtil({
                                         time: user.userTraffic.onlineAt,
@@ -284,13 +261,14 @@ export const DetailedUserInfoDrawerWidget = () => {
                                         language: i18n.language
                                     })}
                                 />
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t(
                                         'detailed-user-info-drawer.widget.last-connected-node'
                                     )}
-                                    value={user.userTraffic.lastConnectedNodeUuid || '—'}
+                                    monospace
+                                    value={user.userTraffic.lastConnectedNodeUuid}
                                 />
-                            </Stack>
+                            </DataList>
                         </SectionCardSection>
                     </SectionCardRoot>
 
@@ -307,15 +285,16 @@ export const DetailedUserInfoDrawerWidget = () => {
                                 />
                             </SectionCardSection>
                             <SectionCardSection>
-                                <Stack gap="xs">
+                                <DataList withDivider orientation="vertical">
                                     {user.activeInternalSquads.map((squad) => (
-                                        <CopyableFieldShared
+                                        <CopyableDataListItem
                                             key={squad.uuid}
                                             label={squad.name}
+                                            monospace
                                             value={squad.uuid}
                                         />
                                     ))}
-                                </Stack>
+                                </DataList>
                             </SectionCardSection>
                         </SectionCardRoot>
                     )}
@@ -329,8 +308,8 @@ export const DetailedUserInfoDrawerWidget = () => {
                             />
                         </SectionCardSection>
                         <SectionCardSection>
-                            <Stack gap="xs">
-                                <CopyableFieldShared
+                            <DataList withDivider orientation="vertical">
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.created-at')}
                                     value={formatTimeUtil({
                                         time: user.createdAt,
@@ -338,9 +317,7 @@ export const DetailedUserInfoDrawerWidget = () => {
                                         language: i18n.language
                                     })}
                                 />
-                            </Stack>
-                            <Stack gap="xs">
-                                <CopyableFieldShared
+                                <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.updated-at')}
                                     value={formatTimeUtil({
                                         time: user.updatedAt,
@@ -348,7 +325,7 @@ export const DetailedUserInfoDrawerWidget = () => {
                                         language: i18n.language
                                     })}
                                 />
-                            </Stack>
+                            </DataList>
                         </SectionCardSection>
                     </SectionCardRoot>
                 </Stack>

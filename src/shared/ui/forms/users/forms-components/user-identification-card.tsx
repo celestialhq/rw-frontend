@@ -140,8 +140,8 @@ export const UserIdentificationCard = memo((props: IProps) => {
                             IconComponent={TbUser}
                             iconSize={20}
                             iconVariant="soft"
-                            subtitle={user.id.toString()}
-                            title={user.username}
+                            title={user.id.toString()}
+                            subtitle={user.username}
                             titleOrder={5}
                             withCopy
                         />
