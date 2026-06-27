@@ -1223,7 +1223,6 @@
   "show-config-profiles-with-inbounds": {
     "feature": {
       "config-profile": "Config Profile",
-      "select-the-config-profile-that-will-be-applied-to-this-node": "Select the config profile that will be applied to this node",
       "no-config-profile-selected": "No config profile selected",
       "choose-a-profile-to-configure-inbounds-for-this-node": "Choose a profile to configure inbounds for this node"
     }
