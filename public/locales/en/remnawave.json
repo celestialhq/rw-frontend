@@ -883,10 +883,7 @@
       "active-nodes": "Active nodes",
       "current-hour": "Current hour",
       "download-speed": "Download Speed",
-      "upload-speed": "Upload Speed",
-      "download-total": "Download Total",
-      "ram-usage": "RAM Usage",
-      "for-all-nodes": "For all nodes"
+      "upload-speed": "Upload Speed"
     }
   },
   "node-users-usage-drawer": {

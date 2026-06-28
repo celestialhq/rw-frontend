@@ -40,7 +40,7 @@ body {
 }
 
 [class*='MRT_TopToolbar-module_root-fullscreen'] {
-    margin-top: 64px !important;
+    margin-top: 116px !important;
     padding-top: env(safe-area-inset-top, 0px) !important;
 }
 
