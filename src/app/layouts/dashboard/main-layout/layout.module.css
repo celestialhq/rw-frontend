@@ -28,6 +28,11 @@
     }
 }
 
+.sidebarWrapperClosedDesktop {
+    margin-left: 0;
+    box-shadow: none;
+}
+
 .sidebarWrapperClosedMobile {
     margin-left: 0;
     box-shadow: none;

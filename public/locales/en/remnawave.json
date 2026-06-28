@@ -1689,6 +1689,14 @@
       "color-format-note": "💡 Color applies only to the word immediately following the marker. Without markers, text will be white."
     }
   },
+  "visual-settings-card": {
+    "widget": {
+      "layout-style": "Layout Style",
+      "choose-how-the-desktop-navigation-is-displayed": "Choose how the desktop navigation is displayed",
+      "compact": "Compact",
+      "sidebar": "Sidebar"
+    }
+  },
   "api-tokens-card": {
     "widget": {
       "api-tokens-description": "Manage your API access tokens for programmatic access.",

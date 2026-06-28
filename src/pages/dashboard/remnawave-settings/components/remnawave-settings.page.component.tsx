@@ -3,6 +3,7 @@ import { FindAllApiTokensCommand, GetRemnawaveSettingsCommand } from '@remnawave
 import { ApiTokensCardWidget } from '@widgets/remnawave-settings/api-tokens-card/api-tokens-card.widget'
 import { AuthentificationSettingsCardWidget } from '@widgets/remnawave-settings/authentification-settings-card/authentification-settings-card.widget'
 import { BrandingSettingsCardWidget } from '@widgets/remnawave-settings/branding-settings-card/branding-settings-card.widget'
+import { VisualSettingsCardWidget } from '@widgets/remnawave-settings/visual-settings-card/visual-settings-card.widget'
 import { useTranslation } from 'react-i18next'
 import Masonry from 'react-layout-masonry'
 
@@ -43,6 +44,8 @@ export const RemnawaveSettingsPageComponent = (props: IProps) => {
                     />
 
                     <ApiTokensCardWidget apiTokensData={apiTokensData} />
+
+                    <VisualSettingsCardWidget />
                     <BrandingSettingsCardWidget
                         brandingSettings={remnawaveSettings.brandingSettings}
                     />

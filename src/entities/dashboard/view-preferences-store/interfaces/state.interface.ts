@@ -1,4 +1,4 @@
-import { CONFIG_PROFILES_VIEW_MODE, HOSTS_VIEW_MODE, NODES_VIEW_MODE } from './enums'
+import { CONFIG_PROFILES_VIEW_MODE, HOSTS_VIEW_MODE, LAYOUT_STYLE, NODES_VIEW_MODE } from './enums'
 
 export interface IState {
     configProfilesViewMode: CONFIG_PROFILES_VIEW_MODE
@@ -6,4 +6,5 @@ export interface IState {
     hostsViewMode: HOSTS_VIEW_MODE
     nodesActiveTag: null | string
     nodesViewMode: NODES_VIEW_MODE
+    layoutStyle: LAYOUT_STYLE
 }
