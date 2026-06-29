@@ -4,7 +4,10 @@ import { UsersTableSelectionFeature } from '@features/ui/dashboard/users/users-t
 import {
     MantineReactTable,
     MRT_ColumnFilterFnsState,
+    MRT_ShowHideColumnsButton,
     MRT_SortingState,
+    MRT_ToggleDensePaddingButton,
+    MRT_ToggleFullScreenButton,
     useMantineReactTable
 } from '@kastov/mantine-react-table-open'
 import { Badge } from '@mantine/core'
@@ -216,11 +219,19 @@ export function UserTableWidget() {
             )
         },
         selectAllMode: 'page',
+        renderToolbarInternalActions: ({ table: t }) => (
+            <>
+                <MRT_ShowHideColumnsButton table={t} />
+                <MRT_ToggleDensePaddingButton table={t} />
+                <MRT_ToggleFullScreenButton table={t} />
+            </>
+        ),
         state: {
             ...persistedTableState,
             columnFilterFns,
             isLoading,
             showAlertBanner: isError,
+            showColumnFilters: true,
             showProgressBars: isFetching,
             sorting,
             rowSelection: tableSelection
