@@ -1,7 +1,7 @@
+import { DataTableColumn } from '@kastov/mantine-datatable'
 import { ActionIcon, Group, Text } from '@mantine/core'
 import { GetTopUsersByHwidDevicesCommand } from '@remnawave/backend-contract'
 import { TFunction } from 'i18next'
-import { DataTableColumn } from 'mantine-datatable'
 import { PiUserCircle } from 'react-icons/pi'
 import { TbSum, TbUser } from 'react-icons/tb'
 

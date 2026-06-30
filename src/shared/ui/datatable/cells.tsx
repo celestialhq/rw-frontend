@@ -1,5 +1,3 @@
-import type { BooleanFilterValue } from './use-hosts-table-widget'
-
 import {
     ActionIcon,
     Group,
@@ -8,11 +6,15 @@ import {
     Stack,
     Text,
     TextInput,
-    ThemeIcon
+    ThemeIcon,
+    Tooltip
 } from '@mantine/core'
+import { useClipboard } from '@mantine/hooks'
 import { ReactNode } from 'react'
 import { PiCheckCircleDuotone, PiXCircleDuotone } from 'react-icons/pi'
 import { TbSearch, TbX } from 'react-icons/tb'
+
+export type BooleanFilterValue = 'all' | 'no' | 'yes'
 
 export function EllipsisCell({ children }: { children: ReactNode }) {
     return (
@@ -29,6 +31,29 @@ export function EllipsisCell({ children }: { children: ReactNode }) {
                 {children}
             </Text>
         </Group>
+    )
+}
+
+export function CopyableCell({ value }: { value: string }) {
+    const clipboard = useClipboard({ timeout: 1000 })
+    if (!value || value === '–') return <EllipsisCell>{value || '–'}</EllipsisCell>
+    return (
+        <Tooltip label={value} withArrow>
+            <Text
+                c={clipboard.copied ? 'teal' : undefined}
+                ff="monospace"
+                onClick={() => clipboard.copy(value)}
+                size="sm"
+                style={{
+                    cursor: 'pointer',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                }}
+            >
+                {value}
+            </Text>
+        </Tooltip>
     )
 }
 

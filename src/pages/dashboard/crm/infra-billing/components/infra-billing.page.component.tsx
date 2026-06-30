@@ -12,29 +12,16 @@ import { LinkedHostsDrawer } from '@widgets/dashboard/nodes/linked-hosts-drawer/
 import { NodeUsersUsageDrawer } from '@widgets/dashboard/nodes/node-users-usage-statistic/node-users-usage-drawer.widget'
 import { NodesUsersUsageStatisticsDrawer } from '@widgets/dashboard/nodes/nodes-users-usage-statistics/nodes-users-usage-statistics.drawer'
 import { motion } from 'motion/react'
-import { useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useIsMobile } from '@shared/hooks'
+import { useIsMobile, usePreventTableBackScroll } from '@shared/hooks'
 import { Page } from '@shared/ui/page'
-import { preventBackScrollTables } from '@shared/utils/misc'
 
 export const InfraBillingPageComponent = () => {
     const { t } = useTranslation()
     const isMobile = useIsMobile()
 
-    useLayoutEffect(() => {
-        if (isMobile) {
-            return undefined
-        }
-
-        document.body.addEventListener('wheel', preventBackScrollTables, {
-            passive: false
-        })
-        return () => {
-            document.body.removeEventListener('wheel', preventBackScrollTables)
-        }
-    }, [isMobile])
+    usePreventTableBackScroll()
 
     return (
         <Page title={t('constants.infra-billing')}>

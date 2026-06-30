@@ -1,7 +1,7 @@
+import { DataTable } from '@kastov/mantine-datatable'
 import { Badge, Box, Center, Drawer, Group, Loader, Stack, Text } from '@mantine/core'
 import { GetUserAccessibleNodesCommand } from '@remnawave/backend-contract'
 import clsx from 'clsx'
-import { DataTable } from 'mantine-datatable'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiTag } from 'react-icons/pi'
