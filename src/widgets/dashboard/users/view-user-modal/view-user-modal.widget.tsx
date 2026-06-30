@@ -1,4 +1,5 @@
 import { Modal } from '@mantine/core'
+import { useHotkeys } from '@mantine/hooks'
 import { IconUser } from '@tabler/icons-react'
 import { motion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
@@ -41,9 +42,12 @@ export const ViewUserModal = () => {
         }
     }
 
+    useHotkeys([['Q', () => handleClose()]], ['INPUT', 'TEXTAREA'])
+
     return (
         <Modal
             centered
+            closeOnEscape={false}
             fullScreen={isMobile}
             onClose={() => actions.changeModalState(false)}
             onExitTransitionEnd={handleClose}

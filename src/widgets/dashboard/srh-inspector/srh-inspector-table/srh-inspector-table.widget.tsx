@@ -6,15 +6,15 @@ import {
     useMantineReactTable
 } from '@kastov/mantine-react-table-open'
 import { ActionIcon, ActionIconGroup, Tooltip } from '@mantine/core'
-import { useLayoutEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbExternalLink, TbRefresh, TbReportAnalytics, TbRestore } from 'react-icons/tb'
 
 import { useGetSubscriptionRequestHistory } from '@shared/api/hooks'
+import { usePreventTableBackScroll } from '@shared/hooks'
 import { DEFAULT_PAGINATION_STATE, useMrtTableBinding } from '@shared/lib/mrt-table-store'
 import { ResolveUserActionShared } from '@shared/ui/resolve-user-action-icon'
 import { DataTableShared } from '@shared/ui/table'
-import { preventBackScrollTables } from '@shared/utils/misc'
 import { sToMs } from '@shared/utils/time-utils'
 
 import { useSrhInspectorTableStore } from '@entities/dashboard/srh-inspector/srh-inspector-table-store'
@@ -33,14 +33,7 @@ export function SrhInspectorTableWidget() {
         Object.fromEntries(tableColumns.map(({ accessorKey }) => [accessorKey, 'contains']))
     )
 
-    useLayoutEffect(() => {
-        document.body.addEventListener('wheel', preventBackScrollTables, {
-            passive: false
-        })
-        return () => {
-            document.body.removeEventListener('wheel', preventBackScrollTables)
-        }
-    }, [])
+    usePreventTableBackScroll()
 
     const params = {
         start: persistedTableState.pagination.pageIndex * persistedTableState.pagination.pageSize,

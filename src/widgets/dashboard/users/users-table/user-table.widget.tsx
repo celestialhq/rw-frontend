@@ -12,7 +12,7 @@ import {
 } from '@kastov/mantine-react-table-open'
 import { Badge } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiUsersDuotone } from 'react-icons/pi'
 import { TbSearch, TbSearchOff } from 'react-icons/tb'
@@ -26,9 +26,9 @@ import {
     useGetUserTags
 } from '@shared/api/hooks'
 import { SEARCH_PARAMS } from '@shared/constants/search-params'
+import { usePreventTableBackScroll } from '@shared/hooks'
 import { DEFAULT_PAGINATION_STATE, useMrtTableBinding } from '@shared/lib/mrt-table-store'
 import { DataTableShared } from '@shared/ui/table'
-import { preventBackScrollTables } from '@shared/utils/misc'
 import { sToMs } from '@shared/utils/time-utils'
 
 import { useUserModalStoreActions } from '@entities/dashboard/user-modal-store'
@@ -72,14 +72,7 @@ export function UserTableWidget() {
         )
     )
 
-    useLayoutEffect(() => {
-        document.body.addEventListener('wheel', preventBackScrollTables, {
-            passive: false
-        })
-        return () => {
-            document.body.removeEventListener('wheel', preventBackScrollTables)
-        }
-    }, [])
+    usePreventTableBackScroll()
 
     const params = {
         start: persistedTableState.pagination.pageIndex * persistedTableState.pagination.pageSize,

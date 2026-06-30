@@ -1,7 +1,7 @@
+import { DataTable } from '@kastov/mantine-datatable'
 import { ActionIcon, Tooltip } from '@mantine/core'
 import { useClipboard } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
-import { DataTable } from 'mantine-datatable'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbRefresh } from 'react-icons/tb'
@@ -98,9 +98,10 @@ export function HwidInspectorLeaderboardWidget() {
                 </>
             )}
             totalRecords={usersResponse?.total ?? 0}
-            withColumnBorders={false}
-            withRowBorders={true}
-            withTableBorder={true}
+            striped
+            withColumnBorders
+            withRowBorders
+            withTableBorder
         />
     )
 }
