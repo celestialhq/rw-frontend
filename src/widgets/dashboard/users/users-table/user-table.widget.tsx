@@ -170,6 +170,21 @@ export function UserTableWidget() {
             density: 'xxs',
             pagination: DEFAULT_PAGINATION_STATE
         },
+        mantineTopToolbarProps: {
+            style: {
+                '--mrt-base-background-color': '#1b2027'
+            }
+        },
+        mantineTableHeadProps: {
+            style: {
+                '--mrt-base-background-color': '#1b2027'
+            }
+        },
+        mantineBottomToolbarProps: {
+            style: {
+                '--mrt-base-background-color': '#1b2027'
+            }
+        },
         enableDensityToggle: true,
         manualFiltering: true,
         manualPagination: true,
