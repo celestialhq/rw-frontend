@@ -8,14 +8,13 @@ import { TbFingerprint, TbId, TbServer, TbSum } from 'react-icons/tb'
 import { createSearchParams, useNavigate } from 'react-router'
 import { GroupedVirtuoso } from 'react-virtuoso'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { useResolveUser } from '@shared/api/hooks'
 import { ROUTES } from '@shared/constants'
 import { SEARCH_PARAMS } from '@shared/constants/search-params'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { SectionCard } from '@shared/ui/section-card'
 import { isPwa } from '@shared/utils/open-or-navigate'
-
-import { useUserModalStoreActions } from '@entities/dashboard/user-modal-store'
 
 import { SessionsExplorerIpRow } from './sessions-explorer-ip-row'
 import styles from './sessions-explorer.module.css'
@@ -66,8 +65,6 @@ export const SessionsExplorerCard = memo(
         const { mutateAsync: resolveUser, isPending: isLoading } = useResolveUser()
         const navigate = useNavigate()
 
-        const userModalActions = useUserModalStoreActions()
-
         const { visibleNodes, groupCounts, flatIps } = useMemo(() => {
             const visible: AggregatedUserNode[] = []
             const counts: number[] = []
@@ -97,8 +94,7 @@ export const SessionsExplorerCard = memo(
 
                     navigate(`${ROUTES.DASHBOARD.MANAGEMENT.USERS}?${searchParams.toString()}`)
                 }
-                await userModalActions.setUserUuid(result.uuid)
-                userModalActions.changeModalState(true)
+                showModal('users_viewUserModal', { userUuid: result.uuid })
             }
         }
 

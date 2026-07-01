@@ -2,7 +2,6 @@ import { ConfigProfilesHeaderActionButtonsFeature } from '@features/ui/dashboard
 import { ConfigProfilesGridWidget } from '@widgets/dashboard/config-profiles/config-profiles-grid/config-profiles-grid.widget'
 import { ConfigProfilesSpotlightWidget } from '@widgets/dashboard/config-profiles/config-profiles-spotlight/config-profiles-spotlight'
 import { SnippetsDrawerWidget } from '@widgets/dashboard/config-profiles/snippets-drawer'
-import { InternalSquadsDrawerWithStore } from '@widgets/dashboard/users/internal-squads-drawer-with-store'
 import { useTranslation } from 'react-i18next'
 
 import { XrayLogo } from '@shared/ui/logos'
@@ -54,7 +53,6 @@ export const ConfigPageComponent = (props: Props) => {
             )}
 
             <RenameModalShared key="rename-config-profile-modal" renameFrom="configProfile" />
-            <InternalSquadsDrawerWithStore key="internal-squads-drawer-with-store" />
         </Page>
     )
 }

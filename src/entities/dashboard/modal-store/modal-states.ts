@@ -7,12 +7,9 @@ import {
 import { THelpDrawerAvailableScreen } from '@shared/ui/help-drawer/help-drawer.types'
 
 export const MODALS = {
-    USER_TORRENT_BLOCKER_REPORTS_DRAWER: 'USER_TORRENT_BLOCKER_REPORTS_DRAWER',
     CONFIG_PROFILES_SHOW_ACTIVE_NODE: 'CONFIG_PROFILES_SHOW_ACTIVE_NODE',
-    INTERNAL_SQUAD_SHOW_INBOUNDS: 'INTERNAL_SQUAD_SHOW_INBOUNDS',
     NODE_PLUGIN_EXECUTOR_DRAWER: 'NODE_PLUGIN_EXECUTOR_DRAWER',
     EXTERNAL_SQUAD_DRAWER: 'EXTERNAL_SQUAD_DRAWER',
-    USER_ACCESSIBLE_NODES_DRAWER: 'USER_ACCESSIBLE_NODES_DRAWER',
     VIEW_INFRA_PROVIDER_DRAWER: 'VIEW_INFRA_PROVIDER_DRAWER',
     CREATE_INFRA_PROVIDER_DRAWER: 'CREATE_INFRA_PROVIDER_DRAWER',
     CREATE_INFRA_BILLING_RECORD_DRAWER: 'CREATE_INFRA_BILLING_RECORD_DRAWER',
@@ -54,9 +51,6 @@ export interface ModalInternalStates {
     INTERNAL_SQUAD_ACCESSIBLE_NODES_DRAWER: {
         squadUuid: string
     }
-    INTERNAL_SQUAD_SHOW_INBOUNDS: {
-        squadUuid: string
-    }
     NODE_PLUGIN_EXECUTOR_DRAWER: undefined
     NODES_USERS_USAGE_STATISTICS_MODAL: {
         nodeUuids: string[]
@@ -75,12 +69,6 @@ export interface ModalInternalStates {
         callback?: () => void
         nextBillingAt?: Date
         uuids: string[]
-    }
-    USER_ACCESSIBLE_NODES_DRAWER: {
-        userUuid: string
-    }
-    USER_TORRENT_BLOCKER_REPORTS_DRAWER: {
-        userUuid: string
     }
     VIEW_INFRA_PROVIDER_DRAWER: GetInfraProvidersCommand.Response['response']['providers'][number]
 }

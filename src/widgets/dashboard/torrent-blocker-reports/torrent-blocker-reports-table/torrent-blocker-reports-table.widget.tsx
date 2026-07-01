@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { PiUserCircle } from 'react-icons/pi'
 import { TbExternalLink, TbFlame, TbJson, TbRefresh, TbRestore, TbTrash } from 'react-icons/tb'
 
+import { showModal } from '@shared/_modals/show-modal'
 import {
     useGetNodes,
     useGetTorrentBlockerReports,
@@ -25,7 +26,6 @@ import { DataTableShared } from '@shared/ui/table'
 import { sToMs } from '@shared/utils/time-utils'
 
 import { useTbReportsTableStore } from '@entities/dashboard/torrent-blocker-reports/tb-reports-table-store'
-import { useUserModalStoreActions } from '@entities/dashboard/user-modal-store'
 
 import { useTbReportsTableColumns } from './use-tb-reports-table-columns'
 
@@ -36,7 +36,6 @@ export function TorrentBlockerReportsTableWidget() {
     const { refetch: refetchTorrentBlockerStats } = useGetTorrentBlockerStats()
 
     const tableColumns = useTbReportsTableColumns(nodes)
-    const userModalActions = useUserModalStoreActions()
 
     const { state: persistedTableState, handlers: persistedTableHandlers } =
         useMrtTableBinding(useTbReportsTableStore)
@@ -128,8 +127,7 @@ export function TorrentBlockerReportsTableWidget() {
             <ActionIconGroup>
                 <ActionIcon
                     onClick={async () => {
-                        await userModalActions.setUserUuid(row.original.user.uuid)
-                        userModalActions.changeModalState(true)
+                        showModal('users_viewUserModal', { userUuid: row.original.user.uuid })
                     }}
                     size="input-sm"
                     variant="soft"
