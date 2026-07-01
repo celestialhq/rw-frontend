@@ -2,7 +2,6 @@ import { InternalSquadsHeaderActionButtonsFeature } from '@features/ui/dashboard
 import { InternalSquadAccessibleNodesModalWidget } from '@widgets/dashboard/internal-squads/internal-squad-accessible-nodes-modal/internal-squad-accessible-nodes.modal.widget'
 import { InternalSquadsGridWidget } from '@widgets/dashboard/internal-squads/internal-squads-grid/internal-squads-grid.widget'
 import { InternalSquadsSpotlightWidget } from '@widgets/dashboard/internal-squads/internal-squads-spotlight/internal-squads-spotlight'
-import { InternalSquadsDrawerWithStore } from '@widgets/dashboard/users/internal-squads-drawer-with-store'
 import { useTranslation } from 'react-i18next'
 import { TbCirclesRelation } from 'react-icons/tb'
 
@@ -36,7 +35,6 @@ export const InternalSquadsPageComponent = (props: Props) => {
 
             <RenameModalShared key="rename-internal-squad-modal" renameFrom="internalSquad" />
             <InternalSquadAccessibleNodesModalWidget key="internal-squad-accessible-nodes-modal" />
-            <InternalSquadsDrawerWithStore key="internal-squads-drawer-with-store" />
         </Page>
     )
 }

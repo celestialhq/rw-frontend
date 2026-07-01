@@ -11,6 +11,7 @@ import '@kastov/mantine-react-table-open/styles.css'
 import '@gfazioli/mantine-list-view-table/styles.css'
 import '@kastov/mantine-datatable/styles.css'
 import './global.css'
+import NiceModal from '@ebay/nice-modal-react'
 import { Center, DirectionProvider, MantineProvider, v8CssVariablesResolver } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
@@ -68,19 +69,21 @@ export function App() {
                                 theme={theme}
                                 deduplicateInlineStyles
                             >
-                                <ModalsProvider>
-                                    <Notifications position="top-right" />
-                                    <NavigationProgress />
-                                    <Suspense
-                                        fallback={
-                                            <Center h="100%">
-                                                <LoadingScreen height="60vh" />
-                                            </Center>
-                                        }
-                                    >
-                                        <Router />
-                                    </Suspense>
-                                </ModalsProvider>
+                                <NiceModal.Provider>
+                                    <ModalsProvider>
+                                        <Notifications position="top-right" />
+                                        <NavigationProgress />
+                                        <Suspense
+                                            fallback={
+                                                <Center h="100%">
+                                                    <LoadingScreen height="60vh" />
+                                                </Center>
+                                            }
+                                        >
+                                            <Router />
+                                        </Suspense>
+                                    </ModalsProvider>
+                                </NiceModal.Provider>
                             </MantineProvider>
                         </DirectionProvider>
                     </IsMobileProvider>

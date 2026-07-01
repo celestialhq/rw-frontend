@@ -29,12 +29,12 @@ import {
     TbSettings
 } from 'react-icons/tb'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { QueryKeys } from '@shared/api/hooks'
 import { queryClient } from '@shared/api/query-client'
 import { useIsMobile } from '@shared/hooks'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 
-import { useUserCreationModalStoreActions } from '@entities/dashboard/user-creation-modal-store'
 import { useUsersTableStoreActions } from '@entities/dashboard/users/users-table-store'
 
 import { UsersTableTemplatesFeature } from '../users-table-templates/users-table-templates.feature'
@@ -49,12 +49,6 @@ export const UserActionGroupFeature = (props: IProps) => {
 
     const { isLoading, refetch, table } = props
     const actions = useUsersTableStoreActions()
-
-    const userCreationModalActions = useUserCreationModalStoreActions()
-
-    const handleOpenCreateUserModal = () => {
-        userCreationModalActions.changeModalState(true)
-    }
 
     const handleRefetch = () => {
         if (table && refetch) {
@@ -186,7 +180,7 @@ export const UserActionGroupFeature = (props: IProps) => {
                     <Tooltip label={t('action-group.feature.new-user')} withArrow>
                         <ActionIcon
                             color="teal"
-                            onClick={handleOpenCreateUserModal}
+                            onClick={() => showModal('users_createUserModal')}
                             size="input-md"
                             variant="soft"
                         >

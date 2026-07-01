@@ -6,10 +6,9 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbRefresh } from 'react-icons/tb'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { useGetTopUsersByHwidDevices } from '@shared/api/hooks'
 import { sToMs } from '@shared/utils/time-utils'
-
-import { useUserModalStoreActions } from '@entities/dashboard/user-modal-store'
 
 import { getHwidInspectorLeaderboardColumns } from './get-hwid-inspector-leaderboard-columns'
 
@@ -22,8 +21,6 @@ export function HwidInspectorLeaderboardWidget() {
     const [pageSize, setPageSize] = useState(PAGE_SIZE)
     const [page, setPage] = useState(1)
     const { copy } = useClipboard()
-
-    const userModalActions = useUserModalStoreActions()
 
     const {
         data: usersResponse,
@@ -49,8 +46,7 @@ export function HwidInspectorLeaderboardWidget() {
         <DataTable
             borderRadius="sm"
             columns={getHwidInspectorLeaderboardColumns(t, async (userUuid) => {
-                await userModalActions.setUserUuid(userUuid)
-                userModalActions.changeModalState(true)
+                showModal('users_viewUserModal', { userUuid })
             })}
             defaultColumnProps={{
                 noWrap: true,

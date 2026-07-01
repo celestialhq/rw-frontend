@@ -14,13 +14,12 @@ import { CreateInternalSquadCommand } from '@remnawave/backend-contract'
 import { useTranslation } from 'react-i18next'
 import { TbCirclesRelation, TbPlus, TbRefresh } from 'react-icons/tb'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { queryClient } from '@shared/api'
 import { QueryKeys, useCreateInternalSquad, useGetInternalSquads } from '@shared/api/hooks'
 import { HelpActionIconShared } from '@shared/ui/help-drawer'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { UniversalSpotlightActionIconShared } from '@shared/ui/universal-spotlight'
-
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 
 interface IProps {
     internalSquadCount: number
@@ -31,8 +30,6 @@ export const InternalSquadsHeaderActionButtonsFeature = (props: IProps) => {
 
     const { t } = useTranslation()
     const { isFetching } = useGetInternalSquads()
-
-    const openModalWithData = useModalsStoreOpenWithData()
 
     const [opened, { open, close }] = useDisclosure(false)
 
@@ -59,7 +56,7 @@ export const InternalSquadsHeaderActionButtonsFeature = (props: IProps) => {
                 nameField.reset()
                 handleUpdate()
 
-                openModalWithData(MODALS.INTERNAL_SQUAD_SHOW_INBOUNDS, {
+                showModal('internalSquads_internalSquadsInboundsDrawer', {
                     squadUuid: data.uuid
                 })
             },

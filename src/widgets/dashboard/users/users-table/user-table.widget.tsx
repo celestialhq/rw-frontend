@@ -18,6 +18,7 @@ import { PiUsersDuotone } from 'react-icons/pi'
 import { TbSearch, TbSearchOff } from 'react-icons/tb'
 import { useSearchParams } from 'react-router'
 
+import { showModal } from '@shared/_modals/show-modal'
 import {
     useGetExternalSquads,
     useGetInternalSquads,
@@ -31,7 +32,6 @@ import { DEFAULT_PAGINATION_STATE, useMrtTableBinding } from '@shared/lib/mrt-ta
 import { DataTableShared } from '@shared/ui/table'
 import { sToMs } from '@shared/utils/time-utils'
 
-import { useUserModalStoreActions } from '@entities/dashboard/user-modal-store'
 import {
     useBulkUsersActionsStoreActions,
     useBulkUsersActionsStoreTableSelection
@@ -49,7 +49,6 @@ export function UserTableWidget() {
     const tableColumns = useUserTableColumns(internalSquads, externalSquads, nodes)
     const bulkUsersActionsStoreActions = useBulkUsersActionsStoreActions()
     const tableSelection = useBulkUsersActionsStoreTableSelection()
-    const userModalActions = useUserModalStoreActions()
     const [searchParams, setSearchParams] = useSearchParams()
 
     const { state: persistedTableState, handlers: persistedTableHandlers } =
@@ -101,14 +100,21 @@ export function UserTableWidget() {
     })
 
     useEffect(() => {
-        if (!isLoading && searchParams.get(SEARCH_PARAMS.USER)) {
-            userModalActions.setUserUuid(searchParams.get(SEARCH_PARAMS.USER)!)
-            userModalActions.changeModalState(true)
+        if (isLoading) return
+        const userUuid = searchParams.get(SEARCH_PARAMS.USER)
+        if (!userUuid) return
 
-            searchParams.delete(SEARCH_PARAMS.USER)
-            setSearchParams(searchParams)
-        }
-    }, [searchParams, isLoading])
+        showModal('users_viewUserModal', { userUuid })
+
+        setSearchParams(
+            (prev) => {
+                const next = new URLSearchParams(prev)
+                next.delete(SEARCH_PARAMS.USER)
+                return next
+            },
+            { replace: true }
+        )
+    }, [isLoading, searchParams, setSearchParams])
 
     const table = useMantineReactTable({
         columns: tableColumns,
@@ -254,8 +260,11 @@ export function UserTableWidget() {
                     })
                     return
                 }
-                await userModalActions.setUserUuid(row.original.uuid)
-                userModalActions.changeModalState(true)
+
+                showModal('users_viewUserModal', { userUuid: row.original.uuid })
+
+                // await userModalActions.setUserUuid(row.original.uuid)
+                // userModalActions.changeModalState(true)
             },
             style: {
                 cursor: 'pointer'

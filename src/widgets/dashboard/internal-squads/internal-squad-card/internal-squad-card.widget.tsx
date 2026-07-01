@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { PiCheck, PiCopy, PiPencil, PiTag, PiTrashDuotone, PiUsers } from 'react-icons/pi'
 import { TbCirclesRelation, TbServerCog, TbTag, TbUsersMinus, TbUsersPlus } from 'react-icons/tb'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { WithDndSortable } from '@shared/hocs/with-dnd-sortable'
 import { EntityCardShared } from '@shared/ui/entity-card'
 import { formatInt } from '@shared/utils/misc'
@@ -35,7 +36,7 @@ export function InternalSquadCardWidget(props: IProps) {
     const isActive = membersCount > 0
 
     const handleOpenInbounds = () => {
-        openModalWithData(MODALS.INTERNAL_SQUAD_SHOW_INBOUNDS, {
+        showModal('internalSquads_internalSquadsInboundsDrawer', {
             squadUuid: internalSquad.uuid
         })
     }

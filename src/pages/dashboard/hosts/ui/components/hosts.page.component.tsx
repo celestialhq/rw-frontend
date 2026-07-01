@@ -80,9 +80,15 @@ export default function HostsPageComponent(props: IProps) {
 
         openModalWithData(MODALS.EDIT_HOST_MODAL, host)
 
-        searchParams.delete(SEARCH_PARAMS.HOST)
-        setSearchParams(searchParams)
-    }, [searchParams, hosts, isLoading])
+        setSearchParams(
+            (prev) => {
+                const next = new URLSearchParams(prev)
+                next.delete(SEARCH_PARAMS.HOST)
+                return next
+            },
+            { replace: true }
+        )
+    }, [searchParams, hosts, isLoading, setSearchParams])
 
     const moveSelected = useCallback(
         (mode: 'bottom' | 'down' | 'top' | 'up') => {
