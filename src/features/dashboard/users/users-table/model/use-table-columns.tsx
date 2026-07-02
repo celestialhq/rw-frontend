@@ -374,7 +374,7 @@ export const useUserTableColumns = (
                 accessorFn: (originalRow) =>
                     originalRow.lastTrafficResetAt
                         ? formatTimeUtil({
-                              time: originalRow.userTraffic.firstConnectedAt,
+                              time: originalRow.lastTrafficResetAt,
                               template: 'TIME_FIRST_DATETIME',
                               language: i18n.language
                           })
