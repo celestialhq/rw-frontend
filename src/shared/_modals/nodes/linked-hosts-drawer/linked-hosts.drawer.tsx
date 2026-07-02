@@ -104,7 +104,6 @@ export const LinkedHostsDrawer = NiceModal.create((props: IProps) => {
                             item={host}
                             nodesByUuid={nodesByUuid}
                             onSelect={() => {}}
-                            openExternal
                             viewOnly
                             key={host.uuid}
                         />
