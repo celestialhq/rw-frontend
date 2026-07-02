@@ -1,5 +1,5 @@
 import { NiceModalHandler } from '@ebay/nice-modal-react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useEffectEvent, useState } from 'react'
 
 import { useIsMobile } from '@shared/hooks/use-is-mobile'
 
@@ -23,6 +23,11 @@ function handleKeyDown(e: KeyboardEvent) {
 }
 
 function register(id: string, hide: () => void) {
+    const existing = stack.find((m) => m.id === id)
+    if (existing) {
+        existing.hide = hide
+        return
+    }
     stack.push({ id, hide })
     if (!listening) {
         document.addEventListener('keydown', handleKeyDown)
@@ -55,6 +60,8 @@ export function useNiceMantineModal(props: IProps) {
         modal.hide()
     }, [onClose, modal])
 
+    const stackHide = useEffectEvent(() => hide())
+
     useEffect(() => {
         const raf = requestAnimationFrame(() => setEntered(true))
         return () => cancelAnimationFrame(raf)
@@ -62,9 +69,10 @@ export function useNiceMantineModal(props: IProps) {
 
     useEffect(() => {
         if (!modal.visible) return
-        register(modal.id, hide)
+
+        register(modal.id, stackHide)
         return () => unregister(modal.id)
-    }, [modal.visible, modal.id, hide])
+    }, [modal.visible, modal.id])
 
     const drawerProps = !drawer
         ? {
