@@ -5,7 +5,6 @@ import {
     Center,
     Group,
     MantineStyleProp,
-    OverflowList,
     Stack,
     Text,
     ThemeIcon,
@@ -21,6 +20,7 @@ import { queryClient } from '@shared/api'
 import { QueryKeys, useDeleteInfraProvider } from '@shared/api/hooks'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { SectionCard } from '@shared/ui/section-card'
+import { SingleRowOverflowList } from '@shared/ui/single-row-overflow-list'
 import { faviconResolver, formatCurrencyWithIntl } from '@shared/utils/misc'
 import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
 
@@ -181,10 +181,9 @@ export function MobileProvidersListWidget(props: IProps) {
 
                     {provider.billingNodes.length > 0 && (
                         <SectionCard.Section>
-                            <OverflowList
+                            <SingleRowOverflowList
                                 data={provider.billingNodes}
                                 gap={4}
-                                maxRows={1}
                                 maxVisibleItems={3}
                                 renderItem={(node) => (
                                     <Badge

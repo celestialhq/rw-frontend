@@ -6,7 +6,6 @@ import {
     Box,
     Checkbox,
     Group,
-    OverflowList,
     px,
     Stack,
     Text,
@@ -37,6 +36,7 @@ import {
 import { showModal } from '@shared/_modals/show-modal'
 import { useIsMobile } from '@shared/hooks'
 import { XrayLogo } from '@shared/ui/logos'
+import { SingleRowOverflowList } from '@shared/ui/single-row-overflow-list'
 import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
 
 import classes from './HostCard.module.css'
@@ -241,10 +241,9 @@ export function HostCardWidget(props: IProps) {
                                     )}
                                 </Badge>
 
-                                <OverflowList
+                                <SingleRowOverflowList
                                     data={item.tags.sort((a, b) => a.localeCompare(b))}
                                     gap={0}
-                                    maxRows={1}
                                     maxVisibleItems={2}
                                     renderItem={(tag) => (
                                         <Badge
@@ -483,10 +482,9 @@ export function HostCardWidget(props: IProps) {
                                 )}
                             </Badge>
 
-                            <OverflowList
+                            <SingleRowOverflowList
                                 data={item.tags.sort((a, b) => a.localeCompare(b))}
                                 gap={0}
-                                maxRows={1}
                                 maxVisibleItems={2}
                                 renderItem={(tag) => (
                                     <Badge
@@ -546,12 +544,11 @@ export function HostCardWidget(props: IProps) {
                         </Group>
 
                         <Group gap="xs" style={{ flexShrink: 0 }} wrap="nowrap">
-                            <OverflowList
+                            <SingleRowOverflowList
                                 data={item.nodes
                                     .map((nodeId) => nodesByUuid.get(nodeId))
                                     .filter((n): n is NonNullable<typeof n> => Boolean(n))}
                                 gap={4}
-                                maxRows={1}
                                 maxVisibleItems={3}
                                 renderItem={(node) => (
                                     <Badge
