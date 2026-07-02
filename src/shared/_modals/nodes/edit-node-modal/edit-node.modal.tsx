@@ -5,7 +5,7 @@ import { TbCpu } from 'react-icons/tb'
 
 import { useNiceMantineModal } from '@shared/_modals/use-nice-modal'
 import { queryClient } from '@shared/api'
-import { nodesQueryKeys, QueryKeys } from '@shared/api/hooks'
+import { QueryKeys } from '@shared/api/hooks'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 
 import { EditNodeByUuidModalContent } from './edit-node.modal.content'
@@ -21,9 +21,6 @@ export const EditNodeModal = NiceModal.create((props: IProps) => {
     const { modalProps, hide } = useNiceMantineModal({
         modal,
         onClose() {
-            queryClient.removeQueries({
-                queryKey: nodesQueryKeys.getNode({ uuid: nodeUuid }).queryKey
-            })
             queryClient.refetchQueries({
                 queryKey: QueryKeys.nodes.getAllNodes.queryKey
             })
