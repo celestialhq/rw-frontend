@@ -32,16 +32,12 @@ import {
     TbMask,
     TbStar
 } from 'react-icons/tb'
-import { createSearchParams, useNavigate } from 'react-router'
 
 import { showModal } from '@shared/_modals/show-modal'
-import { ROUTES } from '@shared/constants'
-import { SEARCH_PARAMS } from '@shared/constants/search-params'
 import { useIsMobile } from '@shared/hooks'
 import { XrayLogo } from '@shared/ui/logos'
 import { SingleRowOverflowList } from '@shared/ui/single-row-overflow-list'
 import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
-import { openOrNavigate } from '@shared/utils/open-or-navigate'
 
 import classes from './HostCard.module.css'
 
@@ -52,7 +48,6 @@ export interface IProps {
     item: GetAllHostsCommand.Response['response'][number]
     nodesByUuid: Map<string, GetAllNodesCommand.Response['response'][number]>
     onSelect?: () => void
-    openExternal?: boolean
     viewOnly?: boolean
     disableReordering?: boolean
 }
@@ -66,12 +61,11 @@ export function HostCardWidget(props: IProps) {
         onSelect,
         isDragOverlay = false,
         viewOnly = false,
-        openExternal = false,
+
         disableReordering = false
     } = props
 
     const { t } = useTranslation()
-    const navigate = useNavigate()
 
     const [isHovered, setIsHovered] = useState(false)
     const isMobile = useIsMobile()
@@ -98,17 +92,6 @@ export function HostCardWidget(props: IProps) {
     }
 
     const handleEdit = () => {
-        if (openExternal) {
-            openOrNavigate(
-                `${ROUTES.DASHBOARD.MANAGEMENT.HOSTS}?${createSearchParams({
-                    [SEARCH_PARAMS.HOST]: item.uuid
-                })}`,
-                navigate
-            )
-
-            return
-        }
-
         showModal('hosts_editHostDrawer', {
             host: item
         })
