@@ -8,6 +8,7 @@ import {
 import { memo, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { showModal } from '@shared/_modals/show-modal'
 import {
     useGetHosts,
     useGetInternalSquads,
@@ -17,8 +18,6 @@ import {
 import { usePreventTableBackScroll } from '@shared/hooks'
 import { DataTableControls, LoadingScreen, sortRecords } from '@shared/ui'
 import { sToMs } from '@shared/utils/time-utils'
-
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 
 import {
     type BooleanFilterValue,
@@ -73,8 +72,6 @@ export const HostsDataTableWidget = memo((props: IProps) => {
     const { data: internalSquads } = useGetInternalSquads()
     const { data: subscriptionTemplates } = useGetSubscriptionTemplates()
 
-    const openModalWithData = useModalsStoreOpenWithData()
-
     useGetHosts({
         rQueryParams: {
             enabled: true,
@@ -85,7 +82,10 @@ export const HostsDataTableWidget = memo((props: IProps) => {
     usePreventTableBackScroll()
 
     const handleViewHost = (hostUuid: string) => {
-        openModalWithData(MODALS.EDIT_HOST_MODAL, hosts!.find((host) => host.uuid === hostUuid)!)
+        if (!hosts) return
+        showModal('hosts_editHostDrawer', {
+            host: hosts.find((host) => host.uuid === hostUuid)!
+        })
     }
 
     const selectedRecords = useMemo(() => {

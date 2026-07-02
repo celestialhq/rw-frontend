@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { PiEmptyDuotone, PiUsersDuotone } from 'react-icons/pi'
 import { TbServer, TbServer2 } from 'react-icons/tb'
 
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
+import { showModal } from '@shared/_modals/show-modal'
 
 import { NodeStatusBadgeWidget } from '../node-status-badge'
 
@@ -15,8 +15,6 @@ interface IProps {
 }
 
 export const NodesSpotlightSearchWidget = ({ nodes }: IProps) => {
-    const openModalWithData = useModalsStoreOpenWithData()
-
     const { t } = useTranslation()
 
     const handleViewNode = (value: null | string) => {
@@ -26,7 +24,7 @@ export const NodesSpotlightSearchWidget = ({ nodes }: IProps) => {
 
         const node = nodes.find((node) => node.uuid === value)
         if (node) {
-            openModalWithData(MODALS.EDIT_NODE_BY_UUID_MODAL, { nodeUuid: node.uuid })
+            showModal('nodes_editNodeModal', { nodeUuid: node.uuid })
         }
     }
 

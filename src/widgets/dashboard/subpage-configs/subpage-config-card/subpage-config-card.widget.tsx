@@ -6,11 +6,10 @@ import { PiCheck, PiCopy, PiPencil, PiTrashDuotone } from 'react-icons/pi'
 import { TbCopyCheck, TbEdit, TbFile } from 'react-icons/tb'
 import { generatePath, useNavigate } from 'react-router'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { ROUTES } from '@shared/constants'
 import { WithDndSortable } from '@shared/hocs/with-dnd-sortable'
 import { EntityCardShared } from '@shared/ui/entity-card'
-
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 
 interface IProps {
     handleCloneSubpageConfig: (subpageConfigUuid: string) => void
@@ -28,7 +27,6 @@ export function SubpageConfigCardWidget(props: IProps) {
     } = props
 
     const { t } = useTranslation()
-    const openModalWithData = useModalsStoreOpenWithData()
     const navigate = useNavigate()
 
     const navigateToConfig = () => {
@@ -85,7 +83,8 @@ export function SubpageConfigCardWidget(props: IProps) {
                         <Menu.Item
                             leftSection={<PiPencil size={18} />}
                             onClick={() => {
-                                openModalWithData(MODALS.RENAME_SQUAD_OR_CONFIG_PROFILE_MODAL, {
+                                showModal('renameModal', {
+                                    renameFrom: 'subpageConfig',
                                     name: subpageConfig.name,
                                     uuid: subpageConfig.uuid
                                 })

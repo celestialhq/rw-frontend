@@ -3,14 +3,9 @@ import { NodesHeaderActionButtonsFeature } from '@features/ui/dashboard/nodes/no
 import { Grid, Stack } from '@mantine/core'
 /* eslint-disable no-nested-ternary */
 import { GetAllNodesCommand } from '@remnawave/backend-contract'
-import { CreateNodeModalWidget } from '@widgets/dashboard/nodes/create-node-modal'
-import { EditNodeByUuidModalWidget } from '@widgets/dashboard/nodes/edit-node-by-uuid-modal'
-import { LinkedHostsDrawer } from '@widgets/dashboard/nodes/linked-hosts-drawer/linked-hosts-drawer.widget'
-import { NodeUsersUsageDrawer } from '@widgets/dashboard/nodes/node-users-usage-statistic'
 import { NodesDataTableWidget } from '@widgets/dashboard/nodes/nodes-datatable/nodes-datatable.widget'
 import { NodesRealtimeUsageMetrics } from '@widgets/dashboard/nodes/nodes-realtime-metrics'
 import { NodesTableWidget } from '@widgets/dashboard/nodes/nodes-table'
-import { NodesUsersUsageStatisticsDrawer } from '@widgets/dashboard/nodes/nodes-users-usage-statistics/nodes-users-usage-statistics.drawer'
 import { motion } from 'motion/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -78,16 +73,10 @@ export default function NodesPageComponent(props: IProps) {
                 </Grid.Col>
             </Grid>
 
-            <EditNodeByUuidModalWidget key="edit-node-by-uuid-modal" />
-            <CreateNodeModalWidget key="create-node-widget" />
-            <NodeUsersUsageDrawer key="node-users-usage-drawer" />
-            <LinkedHostsDrawer key="linked-hosts-drawer" />
-
             <MultiSelectNodesFeature
                 selectedRecords={selectedRecords}
                 setSelectedRecords={setSelectedRecords}
             />
-            <NodesUsersUsageStatisticsDrawer key="nodes-users-usage-statistics-drawer" />
         </Page>
     )
 }

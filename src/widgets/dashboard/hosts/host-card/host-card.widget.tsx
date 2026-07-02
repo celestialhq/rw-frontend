@@ -35,14 +35,13 @@ import {
 } from 'react-icons/tb'
 import { createSearchParams, useNavigate } from 'react-router'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { ROUTES } from '@shared/constants'
 import { SEARCH_PARAMS } from '@shared/constants/search-params'
 import { useIsMobile } from '@shared/hooks'
 import { XrayLogo } from '@shared/ui/logos'
 import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
 import { openOrNavigate } from '@shared/utils/open-or-navigate'
-
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 
 import classes from './HostCard.module.css'
 
@@ -73,8 +72,6 @@ export function HostCardWidget(props: IProps) {
 
     const { t } = useTranslation()
     const navigate = useNavigate()
-
-    const openModalWithData = useModalsStoreOpenWithData()
 
     const [isHovered, setIsHovered] = useState(false)
     const isMobile = useIsMobile()
@@ -112,7 +109,9 @@ export function HostCardWidget(props: IProps) {
             return
         }
 
-        openModalWithData(MODALS.EDIT_HOST_MODAL, item)
+        showModal('hosts_editHostDrawer', {
+            host: item
+        })
     }
 
     if (!configProfiles) {

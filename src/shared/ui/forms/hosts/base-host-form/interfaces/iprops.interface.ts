@@ -24,4 +24,5 @@ export interface IProps<
     removeRequiredFields?: boolean
     setAdvancedOpened: (value: boolean) => void
     subscriptionTemplates: GetSubscriptionTemplatesCommand.Response['response']['templates']
+    hostUuid?: string
 }

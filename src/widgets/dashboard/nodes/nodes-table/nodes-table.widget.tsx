@@ -18,6 +18,7 @@ import { GetAllNodesCommand } from '@remnawave/backend-contract'
 import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { queryClient } from '@shared/api'
 import { nodesQueryKeys, useGetNodes, useReorderNodes } from '@shared/api/hooks'
 import { useIsMobile } from '@shared/hooks'
@@ -25,7 +26,6 @@ import { NO_TAG, TagFilterBar } from '@shared/ui'
 import { EmptyPageLayout } from '@shared/ui/layouts/empty-page'
 import { sToMs } from '@shared/utils/time-utils'
 
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 import {
     useNodesActiveTag,
     useViewPreferencesStoreActions
@@ -51,7 +51,6 @@ export const NodesTableWidget = memo((props: IProps) => {
 
     const [state, handlers] = useListState(visibleNodes)
 
-    const openModalWithData = useModalsStoreOpenWithData()
     const [isPollingEnabled, setIsPollingEnabled] = useState(true)
     const [draggedNode, setDraggedNode] = useState<
         GetAllNodesCommand.Response['response'][number] | null
@@ -184,7 +183,7 @@ export const NodesTableWidget = memo((props: IProps) => {
     }, [])
 
     const handleViewNode = (nodeUuid: string) => {
-        openModalWithData(MODALS.EDIT_NODE_BY_UUID_MODAL, { nodeUuid })
+        showModal('nodes_editNodeModal', { nodeUuid })
     }
 
     if (!nodes) {

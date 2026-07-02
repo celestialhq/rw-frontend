@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next'
 import { TbFile } from 'react-icons/tb'
 
 import { Page, PageHeaderShared } from '@shared/ui'
-import { RenameModalShared } from '@shared/ui/modals/rename-modal.shared'
 
 interface Props {
     configs: GetSubscriptionPageConfigsCommand.Response['response']['configs']
@@ -34,8 +33,6 @@ export const SubpageConfigBasePageComponent = (props: Props) => {
             </motion.div>
 
             <SubpageConfigsSpotlightWidget configs={configs} />
-
-            <RenameModalShared key="rename-subpage-config-modal" renameFrom="subpageConfig" />
         </Page>
     )
 }
