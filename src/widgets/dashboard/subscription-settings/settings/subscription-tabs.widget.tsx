@@ -12,7 +12,6 @@ import { SubscriptionHwidSettingsWidget } from './cards/subscription-hwid-settin
 import { SubscriptionInfoCardWidget } from './cards/subscription-info-card.widget'
 import { SubscriptionResponseHeadersCardWidget } from './cards/subscription-response-headers-card.widget'
 import { SubscriptionUserRemarksCardWidget } from './cards/subscription-user-remarks-card.widget'
-import styles from './subscription-tabs.module.css'
 
 interface SubscriptionTabsProps {
     subscriptionSettings: UpdateSubscriptionSettingsCommand.Response['response']
@@ -33,10 +32,6 @@ export const SubscriptionSettingsTabsWidget = ({ subscriptionSettings }: Subscri
 
     return (
         <Tabs
-            classNames={{
-                tab: styles.tab,
-                tabLabel: styles.tabLabel
-            }}
             color="cyan"
             defaultValue={TABS.general}
             keepMountedMode="display-none"
@@ -45,11 +40,7 @@ export const SubscriptionSettingsTabsWidget = ({ subscriptionSettings }: Subscri
                     setActiveTab(value as TabKey)
                 }
             }}
-            style={{
-                width: '100%'
-            }}
             value={activeTab}
-            variant="unstyled"
         >
             <Tabs.List>
                 <Tabs.Tab leftSection={<PiInfo size={px('1.2rem')} />} value={TABS.general}>

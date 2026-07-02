@@ -6,12 +6,11 @@ import { memo, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiEmpty } from 'react-icons/pi'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { useGetConfigProfiles, useGetNodePlugins, useGetNodes } from '@shared/api/hooks'
 import { usePreventTableBackScroll } from '@shared/hooks'
 import { DataTableControls, LoadingScreen, sortRecords } from '@shared/ui'
 import { sToMs } from '@shared/utils/time-utils'
-
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 
 import {
     getNodesTableColumns,
@@ -51,8 +50,6 @@ export const NodesDataTableWidget = memo((props: IProps) => {
     const { data: configProfiles } = useGetConfigProfiles({})
     const { data: nodePlugins } = useGetNodePlugins()
 
-    const openModalWithData = useModalsStoreOpenWithData()
-
     useGetNodes({
         rQueryParams: {
             enabled: true,
@@ -63,7 +60,7 @@ export const NodesDataTableWidget = memo((props: IProps) => {
     usePreventTableBackScroll()
 
     const handleViewNode = (nodeUuid: string) => {
-        openModalWithData(MODALS.EDIT_NODE_BY_UUID_MODAL, { nodeUuid })
+        showModal('nodes_editNodeModal', { nodeUuid })
     }
 
     const { availableTags, availableProviders, availableInbounds } = useMemo(() => {

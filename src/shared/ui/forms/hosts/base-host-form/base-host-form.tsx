@@ -70,7 +70,6 @@ import { TagInputPill } from '@shared/ui/tag-input-pill'
 import { handleFormErrors } from '@shared/utils/misc'
 import { emojiFlag, resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
 
-import classes from './HostTabs.module.css'
 import { IProps } from './interfaces'
 import { FINAL_MASK_MODAL_ID, FinalMaskModalContent } from './modals/final-mask.modal.content'
 import { MUX_MODAL_ID, MuxModalContent } from './modals/mux.modal.content'
@@ -118,7 +117,8 @@ export const BaseHostForm = <
         internalSquads,
         subscriptionTemplates,
         hostTags,
-        removeRequiredFields
+        removeRequiredFields,
+        hostUuid
     } = props
 
     const { t } = useTranslation()
@@ -340,12 +340,10 @@ export const BaseHostForm = <
             </Group>
 
             <Tabs
-                classNames={classes}
                 keepMounted
                 keepMountedMode="display-none"
                 onChange={setActiveTab}
                 value={activeTab}
-                variant="unstyled"
             >
                 <Tabs.List grow mb="md">
                     <Tabs.Tab key="basic" leftSection={<PiNoteDuotone size={16} />} value="basic">
@@ -1313,9 +1311,11 @@ export const BaseHostForm = <
                         </Button>
                     </Group>
 
-                    <Group>
-                        <DeleteHostFeature />
-                    </Group>
+                    {!!hostUuid && (
+                        <Group>
+                            <DeleteHostFeature hostUuid={hostUuid} />
+                        </Group>
+                    )}
                 </Group>
             </DrawerFooter>
         </form>

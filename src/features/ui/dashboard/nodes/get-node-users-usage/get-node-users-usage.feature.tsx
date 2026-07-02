@@ -3,7 +3,7 @@ import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiChartBarDuotone } from 'react-icons/pi'
 
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
+import { showModal } from '@shared/_modals/show-modal'
 
 import { IProps } from './interfaces'
 
@@ -11,14 +11,12 @@ const GetNodeUsersUsageFeatureComponent = (props: IProps) => {
     const { nodeUuid } = props
     const { t } = useTranslation()
 
-    const openModalWithData = useModalsStoreOpenWithData()
-
     return (
         <Tooltip label={t('get-user-usage.feature.show-usage')}>
             <ActionIcon
                 color="indigo"
                 onClick={() => {
-                    openModalWithData(MODALS.SHOW_NODE_USERS_USAGE_DRAWER, {
+                    showModal('nodes_nodeUsageStatsDrawer', {
                         nodeUuid
                     })
                 }}

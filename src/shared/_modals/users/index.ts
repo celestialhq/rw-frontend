@@ -9,3 +9,7 @@ export { ConnectionKeysDrawer } from './connection-keys-drawer/connection-keys.d
 export { UserSubscriptionRequestsModal } from './user-subscription-requests-modal/user-subscription-requests.modal'
 export { UserHwidDevicesModal } from './user-hwid-devices-modal/user-hwid-devices.modal'
 export { UserActiveSessionDrawer } from './user-active-sessions/user-active-session.drawer'
+export { BulkManyUsersActionsModal } from './bulk-many-users-actions/bulk-many-users-actions.modal'
+export { BulkManyUsersUpdateModal } from './bulk-many-users-update/bulk-many-users-update.modal'
+export { BulkAllUsersActionsModal } from './bulk-all-users-actions/bulk-all-users-actions.modal'
+export { BulkAllUsersUpdateModal } from './bulk-all-users-update/bulk-all-users-update.modal'

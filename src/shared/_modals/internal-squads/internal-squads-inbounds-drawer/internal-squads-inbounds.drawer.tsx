@@ -36,7 +36,7 @@ import { LoaderModalShared } from '@shared/ui/loader-modal'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { formatInt } from '@shared/utils/misc'
 
-import classes from './internal-squads-with-store.module.css'
+import classes from './internal-squads-inbounds.module.css'
 
 interface IProps {
     squadUuid: string
@@ -341,13 +341,10 @@ export const InternalSquadsInboundsDrawer = NiceModal.create((props: IProps) => 
 
                 <Tabs
                     classNames={{
-                        root: classes.tabsContainer,
-                        tab: classes.tab,
-                        tabLabel: classes.tabLabel
+                        root: classes.tabsContainer
                     }}
                     onChange={(value) => value && setActiveTab(value)}
                     value={activeTab}
-                    variant="unstyled"
                 >
                     <Tabs.List grow>
                         <Tabs.Tab leftSection={<PiTreeView size={18} />} value="profiles">

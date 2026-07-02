@@ -9,8 +9,6 @@ import { WithDndSortable } from '@shared/hocs/with-dnd-sortable'
 import { EntityCardShared } from '@shared/ui/entity-card'
 import { formatInt } from '@shared/utils/misc'
 
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
-
 interface IProps {
     handleAddToUsers: (internalSquadUuid: string, internalSquadName: string) => void
     handleDeleteInternalSquad: (internalSquadUuid: string, internalSquadName: string) => void
@@ -29,7 +27,6 @@ export function InternalSquadCardWidget(props: IProps) {
     } = props
 
     const { t } = useTranslation()
-    const openModalWithData = useModalsStoreOpenWithData()
 
     const { membersCount } = internalSquad.info
     const { inboundsCount } = internalSquad.info
@@ -112,8 +109,8 @@ export function InternalSquadCardWidget(props: IProps) {
                         <Menu.Item
                             leftSection={<TbServerCog size={18} />}
                             onClick={() =>
-                                openModalWithData(MODALS.INTERNAL_SQUAD_ACCESSIBLE_NODES_DRAWER, {
-                                    squadUuid: internalSquad.uuid
+                                showModal('internalSquads_internalSquadAccessibleNodesDrawer', {
+                                    uuid: internalSquad.uuid
                                 })
                             }
                         >
@@ -137,7 +134,8 @@ export function InternalSquadCardWidget(props: IProps) {
                         <Menu.Item
                             leftSection={<PiPencil size={18} />}
                             onClick={() =>
-                                openModalWithData(MODALS.RENAME_SQUAD_OR_CONFIG_PROFILE_MODAL, {
+                                showModal('renameModal', {
+                                    renameFrom: 'internalSquad',
                                     name: internalSquad.name,
                                     uuid: internalSquad.uuid
                                 })
