@@ -3,7 +3,7 @@ import {
     useGetNodePlugins,
     useGetNodes,
     useGetNodesTags,
-    useGetPubKey
+    useGetNodeSecretKey
 } from '@shared/api/hooks'
 
 import NodesPageComponent from '../components/nodes.page.component'
@@ -12,7 +12,7 @@ export function NodesPageConnector() {
     const { data: nodes, isLoading } = useGetNodes()
     const { isLoading: isConfigProfilesLoading } = useGetConfigProfiles()
 
-    useGetPubKey()
+    useGetNodeSecretKey()
     useGetNodePlugins()
     useGetNodesTags()
 

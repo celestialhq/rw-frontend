@@ -16,7 +16,7 @@ export const LoginFormFeature = () => {
 
     const form = useForm({
         mode: 'uncontrolled',
-        validate: zodResolver(LoginCommand.RequestSchema),
+        validate: zodResolver(LoginCommand.RequestBodySchema),
         initialValues: { username: '', password: '' }
     })
 

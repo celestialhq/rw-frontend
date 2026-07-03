@@ -59,7 +59,7 @@ export const BulkAllUsersUpdateModal = NiceModal.create(() => {
     const { data: externalSquads } = useGetExternalSquads()
     const { data: tags } = useGetUserTags()
 
-    const form = useForm<BulkAllUpdateUsersCommand.Request>({
+    const form = useForm<BulkAllUpdateUsersCommand.RequestBody>({
         mode: 'uncontrolled',
         name: 'bulk-all-user-actions-form',
         initialValues: {
@@ -73,7 +73,7 @@ export const BulkAllUsersUpdateModal = NiceModal.create(() => {
             hwidDeviceLimit: undefined
         },
         validate: zodResolver(
-            BulkAllUpdateUsersCommand.RequestSchema.omit({
+            BulkAllUpdateUsersCommand.RequestBodySchema.omit({
                 expireAt: true,
                 telegramId: true,
                 email: true

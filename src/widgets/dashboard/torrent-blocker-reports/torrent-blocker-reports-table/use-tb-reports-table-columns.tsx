@@ -4,14 +4,14 @@ import {
 } from '@features/dashboard/users/users-table/model/node-select-item'
 import { MRT_ColumnDef } from '@kastov/mantine-react-table-open'
 import { Group, Text } from '@mantine/core'
-import { GetAllNodesCommand, GetTorrentBlockerReportsCommand } from '@remnawave/backend-contract'
+import { GetNodesCommand, GetTorrentBlockerReportsCommand } from '@remnawave/backend-contract'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { CountryFlag } from '@shared/ui/get-country-flag'
 import { formatTimeUtil } from '@shared/utils/time-utils'
 
-export const useTbReportsTableColumns = (nodes?: GetAllNodesCommand.Response['response']) => {
+export const useTbReportsTableColumns = (nodes?: GetNodesCommand.Response['response']) => {
     const { t, i18n } = useTranslation()
 
     return useMemo<

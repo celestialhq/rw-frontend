@@ -1,5 +1,5 @@
 import { CopyButton, Menu } from '@mantine/core'
-import { GetSubscriptionPageConfigsCommand } from '@remnawave/backend-contract'
+import { GetSubpageConfigsCommand } from '@remnawave/backend-contract'
 import { SUBPAGE_DEFAULT_CONFIG_UUID } from '@remnawave/subscription-page-types'
 import { useTranslation } from 'react-i18next'
 import { PiCheck, PiCopy, PiPencil, PiTrashDuotone } from 'react-icons/pi'
@@ -15,7 +15,7 @@ interface IProps {
     handleCloneSubpageConfig: (subpageConfigUuid: string) => void
     handleDeleteSubpageConfig: (subpageConfigUuid: string) => void
     isDragOverlay?: boolean
-    subpageConfig: GetSubscriptionPageConfigsCommand.Response['response']['configs'][number]
+    subpageConfig: GetSubpageConfigsCommand.Response['response']['configs'][number]
 }
 
 export function SubpageConfigCardWidget(props: IProps) {

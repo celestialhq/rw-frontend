@@ -13,8 +13,8 @@ import {
     Tooltip
 } from '@mantine/core'
 import {
-    GetAllHostsCommand,
-    GetAllNodesCommand,
+    GetHostsCommand,
+    GetNodesCommand,
     GetConfigProfilesCommand
 } from '@remnawave/backend-contract'
 import cx from 'clsx'
@@ -45,8 +45,8 @@ export interface IProps {
     configProfiles: GetConfigProfilesCommand.Response['response']['configProfiles'] | undefined
     isDragOverlay?: boolean
     isSelected?: boolean
-    item: GetAllHostsCommand.Response['response'][number]
-    nodesByUuid: Map<string, GetAllNodesCommand.Response['response'][number]>
+    item: GetHostsCommand.Response['response'][number]
+    nodesByUuid: Map<string, GetNodesCommand.Response['response'][number]>
     onSelect?: () => void
     viewOnly?: boolean
     disableReordering?: boolean

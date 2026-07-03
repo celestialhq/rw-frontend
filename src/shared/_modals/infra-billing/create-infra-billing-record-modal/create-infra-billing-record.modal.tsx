@@ -3,7 +3,7 @@ import { Button, Modal, NumberInput, Stack } from '@mantine/core'
 import { DatePickerInput } from '@mantine/dates'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
-import { CreateInfraBillingHistoryRecordCommand } from '@remnawave/backend-contract'
+import { CreateInfraBillingRecordCommand } from '@remnawave/backend-contract'
 import dayjs from 'dayjs'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import { useTranslation } from 'react-i18next'
@@ -24,11 +24,11 @@ export const CreateInfraBillingRecordModal = NiceModal.create(() => {
 
     const { t, i18n } = useTranslation()
 
-    const form = useForm<CreateInfraBillingHistoryRecordCommand.Request>({
+    const form = useForm<CreateInfraBillingRecordCommand.RequestBody>({
         name: 'create-infra-billing-record-form',
         mode: 'uncontrolled',
         validate: zodResolver(
-            CreateInfraBillingHistoryRecordCommand.RequestSchema.omit({
+            CreateInfraBillingRecordCommand.RequestBodySchema.omit({
                 billedAt: true,
                 providerUuid: true
             })

@@ -52,7 +52,7 @@ export const EditHostDrawer = NiceModal.create((props: IProps) => {
     const { data: internalSquads } = useGetInternalSquads()
     const { data: hostTags } = useGetHostTags()
 
-    const form = useForm<UpdateHostCommand.Request>({
+    const form = useForm<UpdateHostCommand.RequestBody>({
         name: 'edit-host-form',
         mode: 'uncontrolled',
         validateInputOnBlur: true,
@@ -61,7 +61,7 @@ export const EditHostDrawer = NiceModal.create((props: IProps) => {
                 form.setFieldValue('vlessRouteId', null)
             }
         },
-        validate: zodResolver(UpdateHostCommand.RequestSchema.omit({ uuid: true }))
+        validate: zodResolver(UpdateHostCommand.RequestBodySchema.omit({ uuid: true }))
     })
 
     const { mutate: updateHost, isPending: isUpdateHostPending } = useUpdateHost({

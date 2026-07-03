@@ -40,7 +40,7 @@ export const CreateHostDrawer = NiceModal.create(() => {
 
     const [advancedOpened, setAdvancedOpened] = useState(false)
 
-    const form = useForm<CreateHostCommand.Request>({
+    const form = useForm<CreateHostCommand.RequestBody>({
         mode: 'uncontrolled',
         name: 'create-host-form',
         validateInputOnBlur: true,
@@ -49,7 +49,7 @@ export const CreateHostDrawer = NiceModal.create(() => {
                 form.setFieldValue('vlessRouteId', null)
             }
         },
-        validate: zodResolver(CreateHostCommand.RequestSchema),
+        validate: zodResolver(CreateHostCommand.RequestBodySchema),
 
         initialValues: {
             securityLayer: SECURITY_LAYERS.DEFAULT,

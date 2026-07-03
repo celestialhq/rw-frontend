@@ -1,9 +1,9 @@
-import { FetchUsersIpsResultCommand, GetAllNodesCommand } from '@remnawave/backend-contract'
+import { FetchUsersIpsResultCommand, GetNodesCommand } from '@remnawave/backend-contract'
 import { useEffect, useRef, useState } from 'react'
 
 import { useFetchUsersIps, useFetchUsersIpsResultMutation } from '@shared/api/hooks'
 
-type NodeType = GetAllNodesCommand.Response['response'][number]
+type NodeType = GetNodesCommand.Response['response'][number]
 type NodeIpEntry = NonNullable<
     FetchUsersIpsResultCommand.Response['response']['result']
 >['users'][number]['ips'][number]

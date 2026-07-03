@@ -5,19 +5,19 @@ import { useNavigate } from 'react-router'
 
 import { showModal } from '@shared/_modals/show-modal'
 import { queryClient } from '@shared/api'
-import { QueryKeys, useGetSubscriptionPageConfigs } from '@shared/api/hooks'
+import { QueryKeys, useGetSubpageConfigs } from '@shared/api/hooks'
 import { UniversalSpotlightActionIconShared } from '@shared/ui/universal-spotlight'
 
 export const SubpageConfigsHeaderActionButtonsFeature = () => {
     const { t } = useTranslation()
 
-    const { isFetching } = useGetSubscriptionPageConfigs()
+    const { isFetching } = useGetSubpageConfigs()
 
     const navigate = useNavigate()
 
     const handleUpdate = async () => {
         await queryClient.refetchQueries({
-            queryKey: QueryKeys.subpageConfigs.getSubscriptionPageConfigs.queryKey
+            queryKey: QueryKeys.subpageConfigs.getSubpageConfigs.queryKey
         })
     }
 

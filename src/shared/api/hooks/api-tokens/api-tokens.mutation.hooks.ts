@@ -5,7 +5,7 @@ import { createMutationHook } from '@shared/api/tsq-helpers/create-mutation-hook
 
 export const useCreateApiToken = createMutationHook({
     endpoint: CreateApiTokenCommand.TSQ_url,
-    bodySchema: CreateApiTokenCommand.RequestSchema,
+    bodySchema: CreateApiTokenCommand.RequestBodySchema,
     responseSchema: CreateApiTokenCommand.ResponseSchema,
     requestMethod: CreateApiTokenCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -30,7 +30,7 @@ export const useCreateApiToken = createMutationHook({
 export const useDeleteApiToken = createMutationHook({
     endpoint: DeleteApiTokenCommand.TSQ_url,
     responseSchema: DeleteApiTokenCommand.ResponseSchema,
-    routeParamsSchema: DeleteApiTokenCommand.RequestSchema,
+    routeParamsSchema: DeleteApiTokenCommand.RequestParamSchema,
     requestMethod: DeleteApiTokenCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {

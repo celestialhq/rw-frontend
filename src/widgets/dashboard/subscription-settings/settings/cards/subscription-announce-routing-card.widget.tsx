@@ -19,10 +19,10 @@ export const SubscriptionAnnounceRoutingCardWidget = (props: IProps) => {
     const { subscriptionSettings } = props
     const { t } = useTranslation()
 
-    const form = useForm<UpdateSubscriptionSettingsCommand.Request>({
+    const form = useForm<UpdateSubscriptionSettingsCommand.RequestBody>({
         name: 'subscription-announce-routing-card-form',
         mode: 'uncontrolled',
-        validate: zodResolver(UpdateSubscriptionSettingsCommand.RequestSchema),
+        validate: zodResolver(UpdateSubscriptionSettingsCommand.RequestBodySchema),
         initialValues: {
             uuid: subscriptionSettings.uuid,
             happAnnounce: subscriptionSettings.happAnnounce,

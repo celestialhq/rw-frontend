@@ -1,5 +1,5 @@
 import { Container } from '@mantine/core'
-import { FindAllApiTokensCommand, GetRemnawaveSettingsCommand } from '@remnawave/backend-contract'
+import { GetApiTokensCommand, GetRemnawaveSettingsCommand } from '@remnawave/backend-contract'
 import { ApiTokensCardWidget } from '@widgets/remnawave-settings/api-tokens-card/api-tokens-card.widget'
 import { AuthentificationSettingsCardWidget } from '@widgets/remnawave-settings/authentification-settings-card/authentification-settings-card.widget'
 import { BrandingSettingsCardWidget } from '@widgets/remnawave-settings/branding-settings-card/branding-settings-card.widget'
@@ -10,7 +10,7 @@ import Masonry from 'react-layout-masonry'
 import { LoadingScreen, Logo, Page, PageHeaderShared } from '@shared/ui'
 
 interface IProps {
-    apiTokensData: FindAllApiTokensCommand.Response['response']
+    apiTokensData: GetApiTokensCommand.Response['response']
     remnawaveSettings: GetRemnawaveSettingsCommand.Response['response']
 }
 

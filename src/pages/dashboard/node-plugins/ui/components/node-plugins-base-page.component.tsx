@@ -1,5 +1,5 @@
 import { NodePluginsHeaderActionButtonsFeature } from '@features/ui/dashboard/node-plugins/header-action-buttons'
-import { GetAllNodesCommand, GetNodePluginsCommand } from '@remnawave/backend-contract'
+import { GetNodesCommand, GetNodePluginsCommand } from '@remnawave/backend-contract'
 import { NodePluginsGridWidget } from '@widgets/dashboard/node-plugins/node-plugins-grid/node-plugins-grid.widget'
 import { NodePluginsSpotlightWidget } from '@widgets/dashboard/node-plugins/node-plugins-spotlight'
 import { motion } from 'motion/react'
@@ -9,7 +9,7 @@ import { TbPackage } from 'react-icons/tb'
 import { Page, PageHeaderShared } from '@shared/ui'
 
 interface Props {
-    nodes: GetAllNodesCommand.Response['response']
+    nodes: GetNodesCommand.Response['response']
     plugins: GetNodePluginsCommand.Response['response']['nodePlugins']
 }
 

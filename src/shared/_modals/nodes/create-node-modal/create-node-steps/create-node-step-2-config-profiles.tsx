@@ -15,7 +15,7 @@ import { CopyDockerComposeWidget } from './copy-docker-compose.widget'
 
 interface IProps {
     // oxlint-disable-next-line
-    form: UseFormReturnType<CreateNodeCommand.Request, any>
+    form: UseFormReturnType<CreateNodeCommand.RequestBody, any>
     isCreating: boolean
     onCreateNode: () => void
     onPrev: () => void

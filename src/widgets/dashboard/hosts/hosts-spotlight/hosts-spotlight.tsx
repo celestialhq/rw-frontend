@@ -1,5 +1,5 @@
 import { Group, Stack, Text, ThemeIcon } from '@mantine/core'
-import { GetAllHostsCommand, GetConfigProfilesCommand } from '@remnawave/backend-contract'
+import { GetHostsCommand, GetConfigProfilesCommand } from '@remnawave/backend-contract'
 import { PiProhibit, PiPulse } from 'react-icons/pi'
 import { TbEyeOff } from 'react-icons/tb'
 
@@ -9,7 +9,7 @@ import { UniversalSpotlightContentShared } from '@shared/ui/universal-spotlight'
 
 interface IProps {
     configProfiles: GetConfigProfilesCommand.Response['response']['configProfiles']
-    hosts: GetAllHostsCommand.Response['response']
+    hosts: GetHostsCommand.Response['response']
 }
 
 export const HostsSpotlightWidget = (props: IProps) => {

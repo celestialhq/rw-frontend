@@ -57,10 +57,10 @@ export const SubscriptionUserRemarksCardWidget = (props: IProps) => {
         setRemarks((prev) => ({ ...prev, HWIDNotSupported: newRemarks }))
     }
 
-    const form = useForm<UpdateSubscriptionSettingsCommand.Request>({
+    const form = useForm<UpdateSubscriptionSettingsCommand.RequestBody>({
         name: 'subscription-user-remarks-card-form',
         mode: 'uncontrolled',
-        validate: zodResolver(UpdateSubscriptionSettingsCommand.RequestSchema),
+        validate: zodResolver(UpdateSubscriptionSettingsCommand.RequestBodySchema),
         initialValues: {
             uuid: subscriptionSettings.uuid
         }

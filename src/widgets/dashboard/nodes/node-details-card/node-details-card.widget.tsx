@@ -16,7 +16,7 @@ import {
     Tooltip
 } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { GetOneNodeCommand, UpdateNodeCommand } from '@remnawave/backend-contract'
+import { GetNodeCommand, UpdateNodeCommand } from '@remnawave/backend-contract'
 import { githubDarkTheme, JsonEditor } from 'json-edit-react'
 import { memo, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -38,7 +38,7 @@ import { prettifyBytesUtil } from '@shared/utils/bytes'
 import { getNodeResetDaysUtil, getXrayUptimeUtil } from '@shared/utils/time-utils'
 
 interface IProps {
-    node: GetOneNodeCommand.Response['response']
+    node: GetNodeCommand.Response['response']
 }
 
 export const NodeDetailsCardWidget = memo((props: IProps) => {

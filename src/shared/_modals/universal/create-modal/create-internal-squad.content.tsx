@@ -21,11 +21,11 @@ export const CreateInternalSquadContent = (props: IProps) => {
         })
     }
 
-    const nameField = useField<CreateInternalSquadCommand.Request['name']>({
+    const nameField = useField<CreateInternalSquadCommand.RequestBody['name']>({
         initialValue: '',
         validateOnChange: true,
         validate: (value) => {
-            const result = CreateInternalSquadCommand.RequestSchema.omit({
+            const result = CreateInternalSquadCommand.RequestBodySchema.omit({
                 inbounds: true
             }).safeParse({ name: value })
             return result.success ? null : result.error.errors[0]?.message

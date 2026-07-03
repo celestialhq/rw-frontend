@@ -1,11 +1,11 @@
 import { UseListStateHandlers } from '@mantine/hooks'
-import { GetAllHostsCommand, GetConfigProfilesCommand } from '@remnawave/backend-contract'
+import { GetHostsCommand, GetConfigProfilesCommand } from '@remnawave/backend-contract'
 
 export interface IProps {
     configProfiles: GetConfigProfilesCommand.Response['response']['configProfiles'] | undefined
-    handlers: UseListStateHandlers<GetAllHostsCommand.Response['response'][number]>
-    hosts: GetAllHostsCommand.Response['response'] | undefined
+    handlers: UseListStateHandlers<GetHostsCommand.Response['response'][number]>
+    hosts: GetHostsCommand.Response['response'] | undefined
     selectedHosts: string[]
     setSelectedHosts: React.Dispatch<React.SetStateAction<string[]>>
-    state: GetAllHostsCommand.Response['response']
+    state: GetHostsCommand.Response['response']
 }

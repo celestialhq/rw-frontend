@@ -10,7 +10,7 @@ import {
     Transition
 } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { GetAllNodesCommand } from '@remnawave/backend-contract'
+import { GetNodesCommand } from '@remnawave/backend-contract'
 import { useTranslation } from 'react-i18next'
 import { TbCategoryPlus, TbChartArcs3, TbDots } from 'react-icons/tb'
 
@@ -24,8 +24,8 @@ import { BulkUpdateNodesModalContent } from './bulk-update-nodes.modal.content'
 import { MultiSelectNodesModalContent } from './multi-select-modal.content'
 
 interface IProps {
-    selectedRecords: GetAllNodesCommand.Response['response'][number][]
-    setSelectedRecords: (records: GetAllNodesCommand.Response['response'][number][]) => void
+    selectedRecords: GetNodesCommand.Response['response'][number][]
+    setSelectedRecords: (records: GetNodesCommand.Response['response'][number][]) => void
 }
 
 export const MultiSelectNodesFeature = (props: IProps) => {

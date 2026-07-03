@@ -11,7 +11,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbDeviceAnalytics, TbExternalLink, TbRefresh, TbRestore } from 'react-icons/tb'
 
-import { useGetAllHwidDevices } from '@shared/api/hooks'
+import { useGetHwidDevices } from '@shared/api/hooks'
 import { usePreventTableBackScroll } from '@shared/hooks'
 import { DEFAULT_PAGINATION_STATE, useMrtTableBinding } from '@shared/lib/mrt-table-store'
 import { ResolveUserActionShared } from '@shared/ui/resolve-user-action-icon'
@@ -49,7 +49,7 @@ export function HwidInspectorTableWidget() {
         isFetching,
         isLoading,
         refetch
-    } = useGetAllHwidDevices({
+    } = useGetHwidDevices({
         query: params,
         rQueryParams: {
             refetchInterval: sToMs(25)

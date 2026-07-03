@@ -17,27 +17,30 @@ export const bandwidthStatsQueryKeys = createQueryKeys('bandwidthStats', {
         queryKey: [filters]
     }),
     getStatsUserUsageCommand: (
-        query: GetStatsUserUsageCommand.Request & GetStatsUserUsageCommand.RequestQuery
+        query: GetStatsUserUsageCommand.RequestParam & GetStatsUserUsageCommand.RequestQuery
     ) => ({
         queryKey: [query]
     }),
     getStatsNodeUsersUsageCommand: (
-        query: GetStatsNodeUsersUsageCommand.Request & GetStatsNodeUsersUsageCommand.RequestQuery
+        query: GetStatsNodeUsersUsageCommand.RequestParam &
+            GetStatsNodeUsersUsageCommand.RequestQuery
     ) => ({
         queryKey: [query]
     }),
     getStatsNodesUsersUsageCommand: (
-        params: GetStatsNodesUsersUsageCommand.Request & GetStatsNodesUsersUsageCommand.RequestQuery
+        params: GetStatsNodesUsersUsageCommand.RequestBody &
+            GetStatsNodesUsersUsageCommand.RequestQuery
     ) => ({
         queryKey: [params]
     }),
     getLegacyStatsUserUsageCommand: (
-        query: GetLegacyStatsUserUsageCommand.Request & GetLegacyStatsUserUsageCommand.RequestQuery
+        query: GetLegacyStatsUserUsageCommand.RequestParam &
+            GetLegacyStatsUserUsageCommand.RequestQuery
     ) => ({
         queryKey: [query]
     }),
     getLegacyStatsNodeUserUsageCommand: (
-        query: GetLegacyStatsNodeUserUsageCommand.Request &
+        query: GetLegacyStatsNodeUserUsageCommand.RequestParam &
             GetLegacyStatsNodeUserUsageCommand.RequestQuery
     ) => ({
         queryKey: [query]
@@ -84,7 +87,7 @@ export const useGetStatsNodesUsersUsage = createBodyQueryHook({
     requestMethod: GetStatsNodesUsersUsageCommand.endpointDetails.REQUEST_METHOD,
     responseSchema: GetStatsNodesUsersUsageCommand.ResponseSchema,
     requestQuerySchema: GetStatsNodesUsersUsageCommand.RequestQuerySchema,
-    bodySchema: GetStatsNodesUsersUsageCommand.RequestSchema,
+    bodySchema: GetStatsNodesUsersUsageCommand.RequestBodySchema,
     getQueryKey: ({ query, body }) =>
         bandwidthStatsQueryKeys.getStatsNodesUsersUsageCommand({ ...query!, ...body! }).queryKey,
     rQueryParams: {
@@ -97,7 +100,7 @@ export const useGetLegacyStatsNodeUserUsage = createGetQueryHook({
     endpoint: GetLegacyStatsNodeUserUsageCommand.TSQ_url,
     responseSchema: GetLegacyStatsNodeUserUsageCommand.ResponseSchema,
     requestQuerySchema: GetLegacyStatsNodeUserUsageCommand.RequestQuerySchema,
-    routeParamsSchema: GetLegacyStatsNodeUserUsageCommand.RequestSchema,
+    routeParamsSchema: GetLegacyStatsNodeUserUsageCommand.RequestParamSchema,
     getQueryKey: ({ route, query }) =>
         bandwidthStatsQueryKeys.getLegacyStatsNodeUserUsageCommand({ ...route!, ...query! })
             .queryKey,
@@ -111,7 +114,7 @@ export const useGetLegacyStatsUserUsage = createGetQueryHook({
     endpoint: GetLegacyStatsUserUsageCommand.TSQ_url,
     responseSchema: GetLegacyStatsUserUsageCommand.ResponseSchema,
     requestQuerySchema: GetLegacyStatsUserUsageCommand.RequestQuerySchema,
-    routeParamsSchema: GetLegacyStatsUserUsageCommand.RequestSchema,
+    routeParamsSchema: GetLegacyStatsUserUsageCommand.RequestParamSchema,
     getQueryKey: ({ route, query }) =>
         bandwidthStatsQueryKeys.getLegacyStatsUserUsageCommand({ ...route!, ...query! }).queryKey,
     rQueryParams: {

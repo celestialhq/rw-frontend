@@ -11,7 +11,7 @@ import {
     Textarea,
     ThemeIcon
 } from '@mantine/core'
-import { GetAllNodesCommand } from '@remnawave/backend-contract'
+import { GetNodesCommand } from '@remnawave/backend-contract'
 import { useCallback, useState } from 'react'
 import ReactCountryFlag from 'react-country-flag'
 import { useTranslation } from 'react-i18next'
@@ -32,7 +32,7 @@ import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { SectionCard } from '@shared/ui/section-card'
 
 interface IProps {
-    nodes: GetAllNodesCommand.Response['response']
+    nodes: GetNodesCommand.Response['response']
     onClose: () => void
 }
 

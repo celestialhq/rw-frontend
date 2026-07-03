@@ -34,7 +34,7 @@ import { queryClient } from '@shared/api'
 import {
     QueryKeys,
     useDeletePasskey,
-    useGetAllPasskeys,
+    useGetPasskeys,
     usePasskeyRegistrationOptions,
     usePasskeyRegistrationVerify
 } from '@shared/api/hooks'
@@ -52,14 +52,14 @@ export const PasskeysDrawer = NiceModal.create(() => {
         drawer: true
     })
 
-    const { data: passkeysData, isLoading } = useGetAllPasskeys()
+    const { data: passkeysData, isLoading } = useGetPasskeys()
 
     const [isPasskeyRegistering, setIsPasskeyRegistering] = useState(false)
     const { mutate: deletePasskey, isPending: isDeleting } = useDeletePasskey({
         mutationFns: {
             onSuccess: () => {
                 queryClient.refetchQueries({
-                    queryKey: QueryKeys.passkeys.getAllPasskeys.queryKey
+                    queryKey: QueryKeys.passkeys.getPasskeys.queryKey
                 })
             }
         }
@@ -70,7 +70,7 @@ export const PasskeysDrawer = NiceModal.create(() => {
         mutationFns: {
             onSuccess: () => {
                 queryClient.refetchQueries({
-                    queryKey: QueryKeys.passkeys.getAllPasskeys.queryKey
+                    queryKey: QueryKeys.passkeys.getPasskeys.queryKey
                 })
             }
         }

@@ -1,8 +1,8 @@
 import { MRT_ColumnDef } from '@kastov/mantine-react-table-open'
 import { Badge, ComboboxItem, Group, SelectProps, Stack, Text, Tooltip } from '@mantine/core'
 import {
-    GetAllNodesCommand,
-    GetAllUsersCommand,
+    GetNodesCommand,
+    GetUsersCommand,
     GetExternalSquadsCommand,
     GetInternalSquadsCommand
 } from '@remnawave/backend-contract'
@@ -38,11 +38,11 @@ const renderSelectOption: SelectProps['renderOption'] = ({ option }) => {
 export const useUserTableColumns = (
     internalSquads?: GetInternalSquadsCommand.Response['response'],
     externalSquads?: GetExternalSquadsCommand.Response['response'],
-    nodes?: GetAllNodesCommand.Response['response']
+    nodes?: GetNodesCommand.Response['response']
 ) => {
     const { t, i18n } = useTranslation()
 
-    return useMemo<MRT_ColumnDef<GetAllUsersCommand.Response['response']['users'][number]>[]>(
+    return useMemo<MRT_ColumnDef<GetUsersCommand.Response['response']['users'][number]>[]>(
         () => [
             {
                 accessorKey: 'username',

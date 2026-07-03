@@ -14,7 +14,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Box, Container, Stack } from '@mantine/core'
 import { useListState } from '@mantine/hooks'
-import { GetAllNodesCommand } from '@remnawave/backend-contract'
+import { GetNodesCommand } from '@remnawave/backend-contract'
 import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
@@ -53,7 +53,7 @@ export const NodesTableWidget = memo((props: IProps) => {
 
     const [isPollingEnabled, setIsPollingEnabled] = useState(true)
     const [draggedNode, setDraggedNode] = useState<
-        GetAllNodesCommand.Response['response'][number] | null
+        GetNodesCommand.Response['response'][number] | null
     >(null)
     const [scrollMargin, setScrollMargin] = useState(0)
     const listRef = useRef<HTMLDivElement | null>(null)

@@ -104,7 +104,10 @@ const SUBSCRIPTION_TYPES = {
 } as const
 
 export const BaseHostForm = <
-    T extends CreateHostCommand.Request | UpdateHostCommand.Request | UpdateManyHostsCommand.Request
+    T extends
+        | CreateHostCommand.RequestBody
+        | UpdateHostCommand.RequestBody
+        | UpdateManyHostsCommand.RequestBody
 >(
     props: IProps<T>
 ) => {

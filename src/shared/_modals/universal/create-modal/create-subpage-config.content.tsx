@@ -1,11 +1,11 @@
 import { Stack, TextInput, Group, Button } from '@mantine/core'
 import { useField } from '@mantine/form'
-import { CreateSubscriptionPageConfigCommand } from '@remnawave/backend-contract'
+import { CreateSubpageConfigCommand } from '@remnawave/backend-contract'
 import { t } from 'i18next'
 import { generatePath, NavigateFunction } from 'react-router'
 
 import { queryClient } from '@shared/api'
-import { useCreateSubscriptionPageConfig } from '@shared/api/hooks'
+import { useCreateSubpageConfig } from '@shared/api/hooks'
 import { QueryKeys } from '@shared/api/hooks/keys-factory'
 import { ROUTES } from '@shared/constants'
 
@@ -19,22 +19,22 @@ export const CreateSubpageConfigContent = (props: IProps) => {
 
     const handleUpdate = async () => {
         await queryClient.refetchQueries({
-            queryKey: QueryKeys.subpageConfigs.getSubscriptionPageConfigs.queryKey
+            queryKey: QueryKeys.subpageConfigs.getSubpageConfigs.queryKey
         })
     }
 
-    const nameField = useField<CreateSubscriptionPageConfigCommand.Request['name']>({
+    const nameField = useField<CreateSubpageConfigCommand.RequestBody['name']>({
         initialValue: '',
         validateOnChange: true,
         validate: (value) => {
-            const result = CreateSubscriptionPageConfigCommand.RequestSchema.safeParse({
+            const result = CreateSubpageConfigCommand.RequestBodySchema.safeParse({
                 name: value
             })
             return result.success ? null : result.error.errors[0]?.message
         }
     })
 
-    const { mutate: createSubscriptionPageConfig, isPending } = useCreateSubscriptionPageConfig({
+    const { mutate: createSubpageConfig, isPending } = useCreateSubpageConfig({
         mutationFns: {
             onSuccess: (data) => {
                 onClose()
@@ -51,7 +51,7 @@ export const CreateSubpageConfigContent = (props: IProps) => {
         <form
             onSubmit={(e) => {
                 e.preventDefault()
-                createSubscriptionPageConfig({
+                createSubpageConfig({
                     variables: {
                         name: nameField.getValue()
                     }

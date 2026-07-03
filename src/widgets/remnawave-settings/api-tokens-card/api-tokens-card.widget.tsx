@@ -10,7 +10,7 @@ import {
     Transition
 } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { FindAllApiTokensCommand } from '@remnawave/backend-contract'
+import { GetApiTokensCommand } from '@remnawave/backend-contract'
 import { useTranslation } from 'react-i18next'
 import { PiBookOpenTextDuotone, PiEmpty } from 'react-icons/pi'
 import { SiSwagger } from 'react-icons/si'
@@ -27,7 +27,7 @@ import { ApiTokenItem } from './api-token-item'
 import { CreateApiTokenContentWidget } from './modals/create-api-token-modal.widget'
 
 interface IProps {
-    apiTokensData: FindAllApiTokensCommand.Response['response']
+    apiTokensData: GetApiTokensCommand.Response['response']
 }
 
 export const ApiTokensCardWidget = (props: IProps) => {
