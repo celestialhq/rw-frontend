@@ -38,7 +38,6 @@ export const useUpdateInfraProvider = createMutationHook({
 
 export const useDeleteInfraProvider = createMutationHook({
     endpoint: DeleteInfraProviderCommand.TSQ_url,
-    responseSchema: DeleteInfraProviderCommand.ResponseSchema,
     routeParamsSchema: DeleteInfraProviderCommand.RequestParamSchema,
     requestMethod: DeleteInfraProviderCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -86,7 +85,6 @@ export const useCreateInfraProvider = createMutationHook({
 
 export const useDeleteInfraBillingHistoryRecord = createMutationHook({
     endpoint: DeleteInfraBillingRecordCommand.TSQ_url,
-    responseSchema: DeleteInfraBillingRecordCommand.ResponseSchema,
     routeParamsSchema: DeleteInfraBillingRecordCommand.RequestParamSchema,
     requestMethod: DeleteInfraBillingRecordCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -158,7 +156,6 @@ export const useCreateInfraBillingNode = createMutationHook({
 
 export const useDeleteInfraBillingNode = createMutationHook({
     endpoint: DeleteInfraBillingNodeCommand.TSQ_url,
-    responseSchema: DeleteInfraBillingNodeCommand.ResponseSchema,
     routeParamsSchema: DeleteInfraBillingNodeCommand.RequestParamSchema,
     requestMethod: DeleteInfraBillingNodeCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {

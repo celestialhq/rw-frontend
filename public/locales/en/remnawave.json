@@ -75,7 +75,9 @@
     "selected": "Selected: {{count}}",
     "bulk-actions": "Bulk actions",
     "bulk-edit": "Bulk edit",
-    "creation": "Creation"
+    "creation": "Creation",
+    "processing": "Processing",
+    "operation-completed": "Operation completed"
   },
   "bandwidth-metrics": {
     "current-year": "Current year",
@@ -644,10 +646,7 @@
   },
   "delete-all-users-by-status": {
     "feature": {
-      "processing": "Processing",
-      "deleting-users": "Deleting users...",
-      "success": "Success",
-      "deleted-data-affectedrows-users": "Deleted {{count}} users"
+      "deleting-users": "Deleting users..."
     }
   },
   "bulk-all-user-actions-tabs": {

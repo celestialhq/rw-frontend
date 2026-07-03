@@ -73,7 +73,6 @@ export const useUpdateUser = createMutationHook({
 
 export const useDeleteUser = createMutationHook({
     endpoint: DeleteUserCommand.TSQ_url,
-    responseSchema: DeleteUserCommand.ResponseSchema,
     routeParamsSchema: DeleteUserCommand.RequestParamSchema,
     requestMethod: DeleteUserCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -195,14 +194,12 @@ export const useResetUserTraffic = createMutationHook({
 export const useBulkDeleteUsersByStatus = createMutationHook({
     endpoint: BulkDeleteUsersByStatusCommand.TSQ_url,
     bodySchema: BulkDeleteUsersByStatusCommand.RequestBodySchema,
-    responseSchema: BulkDeleteUsersByStatusCommand.ResponseSchema,
     requestMethod: BulkDeleteUsersByStatusCommand.endpointDetails.REQUEST_METHOD
 })
 
 export const useBulkUpdateUsers = createMutationHook({
     endpoint: BulkUpdateUsersCommand.TSQ_url,
     bodySchema: BulkUpdateUsersCommand.RequestBodySchema,
-    responseSchema: BulkUpdateUsersCommand.ResponseSchema,
     requestMethod: BulkUpdateUsersCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -226,7 +223,6 @@ export const useBulkUpdateUsers = createMutationHook({
 export const useBulkResetTraffic = createMutationHook({
     endpoint: BulkResetTrafficUsersCommand.TSQ_url,
     bodySchema: BulkResetTrafficUsersCommand.RequestBodySchema,
-    responseSchema: BulkResetTrafficUsersCommand.ResponseSchema,
     requestMethod: BulkResetTrafficUsersCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -250,7 +246,6 @@ export const useBulkResetTraffic = createMutationHook({
 export const useBulkRevokeUsersSubscription = createMutationHook({
     endpoint: BulkRevokeUsersSubscriptionCommand.TSQ_url,
     bodySchema: BulkRevokeUsersSubscriptionCommand.RequestBodySchema,
-    responseSchema: BulkRevokeUsersSubscriptionCommand.ResponseSchema,
     requestMethod: BulkRevokeUsersSubscriptionCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -274,7 +269,6 @@ export const useBulkRevokeUsersSubscription = createMutationHook({
 export const useBulkDeleteUsers = createMutationHook({
     endpoint: BulkDeleteUsersCommand.TSQ_url,
     bodySchema: BulkDeleteUsersCommand.RequestBodySchema,
-    responseSchema: BulkDeleteUsersCommand.ResponseSchema,
     requestMethod: BulkDeleteUsersCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -298,7 +292,6 @@ export const useBulkDeleteUsers = createMutationHook({
 export const useBulkSetActiveInternalSquads = createMutationHook({
     endpoint: BulkUpdateUsersSquadsCommand.TSQ_url,
     bodySchema: BulkUpdateUsersSquadsCommand.RequestBodySchema,
-    responseSchema: BulkUpdateUsersSquadsCommand.ResponseSchema,
     requestMethod: BulkUpdateUsersSquadsCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -322,7 +315,6 @@ export const useBulkSetActiveInternalSquads = createMutationHook({
 export const useBulkAllUpdateUsers = createMutationHook({
     endpoint: BulkAllUpdateUsersCommand.TSQ_url,
     bodySchema: BulkAllUpdateUsersCommand.RequestBodySchema,
-    responseSchema: BulkAllUpdateUsersCommand.ResponseSchema,
     requestMethod: BulkAllUpdateUsersCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -345,7 +337,6 @@ export const useBulkAllUpdateUsers = createMutationHook({
 
 export const useBulkAllResetTrafficUsers = createMutationHook({
     endpoint: BulkAllResetTrafficUsersCommand.TSQ_url,
-    responseSchema: BulkAllResetTrafficUsersCommand.ResponseSchema,
     requestMethod: BulkAllResetTrafficUsersCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -369,7 +360,6 @@ export const useBulkAllResetTrafficUsers = createMutationHook({
 export const useBulkExtendUsersExpirationDate = createMutationHook({
     endpoint: BulkExtendExpirationDateCommand.TSQ_url,
     bodySchema: BulkExtendExpirationDateCommand.RequestBodySchema,
-    responseSchema: BulkExtendExpirationDateCommand.ResponseSchema,
     requestMethod: BulkExtendExpirationDateCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -393,7 +383,6 @@ export const useBulkExtendUsersExpirationDate = createMutationHook({
 export const useBulkAllExtendUsersExpirationDate = createMutationHook({
     endpoint: BulkAllExtendExpirationDateCommand.TSQ_url,
     bodySchema: BulkAllExtendExpirationDateCommand.RequestBodySchema,
-    responseSchema: BulkAllExtendExpirationDateCommand.ResponseSchema,
     requestMethod: BulkAllExtendExpirationDateCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {

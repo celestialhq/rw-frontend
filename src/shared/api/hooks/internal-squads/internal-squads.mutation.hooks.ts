@@ -36,7 +36,6 @@ export const useUpdateInternalSquad = createMutationHook({
 
 export const useDeleteInternalSquad = createMutationHook({
     endpoint: DeleteInternalSquadCommand.TSQ_url,
-    responseSchema: DeleteInternalSquadCommand.ResponseSchema,
     routeParamsSchema: DeleteInternalSquadCommand.RequestParamSchema,
     requestMethod: DeleteInternalSquadCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -84,7 +83,6 @@ export const useCreateInternalSquad = createMutationHook({
 
 export const useAddUsersToInternalSquad = createMutationHook({
     endpoint: AddUsersToInternalSquadCommand.TSQ_url,
-    responseSchema: AddUsersToInternalSquadCommand.ResponseSchema,
     routeParamsSchema: AddUsersToInternalSquadCommand.RequestParamSchema,
     requestMethod: AddUsersToInternalSquadCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -101,7 +99,6 @@ export const useAddUsersToInternalSquad = createMutationHook({
 
 export const useDeleteUsersFromInternalSquad = createMutationHook({
     endpoint: DeleteUsersFromInternalSquadCommand.TSQ_url,
-    responseSchema: DeleteUsersFromInternalSquadCommand.ResponseSchema,
     routeParamsSchema: DeleteUsersFromInternalSquadCommand.RequestParamSchema,
     requestMethod: DeleteUsersFromInternalSquadCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {

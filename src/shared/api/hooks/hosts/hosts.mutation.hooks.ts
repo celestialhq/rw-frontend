@@ -55,7 +55,6 @@ export const useUpdateHost = createMutationHook({
 
 export const useDeleteHost = createMutationHook({
     endpoint: DeleteHostCommand.TSQ_url,
-    responseSchema: DeleteHostCommand.ResponseSchema,
     routeParamsSchema: DeleteHostCommand.RequestParamSchema,
     requestMethod: DeleteHostCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
