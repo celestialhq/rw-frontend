@@ -59,7 +59,6 @@ export const useCreateSubscriptionTemplate = createMutationHook({
 export const useDeleteSubscriptionTemplate = createMutationHook({
     endpoint: DeleteSubscriptionTemplateCommand.TSQ_url,
     routeParamsSchema: DeleteSubscriptionTemplateCommand.RequestParamSchema,
-    responseSchema: DeleteSubscriptionTemplateCommand.ResponseSchema,
     requestMethod: DeleteSubscriptionTemplateCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {

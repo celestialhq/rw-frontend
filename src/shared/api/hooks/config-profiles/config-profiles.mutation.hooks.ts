@@ -34,7 +34,6 @@ export const useUpdateConfigProfile = createMutationHook({
 
 export const useDeleteConfigProfile = createMutationHook({
     endpoint: DeleteConfigProfileCommand.TSQ_url,
-    responseSchema: DeleteConfigProfileCommand.ResponseSchema,
     routeParamsSchema: DeleteConfigProfileCommand.RequestParamSchema,
     requestMethod: DeleteConfigProfileCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {

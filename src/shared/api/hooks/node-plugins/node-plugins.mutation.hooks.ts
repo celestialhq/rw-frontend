@@ -62,7 +62,6 @@ export const useCreateNodePlugin = createMutationHook({
 export const useDeleteNodePlugin = createMutationHook({
     endpoint: DeleteNodePluginCommand.TSQ_url,
     routeParamsSchema: DeleteNodePluginCommand.RequestParamSchema,
-    responseSchema: DeleteNodePluginCommand.ResponseSchema,
     requestMethod: DeleteNodePluginCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -127,7 +126,6 @@ export const useCloneNodePlugin = createMutationHook({
 export const useNodePluginExecutor = createMutationHook({
     endpoint: PluginExecutorCommand.TSQ_url,
     bodySchema: PluginExecutorCommand.RequestBodySchema,
-    responseSchema: PluginExecutorCommand.ResponseSchema,
     requestMethod: PluginExecutorCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -150,7 +148,6 @@ export const useNodePluginExecutor = createMutationHook({
 
 export const useTruncateTorrentBlockerReports = createMutationHook({
     endpoint: TruncateTorrentBlockerReportsCommand.TSQ_url,
-    responseSchema: TruncateTorrentBlockerReportsCommand.ResponseSchema,
     requestMethod: TruncateTorrentBlockerReportsCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {

@@ -26,7 +26,6 @@ export const usePasskeyRegistrationVerify = createMutationHook({
 export const useDeletePasskey = createMutationHook({
     endpoint: DeletePasskeyCommand.TSQ_url,
     bodySchema: DeletePasskeyCommand.RequestBodySchema,
-    responseSchema: DeletePasskeyCommand.ResponseSchema,
     requestMethod: DeletePasskeyCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {

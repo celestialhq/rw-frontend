@@ -36,7 +36,6 @@ export const useUpdateExternalSquad = createMutationHook({
 
 export const useDeleteExternalSquad = createMutationHook({
     endpoint: DeleteExternalSquadCommand.TSQ_url,
-    responseSchema: DeleteExternalSquadCommand.ResponseSchema,
     routeParamsSchema: DeleteExternalSquadCommand.RequestParamSchema,
     requestMethod: DeleteExternalSquadCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -84,7 +83,6 @@ export const useCreateExternalSquad = createMutationHook({
 
 export const useAddUsersToExternalSquad = createMutationHook({
     endpoint: AddUsersToExternalSquadCommand.TSQ_url,
-    responseSchema: AddUsersToExternalSquadCommand.ResponseSchema,
     routeParamsSchema: AddUsersToExternalSquadCommand.RequestParamSchema,
     requestMethod: AddUsersToExternalSquadCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -101,7 +99,6 @@ export const useAddUsersToExternalSquad = createMutationHook({
 
 export const useDeleteUsersFromExternalSquad = createMutationHook({
     endpoint: DeleteUsersFromExternalSquadCommand.TSQ_url,
-    responseSchema: DeleteUsersFromExternalSquadCommand.ResponseSchema,
     routeParamsSchema: DeleteUsersFromExternalSquadCommand.RequestParamSchema,
     requestMethod: DeleteUsersFromExternalSquadCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {

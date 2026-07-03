@@ -29,7 +29,6 @@ export const useCreateApiToken = createMutationHook({
 
 export const useDeleteApiToken = createMutationHook({
     endpoint: DeleteApiTokenCommand.TSQ_url,
-    responseSchema: DeleteApiTokenCommand.ResponseSchema,
     routeParamsSchema: DeleteApiTokenCommand.RequestParamSchema,
     requestMethod: DeleteApiTokenCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {

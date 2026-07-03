@@ -31,6 +31,5 @@ export const useFetchUsersIpsResultMutation = createMutationHook({
 export const useDropConnections = createMutationHook({
     endpoint: DropConnectionsCommand.TSQ_url,
     bodySchema: DropConnectionsCommand.RequestBodySchema,
-    responseSchema: DropConnectionsCommand.ResponseSchema,
     requestMethod: DropConnectionsCommand.endpointDetails.REQUEST_METHOD
 })

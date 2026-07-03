@@ -60,7 +60,6 @@ export const useCreateSubpageConfig = createMutationHook({
 export const useDeleteSubpageConfig = createMutationHook({
     endpoint: DeleteSubpageConfigCommand.TSQ_url,
     routeParamsSchema: DeleteSubpageConfigCommand.RequestParamSchema,
-    responseSchema: DeleteSubpageConfigCommand.ResponseSchema,
     requestMethod: DeleteSubpageConfigCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {

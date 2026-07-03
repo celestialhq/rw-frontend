@@ -33,7 +33,6 @@ export const useUpdateSnippet = createMutationHook({
 
 export const useDeleteSnippet = createMutationHook({
     endpoint: DeleteSnippetCommand.TSQ_url,
-    responseSchema: DeleteSnippetCommand.ResponseSchema,
     bodySchema: DeleteSnippetCommand.RequestBodySchema,
     requestMethod: DeleteSnippetCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
