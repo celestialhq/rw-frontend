@@ -1,12 +1,16 @@
 import { notifications } from '@mantine/notifications'
-import { FetchIpsResultCommand } from '@remnawave/backend-contract'
+import { ConnectionsByUserResultCommand } from '@remnawave/backend-contract'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useDropConnections, useFetchIps, useFetchIpsResult } from '@shared/api/hooks'
+import {
+    useDropConnections,
+    useConnectionsByUser,
+    useConnectionsByUserResult
+} from '@shared/api/hooks'
 
 export type ActiveSessionNode = NonNullable<
-    FetchIpsResultCommand.Response['response']['result']
+    ConnectionsByUserResultCommand.Response['response']['result']
 >['nodes'][number]
 
 export const useUserActiveSessions = (userUuid: string) => {
@@ -16,7 +20,7 @@ export const useUserActiveSessions = (userUuid: string) => {
     const [isCompleted, setIsCompleted] = useState(false)
     const [isFailed, setIsFailed] = useState(false)
 
-    const { mutate: fetchIps } = useFetchIps({
+    const { mutate: connectionsByUser } = useConnectionsByUser({
         route: {
             uuid: userUuid
         },
@@ -41,7 +45,7 @@ export const useUserActiveSessions = (userUuid: string) => {
 
     const shouldPoll = !!jobId && !isCompleted && !isFailed
 
-    const { data: userIpsResult } = useFetchIpsResult({
+    const { data: connectionsByUserResult } = useConnectionsByUserResult({
         route: { jobId: jobId ?? '' },
         rQueryParams: {
             enabled: shouldPoll,
@@ -50,31 +54,31 @@ export const useUserActiveSessions = (userUuid: string) => {
     })
 
     useEffect(() => {
-        if (!userIpsResult) return undefined
+        if (!connectionsByUserResult) return undefined
         if (
-            userIpsResult.isFailed ||
-            (userIpsResult.isCompleted && !userIpsResult.result?.success)
+            connectionsByUserResult.isFailed ||
+            (connectionsByUserResult.isCompleted && !connectionsByUserResult.result?.success)
         ) {
             // oxlint-disable-next-line
             setIsFailed(true)
             return undefined
         }
-        if (userIpsResult.isCompleted) {
+        if (connectionsByUserResult.isCompleted) {
             const timer = setTimeout(() => setIsCompleted(true), 500)
             return () => clearTimeout(timer)
         }
         return undefined
-    }, [userIpsResult])
+    }, [connectionsByUserResult])
 
     const refresh = useCallback(() => {
         setJobId(null)
         setIsCompleted(false)
         setIsFailed(false)
-        fetchIps({})
-    }, [fetchIps])
+        connectionsByUser({})
+    }, [connectionsByUser])
 
     useEffect(() => {
-        fetchIps({})
+        connectionsByUser({})
     }, [])
 
     const dropAll = useCallback(
@@ -133,8 +137,8 @@ export const useUserActiveSessions = (userUuid: string) => {
         dropNode,
         isCompleted,
         isFailed,
-        nodes: userIpsResult?.result?.nodes,
-        progress: userIpsResult?.progress,
+        nodes: connectionsByUserResult?.result?.nodes,
+        progress: connectionsByUserResult?.progress,
         refresh
     }
 }

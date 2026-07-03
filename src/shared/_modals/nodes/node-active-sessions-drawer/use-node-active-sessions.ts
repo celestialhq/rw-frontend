@@ -1,10 +1,10 @@
-import { FetchUsersIpsResultCommand } from '@remnawave/backend-contract'
+import { ConnectionsByNodeResultCommand } from '@remnawave/backend-contract'
 import { useCallback, useEffect, useState } from 'react'
 
-import { useFetchUsersIps, useFetchUsersIpsResult } from '@shared/api/hooks'
+import { useConnectionsByNode, useConnectionsByNodeResult } from '@shared/api/hooks'
 
 export type ActiveSessionUser = NonNullable<
-    FetchUsersIpsResultCommand.Response['response']['result']
+    ConnectionsByNodeResultCommand.Response['response']['result']
 >['users'][number]
 
 export const useNodeActiveSessions = (nodeUuid: string) => {
@@ -12,7 +12,7 @@ export const useNodeActiveSessions = (nodeUuid: string) => {
     const [isCompleted, setIsCompleted] = useState(false)
     const [isFailed, setIsFailed] = useState(false)
 
-    const { mutate: fetchUsersIps } = useFetchUsersIps({
+    const { mutate: connectionsByNode } = useConnectionsByNode({
         route: {
             nodeUuid
         },
@@ -25,7 +25,7 @@ export const useNodeActiveSessions = (nodeUuid: string) => {
 
     const shouldPoll = !!jobId && !isCompleted && !isFailed
 
-    const { data: usersIpsResult } = useFetchUsersIpsResult({
+    const { data: connectionsByNodeResult } = useConnectionsByNodeResult({
         route: {
             jobId: jobId ?? ''
         },
@@ -36,37 +36,37 @@ export const useNodeActiveSessions = (nodeUuid: string) => {
     })
 
     useEffect(() => {
-        if (!usersIpsResult) return undefined
+        if (!connectionsByNodeResult) return undefined
         if (
-            usersIpsResult.isFailed ||
-            (usersIpsResult.isCompleted && !usersIpsResult.result?.success)
+            connectionsByNodeResult.isFailed ||
+            (connectionsByNodeResult.isCompleted && !connectionsByNodeResult.result?.success)
         ) {
             // oxlint-disable-next-line
             setIsFailed(true)
             return undefined
         }
-        if (usersIpsResult.isCompleted) {
+        if (connectionsByNodeResult.isCompleted) {
             const timer = setTimeout(() => setIsCompleted(true), 500)
             return () => clearTimeout(timer)
         }
         return undefined
-    }, [usersIpsResult])
+    }, [connectionsByNodeResult])
 
     const refresh = useCallback(() => {
         setJobId(null)
         setIsCompleted(false)
         setIsFailed(false)
-        fetchUsersIps({})
-    }, [fetchUsersIps])
+        connectionsByNode({})
+    }, [connectionsByNode])
 
     useEffect(() => {
-        fetchUsersIps({})
+        connectionsByNode({})
     }, [])
 
     return {
         isCompleted,
         isFailed,
         refresh,
-        users: usersIpsResult?.result?.users
+        users: connectionsByNodeResult?.result?.users
     }
 }
