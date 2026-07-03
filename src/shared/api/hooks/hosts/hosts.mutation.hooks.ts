@@ -96,7 +96,6 @@ export const useReorderHosts = createMutationHook({
 export const useBulkDeleteHosts = createMutationHook({
     endpoint: BulkDeleteHostsCommand.TSQ_url,
     bodySchema: BulkDeleteHostsCommand.RequestBodySchema,
-    responseSchema: BulkDeleteHostsCommand.ResponseSchema,
     requestMethod: BulkDeleteHostsCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -120,7 +119,6 @@ export const useBulkDeleteHosts = createMutationHook({
 export const useBulkEnableHosts = createMutationHook({
     endpoint: BulkEnableHostsCommand.TSQ_url,
     bodySchema: BulkEnableHostsCommand.RequestBodySchema,
-    responseSchema: BulkEnableHostsCommand.ResponseSchema,
     requestMethod: BulkEnableHostsCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -144,7 +142,6 @@ export const useBulkEnableHosts = createMutationHook({
 export const useBulkDisableHosts = createMutationHook({
     endpoint: BulkDisableHostsCommand.TSQ_url,
     bodySchema: BulkDisableHostsCommand.RequestBodySchema,
-    responseSchema: BulkDisableHostsCommand.ResponseSchema,
     requestMethod: BulkDisableHostsCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -168,7 +165,6 @@ export const useBulkDisableHosts = createMutationHook({
 export const useUpdateManyHosts = createMutationHook({
     endpoint: UpdateManyHostsCommand.TSQ_url,
     bodySchema: UpdateManyHostsCommand.RequestBodySchema,
-    responseSchema: UpdateManyHostsCommand.ResponseSchema,
     requestMethod: UpdateManyHostsCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
