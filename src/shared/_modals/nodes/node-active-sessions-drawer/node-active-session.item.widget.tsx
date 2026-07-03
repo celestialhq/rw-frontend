@@ -1,5 +1,5 @@
 import { ActionIcon, Badge, Box, Group, Stack, Text, Tooltip } from '@mantine/core'
-import { FetchUsersIpsResultCommand } from '@remnawave/backend-contract'
+import { ConnectionsByNodeResultCommand } from '@remnawave/backend-contract'
 import { useTranslation } from 'react-i18next'
 import { PiEmptyDuotone, PiUserCircle } from 'react-icons/pi'
 import {
@@ -18,7 +18,9 @@ import { SectionCard } from '@shared/ui/section-card'
 import { formatRelativeDateUtil, formatTimeUtil } from '@shared/utils/time-utils'
 
 interface IProps {
-    user: NonNullable<FetchUsersIpsResultCommand.Response['response']['result']>['users'][number]
+    user: NonNullable<
+        ConnectionsByNodeResultCommand.Response['response']['result']
+    >['users'][number]
 }
 
 const getLastSeenIndicator = (lastSeen: Date | string) => {
