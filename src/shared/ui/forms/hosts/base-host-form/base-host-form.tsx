@@ -32,7 +32,7 @@ import {
     UpdateHostCommand,
     UpdateManyHostsCommand
 } from '@remnawave/backend-contract'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import {
@@ -67,7 +67,6 @@ import { TemplateInfoPopoverShared } from '@shared/ui/popovers'
 import { PopoverWithInfoShared } from '@shared/ui/popovers/popover-with-info'
 import { SectionCard } from '@shared/ui/section-card'
 import { TagInputPill } from '@shared/ui/tag-input-pill'
-import { handleFormErrors } from '@shared/utils/misc'
 import { emojiFlag, resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
 
 import { IProps } from './interfaces'
@@ -168,10 +167,6 @@ export const BaseHostForm = <
             configProfileUuid: true
         })
     }
-
-    useEffect(() => {
-        handleFormErrors(form, form.errors)
-    }, [form.errors])
 
     const patternHoverCard = (showSingle = true, showMulti = true, showWildcard = true) => {
         return (
