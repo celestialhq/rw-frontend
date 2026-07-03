@@ -12,7 +12,7 @@ import {
     nodesQueryKeys,
     useGetNode,
     useGetNodePlugins,
-    useGetPubKey,
+    useGetNodeSecretKey,
     useUpdateNode
 } from '@shared/api/hooks'
 import { BaseNodeForm } from '@shared/ui/forms/nodes/base-node-form/base-node-form'
@@ -28,7 +28,7 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
 
     const isFormInitialized = useRef(false)
 
-    const form = useForm<UpdateNodeCommand.Request>({
+    const form = useForm<UpdateNodeCommand.RequestBody>({
         name: 'edit-node-form',
         mode: 'uncontrolled',
         onValuesChange: (values) => {
@@ -36,10 +36,10 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
                 form.setFieldValue('proxyUrl', null)
             }
         },
-        validate: zodResolver(UpdateNodeCommand.RequestSchema.omit({ uuid: true }))
+        validate: zodResolver(UpdateNodeCommand.RequestBodySchema.omit({ uuid: true }))
     })
 
-    const { data: pubKey } = useGetPubKey()
+    const { data: secretKey } = useGetNodeSecretKey()
     const { data: nodePlugins } = useGetNodePlugins()
 
     const { data: fetchedNode } = useGetNode({
@@ -139,7 +139,7 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
             nodeDetailsCard={<NodeDetailsCardWidget node={fetchedNode} />}
             nodePlugins={nodePlugins?.nodePlugins ?? []}
             nodeSystemCard={<NodeSystemCardWidget node={fetchedNode} />}
-            pubKey={pubKey}
+            secretKey={secretKey}
         />
     )
 }

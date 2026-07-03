@@ -23,7 +23,7 @@ import {
     useGetExternalSquads,
     useGetInternalSquads,
     useGetNodes,
-    useGetUsersV2,
+    useGetUsers,
     useGetUserTags
 } from '@shared/api/hooks'
 import { SEARCH_PARAMS } from '@shared/constants/search-params'
@@ -91,7 +91,7 @@ export function UserTableWidget() {
         isFetching,
         isLoading,
         refetch
-    } = useGetUsersV2({
+    } = useGetUsers({
         query: params,
         rQueryParams: {
             // enabled: bulkUsersActionsStoreActions.getUuidLength() === 0,

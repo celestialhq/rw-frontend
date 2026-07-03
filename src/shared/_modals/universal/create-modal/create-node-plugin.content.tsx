@@ -23,11 +23,11 @@ export const CreateNodePluginContent = (props: IProps) => {
         })
     }
 
-    const nameField = useField<CreateNodePluginCommand.Request['name']>({
+    const nameField = useField<CreateNodePluginCommand.RequestBody['name']>({
         initialValue: '',
         validateOnChange: true,
         validate: (value) => {
-            const result = CreateNodePluginCommand.RequestSchema.safeParse({
+            const result = CreateNodePluginCommand.RequestBodySchema.safeParse({
                 name: value
             })
             return result.success ? null : result.error.errors[0]?.message

@@ -42,14 +42,14 @@ export const EditSnippetModal = (props: IProps) => {
         }
     })
 
-    const editSnippetForm = useForm<UpdateSnippetCommand.Request>({
+    const editSnippetForm = useForm<UpdateSnippetCommand.RequestBody>({
         name: 'edit-snippet-form',
         mode: 'uncontrolled',
         validateInputOnBlur: true,
-        validate: zodResolver(UpdateSnippetCommand.RequestSchema),
+        validate: zodResolver(UpdateSnippetCommand.RequestBodySchema),
         initialValues: {
             name: snippet.name,
-            snippet: snippet.snippet as unknown as UpdateSnippetCommand.Request['snippet']
+            snippet: snippet.snippet as unknown as UpdateSnippetCommand.RequestBody['snippet']
         }
     })
 
@@ -60,7 +60,7 @@ export const EditSnippetModal = (props: IProps) => {
         })
     }
 
-    const handleUpdate = (values: UpdateSnippetCommand.Request) => {
+    const handleUpdate = (values: UpdateSnippetCommand.RequestBody) => {
         if (!editorRef.current) return
 
         let currentValue = editorRef.current.getValue()

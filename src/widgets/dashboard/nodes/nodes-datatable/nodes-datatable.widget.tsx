@@ -1,7 +1,7 @@
 import { DataTable, type DataTableSortStatus, useDataTableColumns } from '@kastov/mantine-datatable'
 import { Box, Button, Stack, Text } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
-import { GetAllNodesCommand } from '@remnawave/backend-contract'
+import { GetNodesCommand } from '@remnawave/backend-contract'
 import { memo, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiEmpty } from 'react-icons/pi'
@@ -18,10 +18,10 @@ import {
     type NodeStatusFilter
 } from './use-nodes-table-widget'
 
-type NodeType = GetAllNodesCommand.Response['response'][number]
+type NodeType = GetNodesCommand.Response['response'][number]
 
 interface IProps {
-    nodes: GetAllNodesCommand.Response['response'] | undefined
+    nodes: GetNodesCommand.Response['response'] | undefined
     selectedRecords: NodeType[]
     setSelectedRecords: (records: NodeType[]) => void
 }

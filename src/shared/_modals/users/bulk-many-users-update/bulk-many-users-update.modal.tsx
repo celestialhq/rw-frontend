@@ -41,7 +41,7 @@ const cardVariants = {
     }
 }
 
-const originalFieldsSchema = BulkUpdateUsersCommand.RequestSchema.shape.fields
+const originalFieldsSchema = BulkUpdateUsersCommand.RequestBodySchema.shape.fields
 
 const fieldsWithoutExpireAt = originalFieldsSchema.omit({
     expireAt: true,
@@ -74,7 +74,7 @@ export const BulkManyUsersUpdateModal = NiceModal.create((props: IProps) => {
 
     const actions = useUsersTableSelectionStoreActions()
 
-    const form = useForm<BulkUpdateUsersCommand.Request>({
+    const form = useForm<BulkUpdateUsersCommand.RequestBody>({
         mode: 'uncontrolled',
         name: 'bulk-user-actions-form',
         initialValues: {

@@ -7,7 +7,7 @@ import {
     DeleteNodeCommand,
     DisableNodeCommand,
     EnableNodeCommand,
-    ReorderNodeCommand,
+    ReorderNodesCommand,
     ResetNodeTrafficCommand,
     RestartAllNodesCommand,
     RestartNodeCommand,
@@ -18,7 +18,7 @@ import { createMutationHook } from '../../tsq-helpers'
 
 export const useCreateNode = createMutationHook({
     endpoint: CreateNodeCommand.TSQ_url,
-    bodySchema: CreateNodeCommand.RequestSchema,
+    bodySchema: CreateNodeCommand.RequestBodySchema,
     responseSchema: CreateNodeCommand.ResponseSchema,
     requestMethod: CreateNodeCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -42,7 +42,7 @@ export const useCreateNode = createMutationHook({
 
 export const useUpdateNode = createMutationHook({
     endpoint: UpdateNodeCommand.TSQ_url,
-    bodySchema: UpdateNodeCommand.RequestSchema,
+    bodySchema: UpdateNodeCommand.RequestBodySchema,
     responseSchema: UpdateNodeCommand.ResponseSchema,
     requestMethod: UpdateNodeCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -67,7 +67,7 @@ export const useUpdateNode = createMutationHook({
 export const useDeleteNode = createMutationHook({
     endpoint: DeleteNodeCommand.TSQ_url,
     responseSchema: DeleteNodeCommand.ResponseSchema,
-    routeParamsSchema: DeleteNodeCommand.RequestSchema,
+    routeParamsSchema: DeleteNodeCommand.RequestParamSchema,
     requestMethod: DeleteNodeCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -91,7 +91,7 @@ export const useDeleteNode = createMutationHook({
 export const useEnableNode = createMutationHook({
     endpoint: EnableNodeCommand.TSQ_url,
     responseSchema: EnableNodeCommand.ResponseSchema,
-    routeParamsSchema: EnableNodeCommand.RequestSchema,
+    routeParamsSchema: EnableNodeCommand.RequestParamSchema,
     requestMethod: EnableNodeCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -115,7 +115,7 @@ export const useEnableNode = createMutationHook({
 export const useDisableNode = createMutationHook({
     endpoint: DisableNodeCommand.TSQ_url,
     responseSchema: DisableNodeCommand.ResponseSchema,
-    routeParamsSchema: DisableNodeCommand.RequestSchema,
+    routeParamsSchema: DisableNodeCommand.RequestParamSchema,
     requestMethod: DisableNodeCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -160,10 +160,10 @@ export const useRestartAllNodes = createMutationHook({
     }
 })
 export const useReorderNodes = createMutationHook({
-    endpoint: ReorderNodeCommand.TSQ_url,
-    bodySchema: ReorderNodeCommand.RequestSchema,
-    responseSchema: ReorderNodeCommand.ResponseSchema,
-    requestMethod: ReorderNodeCommand.endpointDetails.REQUEST_METHOD,
+    endpoint: ReorderNodesCommand.TSQ_url,
+    bodySchema: ReorderNodesCommand.RequestBodySchema,
+    responseSchema: ReorderNodesCommand.ResponseSchema,
+    requestMethod: ReorderNodesCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onError: (error) => {
             notifications.show({
@@ -179,7 +179,7 @@ export const useReorderNodes = createMutationHook({
 export const useRestartNode = createMutationHook({
     endpoint: RestartNodeCommand.TSQ_url,
     responseSchema: RestartNodeCommand.ResponseSchema,
-    routeParamsSchema: RestartNodeCommand.RequestSchema,
+    routeParamsSchema: RestartNodeCommand.RequestParamSchema,
     bodySchema: RestartNodeCommand.RequestBodySchema,
     requestMethod: RestartNodeCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -204,7 +204,7 @@ export const useRestartNode = createMutationHook({
 export const useResetNodeTraffic = createMutationHook({
     endpoint: ResetNodeTrafficCommand.TSQ_url,
     responseSchema: ResetNodeTrafficCommand.ResponseSchema,
-    routeParamsSchema: ResetNodeTrafficCommand.RequestSchema,
+    routeParamsSchema: ResetNodeTrafficCommand.RequestParamSchema,
     requestMethod: ResetNodeTrafficCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -228,7 +228,7 @@ export const useResetNodeTraffic = createMutationHook({
 export const useBulkNodesProfileModification = createMutationHook({
     endpoint: BulkNodesProfileModificationCommand.TSQ_url,
     responseSchema: BulkNodesProfileModificationCommand.ResponseSchema,
-    bodySchema: BulkNodesProfileModificationCommand.RequestSchema,
+    bodySchema: BulkNodesProfileModificationCommand.RequestBodySchema,
     requestMethod: BulkNodesProfileModificationCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -252,7 +252,7 @@ export const useBulkNodesProfileModification = createMutationHook({
 export const useBulkNodesActions = createMutationHook({
     endpoint: BulkNodesActionsCommand.TSQ_url,
     responseSchema: BulkNodesActionsCommand.ResponseSchema,
-    bodySchema: BulkNodesActionsCommand.RequestSchema,
+    bodySchema: BulkNodesActionsCommand.RequestBodySchema,
     requestMethod: BulkNodesActionsCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {
@@ -276,7 +276,7 @@ export const useBulkNodesActions = createMutationHook({
 export const useBulkNodesUpdate = createMutationHook({
     endpoint: BulkNodesUpdateCommand.TSQ_url,
     responseSchema: BulkNodesUpdateCommand.ResponseSchema,
-    bodySchema: BulkNodesUpdateCommand.RequestSchema,
+    bodySchema: BulkNodesUpdateCommand.RequestBodySchema,
     requestMethod: BulkNodesUpdateCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: () => {

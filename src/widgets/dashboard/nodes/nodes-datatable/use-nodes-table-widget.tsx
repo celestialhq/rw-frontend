@@ -1,7 +1,7 @@
 import { DataTableColumn } from '@kastov/mantine-datatable'
 import { ActionIcon, Avatar, Badge, Group, MultiSelect, Text, TextInput } from '@mantine/core'
 import {
-    GetAllNodesCommand,
+    GetNodesCommand,
     GetConfigProfilesCommand,
     GetNodePluginsCommand
 } from '@remnawave/backend-contract'
@@ -57,7 +57,7 @@ export function getNodesTableColumns(
     nodePlugins: GetNodePluginsCommand.Response['response']['nodePlugins'],
     handleViewNode: (nodeUuid: string) => void,
     filters: NodesTableFilters
-): DataTableColumn<GetAllNodesCommand.Response['response'][number]>[] {
+): DataTableColumn<GetNodesCommand.Response['response'][number]>[] {
     return [
         {
             accessor: 'name',

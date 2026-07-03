@@ -13,7 +13,7 @@ import { createMutationHook } from '../../tsq-helpers'
 
 export const useUpdateNodePlugin = createMutationHook({
     endpoint: UpdateNodePluginCommand.TSQ_url,
-    bodySchema: UpdateNodePluginCommand.RequestSchema,
+    bodySchema: UpdateNodePluginCommand.RequestBodySchema,
     responseSchema: UpdateNodePluginCommand.ResponseSchema,
     requestMethod: UpdateNodePluginCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -37,7 +37,7 @@ export const useUpdateNodePlugin = createMutationHook({
 
 export const useCreateNodePlugin = createMutationHook({
     endpoint: CreateNodePluginCommand.TSQ_url,
-    bodySchema: CreateNodePluginCommand.RequestSchema,
+    bodySchema: CreateNodePluginCommand.RequestBodySchema,
     responseSchema: CreateNodePluginCommand.ResponseSchema,
     requestMethod: CreateNodePluginCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -61,7 +61,7 @@ export const useCreateNodePlugin = createMutationHook({
 
 export const useDeleteNodePlugin = createMutationHook({
     endpoint: DeleteNodePluginCommand.TSQ_url,
-    routeParamsSchema: DeleteNodePluginCommand.RequestSchema,
+    routeParamsSchema: DeleteNodePluginCommand.RequestParamSchema,
     responseSchema: DeleteNodePluginCommand.ResponseSchema,
     requestMethod: DeleteNodePluginCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -85,7 +85,7 @@ export const useDeleteNodePlugin = createMutationHook({
 
 export const useReorderNodePlugins = createMutationHook({
     endpoint: ReorderNodePluginCommand.TSQ_url,
-    bodySchema: ReorderNodePluginCommand.RequestSchema,
+    bodySchema: ReorderNodePluginCommand.RequestBodySchema,
     responseSchema: ReorderNodePluginCommand.ResponseSchema,
     requestMethod: ReorderNodePluginCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -102,7 +102,7 @@ export const useReorderNodePlugins = createMutationHook({
 
 export const useCloneNodePlugin = createMutationHook({
     endpoint: CloneNodePluginCommand.TSQ_url,
-    bodySchema: CloneNodePluginCommand.RequestSchema,
+    bodySchema: CloneNodePluginCommand.RequestBodySchema,
     responseSchema: CloneNodePluginCommand.ResponseSchema,
     requestMethod: CloneNodePluginCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -126,7 +126,7 @@ export const useCloneNodePlugin = createMutationHook({
 
 export const useNodePluginExecutor = createMutationHook({
     endpoint: PluginExecutorCommand.TSQ_url,
-    bodySchema: PluginExecutorCommand.RequestSchema,
+    bodySchema: PluginExecutorCommand.RequestBodySchema,
     responseSchema: PluginExecutorCommand.ResponseSchema,
     requestMethod: PluginExecutorCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {

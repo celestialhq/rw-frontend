@@ -1,5 +1,5 @@
 import { ActionIcon, Group } from '@mantine/core'
-import { GetAllHostsCommand, GetSubscriptionTemplateCommand } from '@remnawave/backend-contract'
+import { GetHostsCommand, GetSubscriptionTemplateCommand } from '@remnawave/backend-contract'
 import { SubscriptionTemplateEditorWidget } from '@widgets/dashboard/templates/subscription-template-editor'
 import { TbArrowBackUp } from 'react-icons/tb'
 import { useNavigate } from 'react-router'
@@ -11,7 +11,7 @@ import { getCoreLogoFromType } from '@shared/ui/get-core-logo-from-type'
 
 interface Props {
     editorType: 'json' | 'yaml'
-    hosts: GetAllHostsCommand.Response['response']
+    hosts: GetHostsCommand.Response['response']
     template: GetSubscriptionTemplateCommand.Response['response']
     title: string
 }

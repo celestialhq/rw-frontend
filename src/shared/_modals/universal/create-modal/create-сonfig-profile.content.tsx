@@ -62,11 +62,11 @@ export const CreateConfigProfileContent = (props: IProps) => {
         })
     }
 
-    const nameField = useField<CreateConfigProfileCommand.Request['name']>({
+    const nameField = useField<CreateConfigProfileCommand.RequestBody['name']>({
         initialValue: '',
         validateOnChange: true,
         validate: (value) => {
-            const result = CreateConfigProfileCommand.RequestSchema.omit({
+            const result = CreateConfigProfileCommand.RequestBodySchema.omit({
                 config: true
             }).safeParse({ name: value })
             return result.success ? null : result.error.errors[0]?.message

@@ -25,11 +25,11 @@ export const CreateSnippetModal = () => {
     const monaco = useMonaco()
     const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
 
-    const createSnippetForm = useForm<CreateSnippetCommand.Request>({
+    const createSnippetForm = useForm<CreateSnippetCommand.RequestBody>({
         name: 'create-snippet-form',
         mode: 'uncontrolled',
         validateInputOnBlur: true,
-        validate: zodResolver(CreateSnippetCommand.RequestSchema),
+        validate: zodResolver(CreateSnippetCommand.RequestBodySchema),
         initialValues: {
             name: '',
             snippet: []
@@ -52,7 +52,7 @@ export const CreateSnippetModal = () => {
         }
     })
 
-    const handleCreate = (values: CreateSnippetCommand.Request) => {
+    const handleCreate = (values: CreateSnippetCommand.RequestBody) => {
         if (!editorRef.current) return
 
         let currentValue = editorRef.current.getValue()

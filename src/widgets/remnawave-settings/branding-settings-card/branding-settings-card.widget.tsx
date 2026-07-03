@@ -39,7 +39,7 @@ export const BrandingSettingsCardWidget = (props: IProps) => {
     const { brandingSettings } = props
     const { t } = useTranslation()
 
-    const form = useForm<NonNullable<UpdateRemnawaveSettingsCommand.Request>>({
+    const form = useForm<NonNullable<UpdateRemnawaveSettingsCommand.RequestBody>>({
         name: 'branding-settings',
         mode: 'uncontrolled',
         onValuesChange: (values) => {
@@ -52,7 +52,7 @@ export const BrandingSettingsCardWidget = (props: IProps) => {
             }
         },
         validate: zodResolver(
-            UpdateRemnawaveSettingsCommand.RequestSchema.pick({
+            UpdateRemnawaveSettingsCommand.RequestBodySchema.pick({
                 brandingSettings: true
             })
         ),

@@ -183,11 +183,11 @@ export const AuthentificationSettingsCardWidget = (props: IProps) => {
     const { passkeySettings, passwordSettings, oauth2Settings } = props
     const { t } = useTranslation()
 
-    const form = useForm<NonNullable<UpdateRemnawaveSettingsCommand.Request>>({
+    const form = useForm<NonNullable<UpdateRemnawaveSettingsCommand.RequestBody>>({
         name: 'auth-settings',
         mode: 'uncontrolled',
         validate: zodResolver(
-            UpdateRemnawaveSettingsCommand.RequestSchema.pick({
+            UpdateRemnawaveSettingsCommand.RequestBodySchema.pick({
                 passkeySettings: true,
                 passwordSettings: true,
                 oauth2Settings: true

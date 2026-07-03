@@ -29,7 +29,7 @@ import {
 import { useNiceMantineModal } from '@shared/_modals/use-nice-modal'
 import {
     useGetExternalSquad,
-    useGetSubscriptionPageConfigs,
+    useGetSubpageConfigs,
     useGetSubscriptionTemplates
 } from '@shared/api/hooks'
 import { LoaderModalShared } from '@shared/ui/loader-modal'
@@ -73,7 +73,7 @@ export const ExternalSquadsDrawer = NiceModal.create((props: IProps) => {
     const [activeTab, setActiveTab] = useState<TabType>('templates')
 
     const { isLoading: isTemplatesLoading } = useGetSubscriptionTemplates()
-    const { isLoading: isSubpageConfigsLoading } = useGetSubscriptionPageConfigs()
+    const { isLoading: isSubpageConfigsLoading } = useGetSubpageConfigs()
 
     const { data: externalSquad, isLoading: isExternalSquadLoading } = useGetExternalSquad({
         route: {

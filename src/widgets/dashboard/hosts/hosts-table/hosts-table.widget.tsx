@@ -13,7 +13,7 @@ import {
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Box, Container, Stack } from '@mantine/core'
-import { GetAllHostsCommand } from '@remnawave/backend-contract'
+import { GetHostsCommand } from '@remnawave/backend-contract'
 import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import { HostCardWidget } from '@widgets/dashboard/hosts/host-card'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -34,7 +34,7 @@ import { IProps } from './interfaces'
 export const HostsTableWidget = memo((props: IProps) => {
     const { configProfiles, handlers, hosts, selectedHosts, setSelectedHosts, state } = props
     const [draggedHost, setDraggedHost] = useState<
-        GetAllHostsCommand.Response['response'][number] | null
+        GetHostsCommand.Response['response'][number] | null
     >(null)
 
     const [scrollMargin, setScrollMargin] = useState(0)

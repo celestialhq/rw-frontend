@@ -25,10 +25,10 @@ export const ViewInfraProviderModal = NiceModal.create((props: IProps) => {
 
     const { t } = useTranslation()
 
-    const form = useForm<UpdateInfraProviderCommand.Request>({
+    const form = useForm<UpdateInfraProviderCommand.RequestBody>({
         name: 'edit-infra-provider-form',
         mode: 'uncontrolled',
-        validate: zodResolver(UpdateInfraProviderCommand.RequestSchema)
+        validate: zodResolver(UpdateInfraProviderCommand.RequestBodySchema)
     })
 
     const { mutate: updateInfraProvider, isPending: isUpdateInfraProviderPending } =

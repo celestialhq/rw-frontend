@@ -21,11 +21,11 @@ export const CreateExternalSquadContent = (props: IProps) => {
         })
     }
 
-    const nameField = useField<CreateExternalSquadCommand.Request['name']>({
+    const nameField = useField<CreateExternalSquadCommand.RequestBody['name']>({
         initialValue: '',
         validateOnChange: true,
         validate: (value) => {
-            const result = CreateExternalSquadCommand.RequestSchema.safeParse({ name: value })
+            const result = CreateExternalSquadCommand.RequestBodySchema.safeParse({ name: value })
             return result.success ? null : result.error.errors[0]?.message
         }
     })

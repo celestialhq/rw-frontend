@@ -82,7 +82,7 @@ export const CreateUserModal = NiceModal.create(() => {
         }
     })
 
-    const form = useForm<CreateUserCommand.Request>({
+    const form = useForm<CreateUserCommand.RequestBody>({
         name: 'create-user-form',
         mode: 'uncontrolled',
         validateInputOnBlur: true,
@@ -96,7 +96,7 @@ export const CreateUserModal = NiceModal.create(() => {
             }
         },
         validate: zodResolver(
-            CreateUserCommand.RequestSchema.omit({
+            CreateUserCommand.RequestBodySchema.omit({
                 expireAt: true,
                 hwidDeviceLimit: true
             })

@@ -27,11 +27,11 @@ export const CreateTemplateContent = (props: IProps) => {
         })
     }
 
-    const nameField = useField<CreateSubscriptionTemplateCommand.Request['name']>({
+    const nameField = useField<CreateSubscriptionTemplateCommand.RequestBody['name']>({
         initialValue: '',
         validateOnChange: true,
         validate: (value) => {
-            const result = CreateSubscriptionTemplateCommand.RequestSchema.omit({
+            const result = CreateSubscriptionTemplateCommand.RequestBodySchema.omit({
                 templateType: true
             }).safeParse({ name: value, templateType })
             return result.success ? null : result.error.errors[0]?.message

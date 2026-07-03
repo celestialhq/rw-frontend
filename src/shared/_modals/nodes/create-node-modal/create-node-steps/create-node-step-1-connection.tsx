@@ -38,13 +38,13 @@ import { CopyDockerComposeWidget } from './copy-docker-compose.widget'
 
 interface IProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    form: UseFormReturnType<CreateNodeCommand.Request, any>
+    form: UseFormReturnType<CreateNodeCommand.RequestBody, any>
     onNext: () => void
     port: number
-    pubKey: string | undefined
+    secretKey: string | undefined
 }
 
-export const CreateNodeStep1Connection = ({ form, onNext, pubKey, port }: IProps) => {
+export const CreateNodeStep1Connection = ({ form, onNext, secretKey, port }: IProps) => {
     const { t } = useTranslation()
 
     const { data: nodePlugins } = useGetNodePlugins()
@@ -102,7 +102,7 @@ export const CreateNodeStep1Connection = ({ form, onNext, pubKey, port }: IProps
                         label="Secret Key (SECRET_KEY)"
                         leftSection={<TbCertificate size={16} />}
                         size="sm"
-                        value={`${pubKey?.trimEnd()}`}
+                        value={secretKey ?? ''}
                     />
 
                     <TextInput

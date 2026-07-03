@@ -30,7 +30,7 @@ export const RegisterFormFeature = () => {
 
     const form = useForm({
         validate: {
-            ...zodResolver(RegisterCommand.RequestSchema),
+            ...zodResolver(RegisterCommand.RequestBodySchema),
             confirmPassword: (value, values) =>
                 value !== values.password
                     ? t('register-form.feature.passwords-do-not-match')

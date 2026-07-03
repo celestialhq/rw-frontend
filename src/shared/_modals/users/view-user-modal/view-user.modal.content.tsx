@@ -72,7 +72,7 @@ export const ViewUserModalContent = (props: IProps) => {
     const { data: nodes } = useGetNodes()
     const { data: tags } = useGetUserTags()
 
-    const form = useForm<UpdateUserCommand.Request>({
+    const form = useForm<UpdateUserCommand.RequestBody>({
         name: 'edit-user-form',
         mode: 'uncontrolled',
         onValuesChange: (values) => {
@@ -84,7 +84,7 @@ export const ViewUserModalContent = (props: IProps) => {
             }
         },
         validate: zodResolver(
-            UpdateUserCommand.RequestSchema._def.schema.omit({
+            UpdateUserCommand.RequestBodySchema._def.schema.omit({
                 expireAt: true,
                 hwidDeviceLimit: true
             })

@@ -2,7 +2,7 @@ import { MultiSelectNodesFeature } from '@features/dashboard/nodes/multi-select-
 import { NodesHeaderActionButtonsFeature } from '@features/ui/dashboard/nodes/nodes-header-action-buttons'
 import { Grid, Stack } from '@mantine/core'
 /* eslint-disable no-nested-ternary */
-import { GetAllNodesCommand } from '@remnawave/backend-contract'
+import { GetNodesCommand } from '@remnawave/backend-contract'
 import { NodesDataTableWidget } from '@widgets/dashboard/nodes/nodes-datatable/nodes-datatable.widget'
 import { NodesRealtimeUsageMetrics } from '@widgets/dashboard/nodes/nodes-realtime-metrics'
 import { NodesTableWidget } from '@widgets/dashboard/nodes/nodes-table'
@@ -29,7 +29,7 @@ export default function NodesPageComponent(props: IProps) {
     const viewMode = useNodesViewMode()
     const { setNodesViewMode } = useViewPreferencesStoreActions()
     const [selectedRecords, setSelectedRecords] = useState<
-        GetAllNodesCommand.Response['response'][number][]
+        GetNodesCommand.Response['response'][number][]
     >([])
 
     return (

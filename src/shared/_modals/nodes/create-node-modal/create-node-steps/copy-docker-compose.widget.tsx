@@ -3,17 +3,17 @@ import { useTranslation } from 'react-i18next'
 import { PiCheck } from 'react-icons/pi'
 import { SiDocker } from 'react-icons/si'
 
-import { useGetPubKey } from '@shared/api/hooks'
+import { useGetNodeSecretKey } from '@shared/api/hooks'
 
 interface IProps {
     port?: number
 }
 
 export const CopyDockerComposeWidget = ({ port }: IProps) => {
-    const { data: pubKey, isLoading: isPubKeyLoading } = useGetPubKey()
+    const { data: secretKey, isLoading: isSecretKeyLoading } = useGetNodeSecretKey()
     const { t } = useTranslation()
 
-    if (isPubKeyLoading || !pubKey) {
+    if (isSecretKeyLoading || !secretKey) {
         return <Skeleton height={40} />
     }
 
@@ -33,7 +33,7 @@ export const CopyDockerComposeWidget = ({ port }: IProps) => {
         hard: 1048576
     environment:
       - NODE_PORT=${port ?? 2222}
-      - SECRET_KEY="${pubKey.pubKey.trimEnd()}"`
+      - SECRET_KEY="${secretKey?.secretKey.trimEnd() ?? ''}"`
     }
 
     return (

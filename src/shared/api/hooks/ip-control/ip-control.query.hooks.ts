@@ -6,10 +6,10 @@ import { sToMs } from '@shared/utils/time-utils'
 import { createGetQueryHook, errorHandler } from '../../tsq-helpers'
 
 export const ipControlQueryKeys = createQueryKeys('ipControl', {
-    fetchUserIpsResult: (route: FetchIpsResultCommand.Request) => ({
+    fetchUserIpsResult: (route: FetchIpsResultCommand.RequestParam) => ({
         queryKey: [route]
     }),
-    fetchUsersIpsResult: (route: FetchUsersIpsResultCommand.Request) => ({
+    fetchUsersIpsResult: (route: FetchUsersIpsResultCommand.RequestParam) => ({
         queryKey: [route]
     })
 })
@@ -17,7 +17,7 @@ export const ipControlQueryKeys = createQueryKeys('ipControl', {
 export const useFetchIpsResult = createGetQueryHook({
     endpoint: FetchIpsResultCommand.TSQ_url,
     responseSchema: FetchIpsResultCommand.ResponseSchema,
-    routeParamsSchema: FetchIpsResultCommand.RequestSchema,
+    routeParamsSchema: FetchIpsResultCommand.RequestParamSchema,
     getQueryKey: ({ route, query }) =>
         ipControlQueryKeys.fetchUserIpsResult({ ...route!, ...query! }).queryKey,
     rQueryParams: {
@@ -29,7 +29,7 @@ export const useFetchIpsResult = createGetQueryHook({
 export const useFetchUsersIpsResult = createGetQueryHook({
     endpoint: FetchUsersIpsResultCommand.TSQ_url,
     responseSchema: FetchUsersIpsResultCommand.ResponseSchema,
-    routeParamsSchema: FetchUsersIpsResultCommand.RequestSchema,
+    routeParamsSchema: FetchUsersIpsResultCommand.RequestParamSchema,
     getQueryKey: ({ route, query }) =>
         ipControlQueryKeys.fetchUsersIpsResult({ ...route!, ...query! }).queryKey,
     rQueryParams: {

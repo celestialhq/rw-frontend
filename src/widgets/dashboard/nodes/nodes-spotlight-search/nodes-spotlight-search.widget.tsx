@@ -1,6 +1,6 @@
 import { Badge, Center, Group, Stack, Text } from '@mantine/core'
 import { Spotlight } from '@mantine/spotlight'
-import { GetAllNodesCommand } from '@remnawave/backend-contract'
+import { GetNodesCommand } from '@remnawave/backend-contract'
 import ReactCountryFlag from 'react-country-flag'
 import { useTranslation } from 'react-i18next'
 import { PiEmptyDuotone, PiUsersDuotone } from 'react-icons/pi'
@@ -11,7 +11,7 @@ import { showModal } from '@shared/_modals/show-modal'
 import { NodeStatusBadgeWidget } from '../node-status-badge'
 
 interface IProps {
-    nodes: GetAllNodesCommand.Response['response']
+    nodes: GetNodesCommand.Response['response']
 }
 
 export const NodesSpotlightSearchWidget = ({ nodes }: IProps) => {

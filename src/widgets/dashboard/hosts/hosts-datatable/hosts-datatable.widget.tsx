@@ -1,8 +1,8 @@
 import { DataTable, type DataTableSortStatus, useDataTableColumns } from '@kastov/mantine-datatable'
 import { useDebouncedValue } from '@mantine/hooks'
 import {
-    GetAllHostsCommand,
-    GetAllHostTagsCommand,
+    GetHostsCommand,
+    GetHostsTagsCommand,
     GetConfigProfilesCommand
 } from '@remnawave/backend-contract'
 import { memo, useCallback, useMemo, useState } from 'react'
@@ -33,11 +33,11 @@ import {
 
 interface IProps {
     configProfiles: GetConfigProfilesCommand.Response['response']['configProfiles'] | undefined
-    hosts: GetAllHostsCommand.Response['response'] | undefined
-    hostTags: GetAllHostTagsCommand.Response['response']['tags'] | undefined
+    hosts: GetHostsCommand.Response['response'] | undefined
+    hostTags: GetHostsTagsCommand.Response['response']['tags'] | undefined
     selectedHosts: string[]
     setSelectedHosts: React.Dispatch<React.SetStateAction<string[]>>
-    state: GetAllHostsCommand.Response['response']
+    state: GetHostsCommand.Response['response']
 }
 
 const HOSTS_CACHE_KEY = 'hosts-datatable-hosts-v5'

@@ -1,5 +1,5 @@
 import { SubpageConfigsHeaderActionButtonsFeature } from '@features/ui/dashboard/subpage-configs/header-action-buttons'
-import { GetSubscriptionPageConfigsCommand } from '@remnawave/backend-contract'
+import { GetSubpageConfigsCommand } from '@remnawave/backend-contract'
 import { SubpageConfigsGridWidget } from '@widgets/dashboard/subpage-configs/subpage-configs-grid/subpage-configs-grid.widget'
 import { SubpageConfigsSpotlightWidget } from '@widgets/dashboard/subpage-configs/subpage-configs-spotlight'
 import { motion } from 'motion/react'
@@ -9,7 +9,7 @@ import { TbFile } from 'react-icons/tb'
 import { Page, PageHeaderShared } from '@shared/ui'
 
 interface Props {
-    configs: GetSubscriptionPageConfigsCommand.Response['response']['configs']
+    configs: GetSubpageConfigsCommand.Response['response']['configs']
 }
 
 export const SubpageConfigBasePageComponent = (props: Props) => {

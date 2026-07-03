@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { TbDeviceFloppy } from 'react-icons/tb'
 
 import { queryClient } from '@shared/api'
-import { QueryKeys, useGetSubscriptionPageConfigs, useUpdateExternalSquad } from '@shared/api/hooks'
+import { QueryKeys, useGetSubpageConfigs, useUpdateExternalSquad } from '@shared/api/hooks'
 
 interface IProps {
     externalSquad: GetExternalSquadByUuidCommand.Response['response']
@@ -16,7 +16,7 @@ export const ExternalSquadsSubpageConfigTabWidget = (props: IProps) => {
     const { externalSquad } = props
     const { t } = useTranslation()
 
-    const { data: subpageConfigs } = useGetSubscriptionPageConfigs()
+    const { data: subpageConfigs } = useGetSubpageConfigs()
 
     const [selectedConfigUuid, setSelectedConfigUuid] = useState<null | string>(
         externalSquad.subpageConfigUuid || null

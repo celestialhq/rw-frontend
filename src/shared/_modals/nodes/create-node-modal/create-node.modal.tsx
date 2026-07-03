@@ -9,7 +9,12 @@ import { TbCpu } from 'react-icons/tb'
 
 import { useNiceMantineModal } from '@shared/_modals/use-nice-modal'
 import { queryClient } from '@shared/api'
-import { configProfilesQueryKeys, QueryKeys, useCreateNode, useGetPubKey } from '@shared/api/hooks'
+import {
+    configProfilesQueryKeys,
+    QueryKeys,
+    useCreateNode,
+    useGetNodeSecretKey
+} from '@shared/api/hooks'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 
 import { CreateNodeStep1Connection } from './create-node-steps/create-node-step-1-connection'
@@ -27,16 +32,16 @@ export const CreateNodeModal = NiceModal.create(() => {
         }
     })
 
-    const { data: pubKey } = useGetPubKey()
+    const { data: secretKey } = useGetNodeSecretKey()
 
     const [activeStep, setActiveStep] = useState(0)
     const [createdNodeUuid, setCreatedNodeUuid] = useState<string>()
     const [selectedPort, setSelectedPort] = useState<number>(2222)
 
-    const form = useForm<CreateNodeCommand.Request>({
+    const form = useForm<CreateNodeCommand.RequestBody>({
         name: 'create-node-form',
         mode: 'uncontrolled',
-        validate: zodResolver(CreateNodeCommand.RequestSchema)
+        validate: zodResolver(CreateNodeCommand.RequestBodySchema)
     })
 
     const { mutate: createNode, isPending: isCreateNodePending } = useCreateNode({
@@ -139,7 +144,7 @@ export const CreateNodeModal = NiceModal.create(() => {
                                 form={form}
                                 onNext={nextStep}
                                 port={selectedPort}
-                                pubKey={pubKey?.pubKey}
+                                secretKey={secretKey?.secretKey}
                             />
                         </div>
                     )}

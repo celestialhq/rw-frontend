@@ -33,11 +33,11 @@ export const CreateInfraBillingNodeModal = NiceModal.create(() => {
 
     const [mode, setMode] = useState<Mode>(Mode.NODE)
 
-    const form = useForm<CreateInfraBillingNodeCommand.Request>({
+    const form = useForm<CreateInfraBillingNodeCommand.RequestBody>({
         name: 'create-infra-billing-node-form',
         mode: 'uncontrolled',
         validate: zodResolver(
-            CreateInfraBillingNodeCommand.RequestSchema.omit({
+            CreateInfraBillingNodeCommand.RequestBodySchema.omit({
                 providerUuid: true,
                 nextBillingAt: true,
                 nodeUuid: true

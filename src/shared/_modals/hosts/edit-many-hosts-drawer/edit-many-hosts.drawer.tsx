@@ -46,7 +46,7 @@ export const EditManyHostsDrawer = NiceModal.create((props: IProps) => {
     const { data: internalSquads } = useGetInternalSquads()
     const { data: hostTags } = useGetHostTags()
 
-    const form = useForm<UpdateManyHostsCommand.Request>({
+    const form = useForm<UpdateManyHostsCommand.RequestBody>({
         name: 'edit-many-hosts-form',
         mode: 'uncontrolled',
         validateInputOnBlur: true,
@@ -55,7 +55,7 @@ export const EditManyHostsDrawer = NiceModal.create((props: IProps) => {
                 form.setFieldValue('vlessRouteId', null)
             }
         },
-        validate: zodResolver(UpdateManyHostsCommand.RequestSchema.omit({ uuids: true }))
+        validate: zodResolver(UpdateManyHostsCommand.RequestBodySchema.omit({ uuids: true }))
     })
 
     const { mutate: updateManyHosts, isPending: isUpdateManyHostsPending } = useUpdateManyHosts({
@@ -95,7 +95,7 @@ export const EditManyHostsDrawer = NiceModal.create((props: IProps) => {
 
         const dirtyValues = Object.fromEntries(
             Object.entries(values).filter(([key]) => form.isDirty(key))
-        ) as Partial<UpdateManyHostsCommand.Request>
+        ) as Partial<UpdateManyHostsCommand.RequestBody>
 
         if (form.isDirty('isDisabled')) {
             dirtyValues.isDisabled = !values.isDisabled
@@ -153,7 +153,7 @@ export const EditManyHostsDrawer = NiceModal.create((props: IProps) => {
                                 {': '}
                                 <Code>
                                     {formatValue(
-                                        dirtyValues[key as keyof UpdateManyHostsCommand.Request]
+                                        dirtyValues[key as keyof UpdateManyHostsCommand.RequestBody]
                                     )}
                                 </Code>
                             </List.Item>

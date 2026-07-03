@@ -1,6 +1,6 @@
 import { DataTableColumn } from '@kastov/mantine-datatable'
 import { ActionIcon, Group, MultiSelect, Text } from '@mantine/core'
-import { GetAllHostsCommand } from '@remnawave/backend-contract'
+import { GetHostsCommand } from '@remnawave/backend-contract'
 import { TFunction } from 'i18next'
 import { PiProhibit, PiPulse } from 'react-icons/pi'
 import { TbEdit, TbEyeOff, TbSearch } from 'react-icons/tb'
@@ -16,7 +16,7 @@ import {
 
 export type { BooleanFilterValue }
 
-export type HostType = GetAllHostsCommand.Response['response'][number]
+export type HostType = GetHostsCommand.Response['response'][number]
 
 export type HostStatusFilter = 'disabled' | 'enabled' | 'hidden'
 

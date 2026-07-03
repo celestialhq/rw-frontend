@@ -7,7 +7,7 @@ import {
     UpdateInternalSquadCommand,
     UpdateNodePluginCommand,
     UpdatePasskeyCommand,
-    UpdateSubscriptionPageConfigCommand,
+    UpdateSubpageConfigCommand,
     UpdateSubscriptionTemplateCommand
 } from '@remnawave/backend-contract'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +21,7 @@ import {
     useUpdateInternalSquad,
     useUpdateNodePlugin,
     useUpdatePasskey,
-    useUpdateSubscriptionPageConfig,
+    useUpdateSubpageConfig,
     useUpdateSubscriptionTemplate
 } from '@shared/api/hooks'
 import { queryClient } from '@shared/api/query-client'
@@ -55,31 +55,37 @@ export const RenameModalShared = NiceModal.create((props: IProps) => {
         validate: (value) => {
             const result = (() => {
                 if (renameFrom === 'configProfile') {
-                    return UpdateConfigProfileCommand.RequestSchema.omit({ uuid: true }).safeParse({
+                    return UpdateConfigProfileCommand.RequestBodySchema.omit({
+                        uuid: true
+                    }).safeParse({
                         name: value
                     })
                 }
 
                 if (renameFrom === 'passkey') {
-                    return UpdatePasskeyCommand.RequestSchema.omit({ id: true }).safeParse({
+                    return UpdatePasskeyCommand.RequestBodySchema.omit({ id: true }).safeParse({
                         name: value
                     })
                 }
 
                 if (renameFrom === 'internalSquad') {
-                    return UpdateInternalSquadCommand.RequestSchema.omit({ uuid: true }).safeParse({
+                    return UpdateInternalSquadCommand.RequestBodySchema.omit({
+                        uuid: true
+                    }).safeParse({
                         name: value
                     })
                 }
 
                 if (renameFrom === 'externalSquad') {
-                    return UpdateExternalSquadCommand.RequestSchema.omit({ uuid: true }).safeParse({
+                    return UpdateExternalSquadCommand.RequestBodySchema.omit({
+                        uuid: true
+                    }).safeParse({
                         name: value
                     })
                 }
 
                 if (renameFrom === 'subpageConfig') {
-                    return UpdateSubscriptionPageConfigCommand.RequestSchema.omit({
+                    return UpdateSubpageConfigCommand.RequestBodySchema.omit({
                         uuid: true
                     }).safeParse({
                         name: value
@@ -87,12 +93,14 @@ export const RenameModalShared = NiceModal.create((props: IProps) => {
                 }
 
                 if (renameFrom === 'nodePlugin') {
-                    return UpdateNodePluginCommand.RequestSchema.omit({ uuid: true }).safeParse({
-                        name: value
-                    })
+                    return UpdateNodePluginCommand.RequestBodySchema.omit({ uuid: true }).safeParse(
+                        {
+                            name: value
+                        }
+                    )
                 }
 
-                return UpdateSubscriptionTemplateCommand.RequestSchema.omit({
+                return UpdateSubscriptionTemplateCommand.RequestBodySchema.omit({
                     uuid: true
                 }).safeParse({
                     name: value
@@ -156,7 +164,7 @@ export const RenameModalShared = NiceModal.create((props: IProps) => {
         mutationFns: {
             onSuccess: () => {
                 queryClient.refetchQueries({
-                    queryKey: QueryKeys.passkeys.getAllPasskeys.queryKey
+                    queryKey: QueryKeys.passkeys.getPasskeys.queryKey
                 })
                 hide()
             }
@@ -164,11 +172,11 @@ export const RenameModalShared = NiceModal.create((props: IProps) => {
     })
 
     const { mutate: updateSubpageConfig, isPending: isUpdatingSubpageConfig } =
-        useUpdateSubscriptionPageConfig({
+        useUpdateSubpageConfig({
             mutationFns: {
                 onSuccess: () => {
                     queryClient.refetchQueries({
-                        queryKey: QueryKeys.subpageConfigs.getSubscriptionPageConfigs.queryKey
+                        queryKey: QueryKeys.subpageConfigs.getSubpageConfigs.queryKey
                     })
                     hide()
                 }
