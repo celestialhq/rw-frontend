@@ -3,9 +3,9 @@ import { modals } from '@mantine/modals'
 import { useTranslation } from 'react-i18next'
 import { TbTrash } from 'react-icons/tb'
 
-import { useDeleteUser } from '@shared/api/hooks'
-
-import { useUserModalStoreActions } from '@entities/dashboard/user-modal-store/user-modal-store'
+import { hideModal } from '@shared/_modals/show-modal'
+import { QueryKeys, useDeleteUser } from '@shared/api/hooks'
+import { queryClient } from '@shared/api/query-client'
 
 import { IProps } from './interfaces'
 
@@ -13,12 +13,20 @@ export function DeleteUserFeature(props: IProps) {
     const { userUuid } = props
     const { t } = useTranslation()
 
-    const actions = useUserModalStoreActions()
-
     const { mutate: deleteUser, isPending: isDeleteUserPending } = useDeleteUser({
         mutationFns: {
             onSuccess: () => {
-                actions.changeModalState(false)
+                hideModal('users_viewUserModal')
+
+                queryClient.refetchQueries({
+                    queryKey: QueryKeys.users.getAllUsers._def
+                })
+                queryClient.refetchQueries({
+                    queryKey: QueryKeys.users.getUserTags.queryKey
+                })
+                queryClient.refetchQueries({
+                    queryKey: QueryKeys.system.getSystemStats.queryKey
+                })
             }
         }
     })
@@ -26,7 +34,7 @@ export function DeleteUserFeature(props: IProps) {
     const handleDeleteUser = () => {
         deleteUser({
             route: {
-                uuid: userUuid ?? ''
+                uuid: userUuid
             }
         })
     }
@@ -46,7 +54,7 @@ export function DeleteUserFeature(props: IProps) {
 
     return (
         <Menu.Item
-            color="red.5"
+            color="red"
             leftSection={
                 isDeleteUserPending ? <Loader color="red" size={16} /> : <TbTrash size={16} />
             }

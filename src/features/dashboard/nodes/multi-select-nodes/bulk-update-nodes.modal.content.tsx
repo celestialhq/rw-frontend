@@ -12,10 +12,9 @@ import {
     Text,
     Textarea
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { modals } from '@mantine/modals'
-import { BulkNodesUpdateCommand, GetAllNodesCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
+import { BulkNodesUpdateCommand, GetNodesCommand } from '@remnawave/backend-contract'
 import { motion } from 'motion/react'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -36,7 +35,7 @@ import { LoaderModalShared } from '@shared/ui/loader-modal'
 import { SectionCard } from '@shared/ui/section-card'
 import { TagInputPill } from '@shared/ui/tag-input-pill'
 
-type NodeType = GetAllNodesCommand.Response['response'][number]
+type NodeType = GetNodesCommand.Response['response'][number]
 
 interface IProps {
     selectedRecords: NodeType[]
@@ -49,14 +48,16 @@ export const BulkUpdateNodesModalContent = (props: IProps) => {
     const { mutateAsync: bulkUpdate, isPending } = useBulkNodesUpdate()
     const { data: nodePlugins, isLoading: isNodePluginsLoading } = useGetNodePlugins()
     const { data: tags, isLoading: isTagsLoading } = useGetNodesTags()
-    const handlersRef = useRef<NumberInputHandlers>(null)
+
+    const consumptionMultiplierRef = useRef<NumberInputHandlers>(null)
+    const nodeConsumptionMultiplierRef = useRef<NumberInputHandlers>(null)
 
     const uuids = selectedRecords.map((node) => node.uuid)
 
-    const form = useForm<BulkNodesUpdateCommand.Request>({
+    const form = useForm<BulkNodesUpdateCommand.RequestBody>({
         name: 'bulk-update-nodes-form',
         mode: 'uncontrolled',
-        validate: zodResolver(BulkNodesUpdateCommand.RequestSchema),
+        validate: schemaResolver(BulkNodesUpdateCommand.RequestBodySchema),
         initialValues: {
             uuids,
             fields: {
@@ -192,13 +193,13 @@ export const BulkUpdateNodesModalContent = (props: IProps) => {
                             clampBehavior="strict"
                             decimalScale={1}
                             fixedDecimalScale
-                            handlersRef={handlersRef}
+                            handlersRef={consumptionMultiplierRef}
                             hideControls
                             key={form.key('fields.consumptionMultiplier')}
                             leftSection={
                                 <ActionIcon
                                     color="red"
-                                    onClick={() => handlersRef.current?.decrement()}
+                                    onClick={() => consumptionMultiplierRef.current?.decrement()}
                                     radius="md"
                                     size={rem(44)}
                                     variant="light"
@@ -218,7 +219,7 @@ export const BulkUpdateNodesModalContent = (props: IProps) => {
                             rightSection={
                                 <ActionIcon
                                     color="teal"
-                                    onClick={() => handlersRef.current?.increment()}
+                                    onClick={() => consumptionMultiplierRef.current?.increment()}
                                     radius="md"
                                     size={rem(44)}
                                     variant="light"
@@ -274,13 +275,15 @@ export const BulkUpdateNodesModalContent = (props: IProps) => {
                             clampBehavior="strict"
                             decimalScale={1}
                             fixedDecimalScale
-                            handlersRef={handlersRef}
+                            handlersRef={nodeConsumptionMultiplierRef}
                             hideControls
                             key={form.key('fields.nodeConsumptionMultiplier')}
                             leftSection={
                                 <ActionIcon
                                     color="red"
-                                    onClick={() => handlersRef.current?.decrement()}
+                                    onClick={() =>
+                                        nodeConsumptionMultiplierRef.current?.decrement()
+                                    }
                                     radius="md"
                                     size={rem(44)}
                                     variant="light"
@@ -300,7 +303,9 @@ export const BulkUpdateNodesModalContent = (props: IProps) => {
                             rightSection={
                                 <ActionIcon
                                     color="teal"
-                                    onClick={() => handlersRef.current?.increment()}
+                                    onClick={() =>
+                                        nodeConsumptionMultiplierRef.current?.increment()
+                                    }
                                     radius="md"
                                     size={rem(44)}
                                     variant="light"

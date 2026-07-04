@@ -1,7 +1,7 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory'
 import {
-    GetAllTagsCommand,
-    GetAllUsersCommand,
+    GetUsersTagsCommand,
+    GetUsersCommand,
     GetConnectionKeysByUuidCommand,
     GetUserAccessibleNodesCommand,
     GetUserByUuidCommand,
@@ -15,23 +15,23 @@ import { sToMs } from '@shared/utils/time-utils'
 import { createGetQueryHook, errorHandler } from '../../tsq-helpers'
 
 export const usersQueryKeys = createQueryKeys('users', {
-    getAllUsers: (filters: GetAllUsersCommand.RequestQuery) => ({
+    getAllUsers: (filters: GetUsersCommand.RequestQuery) => ({
         queryKey: [filters]
     }),
-    getUserByUuid: (route: GetUserByUuidCommand.Request) => ({
+    getUserByUuid: (route: GetUserByUuidCommand.RequestParam) => ({
         queryKey: [route]
     }),
-    getConnectionKeysByUuid: (route: GetConnectionKeysByUuidCommand.Request) => ({
+    getConnectionKeysByUuid: (route: GetConnectionKeysByUuidCommand.RequestParam) => ({
         queryKey: [route]
     }),
     getUserTags: {
         queryKey: null
     },
-    getUserAccessibleNodes: (route: GetUserAccessibleNodesCommand.Request) => ({
+    getUserAccessibleNodes: (route: GetUserAccessibleNodesCommand.RequestParam) => ({
         queryKey: [route]
     }),
     getUserSubscriptionRequestHistory: (
-        route: GetUserSubscriptionRequestHistoryCommand.Request
+        route: GetUserSubscriptionRequestHistoryCommand.RequestParam
     ) => ({
         queryKey: [route]
     }),
@@ -43,7 +43,7 @@ export const usersQueryKeys = createQueryKeys('users', {
 export const useGetUserByUuid = createGetQueryHook({
     endpoint: GetUserByUuidCommand.TSQ_url,
     responseSchema: GetUserByUuidCommand.ResponseSchema,
-    routeParamsSchema: GetUserByUuidCommand.RequestSchema,
+    routeParamsSchema: GetUserByUuidCommand.RequestParamSchema,
     getQueryKey: ({ route }) => usersQueryKeys.getUserByUuid(route!).queryKey,
     rQueryParams: {
         staleTime: sToMs(3),
@@ -52,10 +52,10 @@ export const useGetUserByUuid = createGetQueryHook({
     errorHandler: (error) => errorHandler(error, 'Get User By UUID')
 })
 
-export const useGetUsersV2 = createGetQueryHook({
-    endpoint: GetAllUsersCommand.TSQ_url,
-    responseSchema: GetAllUsersCommand.ResponseSchema,
-    requestQuerySchema: GetAllUsersCommand.RequestQuerySchema,
+export const useGetUsers = createGetQueryHook({
+    endpoint: GetUsersCommand.TSQ_url,
+    responseSchema: GetUsersCommand.ResponseSchema,
+    requestQuerySchema: GetUsersCommand.RequestQuerySchema,
     getQueryKey: ({ query }) => usersQueryKeys.getAllUsers(query!).queryKey,
     rQueryParams: {
         staleTime: sToMs(20),
@@ -67,8 +67,8 @@ export const useGetUsersV2 = createGetQueryHook({
 })
 
 export const useGetUserTags = createGetQueryHook({
-    endpoint: GetAllTagsCommand.TSQ_url,
-    responseSchema: GetAllTagsCommand.ResponseSchema,
+    endpoint: GetUsersTagsCommand.TSQ_url,
+    responseSchema: GetUsersTagsCommand.ResponseSchema,
     getQueryKey: () => usersQueryKeys.getUserTags.queryKey,
     rQueryParams: {
         staleTime: sToMs(15),
@@ -80,7 +80,7 @@ export const useGetUserTags = createGetQueryHook({
 export const useGetUserAccessibleNodes = createGetQueryHook({
     endpoint: GetUserAccessibleNodesCommand.TSQ_url,
     responseSchema: GetUserAccessibleNodesCommand.ResponseSchema,
-    routeParamsSchema: GetUserAccessibleNodesCommand.RequestSchema,
+    routeParamsSchema: GetUserAccessibleNodesCommand.RequestParamSchema,
     getQueryKey: ({ route }) => usersQueryKeys.getUserAccessibleNodes(route!).queryKey,
     rQueryParams: {
         staleTime: sToMs(60)
@@ -91,7 +91,7 @@ export const useGetUserAccessibleNodes = createGetQueryHook({
 export const useGetUserSubscriptionRequestHistory = createGetQueryHook({
     endpoint: GetUserSubscriptionRequestHistoryCommand.TSQ_url,
     responseSchema: GetUserSubscriptionRequestHistoryCommand.ResponseSchema,
-    routeParamsSchema: GetUserSubscriptionRequestHistoryCommand.RequestSchema,
+    routeParamsSchema: GetUserSubscriptionRequestHistoryCommand.RequestParamSchema,
     getQueryKey: ({ route }) => usersQueryKeys.getUserSubscriptionRequestHistory(route!).queryKey,
     rQueryParams: {
         staleTime: sToMs(60)
@@ -102,7 +102,7 @@ export const useGetUserSubscriptionRequestHistory = createGetQueryHook({
 export const useGetConnectionKeysByUuid = createGetQueryHook({
     endpoint: GetConnectionKeysByUuidCommand.TSQ_url,
     responseSchema: GetConnectionKeysByUuidCommand.ResponseSchema,
-    routeParamsSchema: GetConnectionKeysByUuidCommand.RequestSchema,
+    routeParamsSchema: GetConnectionKeysByUuidCommand.RequestParamSchema,
     getQueryKey: ({ route }) => usersQueryKeys.getConnectionKeysByUuid(route!).queryKey,
     rQueryParams: {
         staleTime: sToMs(4)

@@ -1,24 +1,21 @@
 import { Container } from '@mantine/core'
-import { FindAllApiTokensCommand, GetRemnawaveSettingsCommand } from '@remnawave/backend-contract'
+import { GetApiTokensCommand, GetRemnawaveSettingsCommand } from '@remnawave/backend-contract'
 import { ApiTokensCardWidget } from '@widgets/remnawave-settings/api-tokens-card/api-tokens-card.widget'
 import { AuthentificationSettingsCardWidget } from '@widgets/remnawave-settings/authentification-settings-card/authentification-settings-card.widget'
 import { BrandingSettingsCardWidget } from '@widgets/remnawave-settings/branding-settings-card/branding-settings-card.widget'
+import { VisualSettingsCardWidget } from '@widgets/remnawave-settings/visual-settings-card/visual-settings-card.widget'
 import { useTranslation } from 'react-i18next'
 import Masonry from 'react-layout-masonry'
 
-import { TCloudflareAccessSettings } from '@shared/api/hooks/remnawave-settings/remnawave-settings.mutation.hooks'
 import { LoadingScreen, Logo, Page, PageHeaderShared } from '@shared/ui'
 
 interface IProps {
-    apiTokensData: FindAllApiTokensCommand.Response['response']
+    apiTokensData: GetApiTokensCommand.Response['response']
     remnawaveSettings: GetRemnawaveSettingsCommand.Response['response']
 }
 
 export const RemnawaveSettingsPageComponent = (props: IProps) => {
     const { remnawaveSettings, apiTokensData } = props
-    const remnawaveSettingsWithCloudflareAccess = remnawaveSettings as typeof remnawaveSettings & {
-        cloudflareAccessSettings?: null | TCloudflareAccessSettings
-    }
 
     const { t } = useTranslation()
 
@@ -41,15 +38,15 @@ export const RemnawaveSettingsPageComponent = (props: IProps) => {
             <Container fluid p={0} size="xl">
                 <Masonry columns={{ 300: 1, 1400: 2, 2000: 3, 3000: 4 }} gap={16}>
                     <AuthentificationSettingsCardWidget
-                        cloudflareAccessSettings={
-                            remnawaveSettingsWithCloudflareAccess.cloudflareAccessSettings
-                        }
+                        cloudflareAccessSettings={remnawaveSettings.cloudflareAccessSettings}
                         oauth2Settings={remnawaveSettings.oauth2Settings}
                         passkeySettings={remnawaveSettings.passkeySettings}
                         passwordSettings={remnawaveSettings.passwordSettings}
                     />
 
                     <ApiTokensCardWidget apiTokensData={apiTokensData} />
+
+                    <VisualSettingsCardWidget />
                     <BrandingSettingsCardWidget
                         brandingSettings={remnawaveSettings.brandingSettings}
                     />

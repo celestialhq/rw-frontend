@@ -8,5 +8,6 @@ export interface IActions {
         setHostsViewMode: (mode: HOSTS_VIEW_MODE) => void
         setNodesActiveTag: (tag: null | string) => void
         setNodesViewMode: (mode: NODES_VIEW_MODE) => void
+        toggleLayoutStyle: () => void
     }
 }

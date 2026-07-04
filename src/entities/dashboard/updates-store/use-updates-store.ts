@@ -6,7 +6,7 @@ import { sToMs } from '@shared/utils/time-utils'
 
 const CACHE_TIME = sToMs(24 * 60 * 60)
 
-interface IRemnawaveInfo {
+export interface IRemnawaveInfo {
     latestVersion: string
     starsCount: number
 }

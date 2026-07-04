@@ -7,25 +7,25 @@ import {
 import { ActionIcon, ActionIconGroup, Box, Tooltip } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { githubDarkTheme, JsonEditor } from 'json-edit-react'
-import { useLayoutEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiUserCircle } from 'react-icons/pi'
 import { TbExternalLink, TbFlame, TbJson, TbRefresh, TbRestore, TbTrash } from 'react-icons/tb'
 
+import { showModal } from '@shared/_modals/show-modal'
 import {
     useGetNodes,
     useGetTorrentBlockerReports,
     useGetTorrentBlockerStats,
     useTruncateTorrentBlockerReports
 } from '@shared/api/hooks'
+import { usePreventTableBackScroll } from '@shared/hooks'
 import { DEFAULT_PAGINATION_STATE, useMrtTableBinding } from '@shared/lib/mrt-table-store'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { DataTableShared } from '@shared/ui/table'
-import { preventBackScrollTables } from '@shared/utils/misc'
 import { sToMs } from '@shared/utils/time-utils'
 
 import { useTbReportsTableStore } from '@entities/dashboard/torrent-blocker-reports/tb-reports-table-store'
-import { useUserModalStoreActions } from '@entities/dashboard/user-modal-store'
 
 import { useTbReportsTableColumns } from './use-tb-reports-table-columns'
 
@@ -36,7 +36,6 @@ export function TorrentBlockerReportsTableWidget() {
     const { refetch: refetchTorrentBlockerStats } = useGetTorrentBlockerStats()
 
     const tableColumns = useTbReportsTableColumns(nodes)
-    const userModalActions = useUserModalStoreActions()
 
     const { state: persistedTableState, handlers: persistedTableHandlers } =
         useMrtTableBinding(useTbReportsTableStore)
@@ -75,14 +74,7 @@ export function TorrentBlockerReportsTableWidget() {
         refetch()
     }
 
-    useLayoutEffect(() => {
-        document.body.addEventListener('wheel', preventBackScrollTables, {
-            passive: false
-        })
-        return () => {
-            document.body.removeEventListener('wheel', preventBackScrollTables)
-        }
-    }, [])
+    usePreventTableBackScroll()
 
     const table = useMantineReactTable({
         columns: tableColumns,
@@ -135,8 +127,7 @@ export function TorrentBlockerReportsTableWidget() {
             <ActionIconGroup>
                 <ActionIcon
                     onClick={async () => {
-                        await userModalActions.setUserUuid(row.original.user.uuid)
-                        userModalActions.changeModalState(true)
+                        showModal('users_viewUserModal', { userUuid: row.original.user.uuid })
                     }}
                     size="input-sm"
                     variant="soft"

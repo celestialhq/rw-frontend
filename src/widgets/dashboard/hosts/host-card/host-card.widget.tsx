@@ -6,7 +6,6 @@ import {
     Box,
     Checkbox,
     Group,
-    OverflowList,
     px,
     Stack,
     Text,
@@ -14,8 +13,8 @@ import {
     Tooltip
 } from '@mantine/core'
 import {
-    GetAllHostsCommand,
-    GetAllNodesCommand,
+    GetHostsCommand,
+    GetNodesCommand,
     GetConfigProfilesCommand
 } from '@remnawave/backend-contract'
 import cx from 'clsx'
@@ -33,16 +32,12 @@ import {
     TbMask,
     TbStar
 } from 'react-icons/tb'
-import { createSearchParams, useNavigate } from 'react-router'
 
-import { ROUTES } from '@shared/constants'
-import { SEARCH_PARAMS } from '@shared/constants/search-params'
+import { showModal } from '@shared/_modals/show-modal'
 import { useIsMobile } from '@shared/hooks'
 import { XrayLogo } from '@shared/ui/logos'
+import { SingleRowOverflowList } from '@shared/ui/single-row-overflow-list'
 import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
-import { openOrNavigate } from '@shared/utils/open-or-navigate'
-
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 
 import classes from './HostCard.module.css'
 
@@ -50,10 +45,9 @@ export interface IProps {
     configProfiles: GetConfigProfilesCommand.Response['response']['configProfiles'] | undefined
     isDragOverlay?: boolean
     isSelected?: boolean
-    item: GetAllHostsCommand.Response['response'][number]
-    nodesByUuid: Map<string, GetAllNodesCommand.Response['response'][number]>
+    item: GetHostsCommand.Response['response'][number]
+    nodesByUuid: Map<string, GetNodesCommand.Response['response'][number]>
     onSelect?: () => void
-    openExternal?: boolean
     viewOnly?: boolean
     disableReordering?: boolean
 }
@@ -67,14 +61,11 @@ export function HostCardWidget(props: IProps) {
         onSelect,
         isDragOverlay = false,
         viewOnly = false,
-        openExternal = false,
+
         disableReordering = false
     } = props
 
     const { t } = useTranslation()
-    const navigate = useNavigate()
-
-    const openModalWithData = useModalsStoreOpenWithData()
 
     const [isHovered, setIsHovered] = useState(false)
     const isMobile = useIsMobile()
@@ -101,18 +92,9 @@ export function HostCardWidget(props: IProps) {
     }
 
     const handleEdit = () => {
-        if (openExternal) {
-            openOrNavigate(
-                `${ROUTES.DASHBOARD.MANAGEMENT.HOSTS}?${createSearchParams({
-                    [SEARCH_PARAMS.HOST]: item.uuid
-                })}`,
-                navigate
-            )
-
-            return
-        }
-
-        openModalWithData(MODALS.EDIT_HOST_MODAL, item)
+        showModal('hosts_editHostDrawer', {
+            host: item
+        })
     }
 
     if (!configProfiles) {
@@ -259,10 +241,9 @@ export function HostCardWidget(props: IProps) {
                                     )}
                                 </Badge>
 
-                                <OverflowList
+                                <SingleRowOverflowList
                                     data={item.tags.sort((a, b) => a.localeCompare(b))}
                                     gap={0}
-                                    maxRows={1}
                                     maxVisibleItems={2}
                                     renderItem={(tag) => (
                                         <Badge
@@ -501,10 +482,9 @@ export function HostCardWidget(props: IProps) {
                                 )}
                             </Badge>
 
-                            <OverflowList
+                            <SingleRowOverflowList
                                 data={item.tags.sort((a, b) => a.localeCompare(b))}
                                 gap={0}
-                                maxRows={1}
                                 maxVisibleItems={2}
                                 renderItem={(tag) => (
                                     <Badge
@@ -564,12 +544,11 @@ export function HostCardWidget(props: IProps) {
                         </Group>
 
                         <Group gap="xs" style={{ flexShrink: 0 }} wrap="nowrap">
-                            <OverflowList
+                            <SingleRowOverflowList
                                 data={item.nodes
                                     .map((nodeId) => nodesByUuid.get(nodeId))
                                     .filter((n): n is NonNullable<typeof n> => Boolean(n))}
                                 gap={4}
-                                maxRows={1}
                                 maxVisibleItems={3}
                                 renderItem={(node) => (
                                     <Badge

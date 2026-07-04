@@ -1,7 +1,6 @@
 import { Button, Group, NumberInput, px, Stack, TextInput } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { UpdateSubscriptionSettingsCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useTranslation } from 'react-i18next'
 import { PiClock, PiLink, PiUserCircle } from 'react-icons/pi'
 
@@ -19,10 +18,10 @@ export const SubscriptionInfoCardWidget = (props: IProps) => {
     const { subscriptionSettings } = props
     const { t } = useTranslation()
 
-    const form = useForm<UpdateSubscriptionSettingsCommand.Request>({
+    const form = useForm<UpdateSubscriptionSettingsCommand.RequestBody>({
         name: 'subscription-info-card-form',
         mode: 'uncontrolled',
-        validate: zodResolver(UpdateSubscriptionSettingsCommand.RequestSchema),
+        validate: schemaResolver(UpdateSubscriptionSettingsCommand.RequestBodySchema),
         initialValues: {
             uuid: subscriptionSettings.uuid,
             profileTitle: subscriptionSettings.profileTitle,

@@ -24,7 +24,7 @@ const CloudflareAccessRequestSchema = z.object({})
 
 export const useLogin = createMutationHook({
     endpoint: LoginCommand.TSQ_url,
-    bodySchema: LoginCommand.RequestSchema,
+    bodySchema: LoginCommand.RequestBodySchema,
     responseSchema: LoginCommand.ResponseSchema,
     requestMethod: LoginCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -43,7 +43,7 @@ export const useLogin = createMutationHook({
 
 export const useRegister = createMutationHook({
     endpoint: RegisterCommand.TSQ_url,
-    bodySchema: RegisterCommand.RequestSchema,
+    bodySchema: RegisterCommand.RequestBodySchema,
     responseSchema: RegisterCommand.ResponseSchema,
     requestMethod: RegisterCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -67,7 +67,7 @@ export const useRegister = createMutationHook({
 
 export const useOauth2Callback = createMutationHook({
     endpoint: OAuth2CallbackCommand.TSQ_url,
-    bodySchema: OAuth2CallbackCommand.RequestSchema,
+    bodySchema: OAuth2CallbackCommand.RequestBodySchema,
     responseSchema: OAuth2CallbackCommand.ResponseSchema,
     requestMethod: OAuth2CallbackCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -79,7 +79,7 @@ export const useOauth2Callback = createMutationHook({
 
 export const useOAuth2Authorize = createMutationHook({
     endpoint: OAuth2AuthorizeCommand.TSQ_url,
-    bodySchema: OAuth2AuthorizeCommand.RequestSchema,
+    bodySchema: OAuth2AuthorizeCommand.RequestBodySchema,
     responseSchema: OAuth2AuthorizeCommand.ResponseSchema,
     requestMethod: OAuth2AuthorizeCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
@@ -107,7 +107,7 @@ export const useCloudflareAccessLogin = createMutationHook({
 
 export const usePasskeyAuthenticationVerify = createMutationHook({
     endpoint: VerifyPasskeyAuthenticationCommand.TSQ_url,
-    bodySchema: VerifyPasskeyAuthenticationCommand.RequestSchema,
+    bodySchema: VerifyPasskeyAuthenticationCommand.RequestBodySchema,
     responseSchema: VerifyPasskeyAuthenticationCommand.ResponseSchema,
     requestMethod: VerifyPasskeyAuthenticationCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {

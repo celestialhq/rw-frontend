@@ -67,7 +67,17 @@
     "clear": "Clear",
     "color": "Color",
     "all": "All",
-    "without-tags": "Without tags"
+    "without-tags": "Without tags",
+    "reset": "Reset",
+    "actions": "Actions",
+    "clear-selection": "Clear selection",
+    "select-all": "Select all",
+    "selected": "Selected: {{count}}",
+    "bulk-actions": "Bulk actions",
+    "bulk-edit": "Bulk edit",
+    "creation": "Creation",
+    "processing": "Processing",
+    "operation-completed": "Operation completed"
   },
   "bandwidth-metrics": {
     "current-year": "Current year",
@@ -130,16 +140,7 @@
       "new-user": "New user",
       "reset-table": "Reset table",
       "clear-filters": "Clear filters",
-      "bulk-actions": "Bulk Actions",
-      "help": "Help",
-      "table-controls-help": "Table Controls Help",
-      "table-controler-description-line-1": "This table provides several controls to help you view and manage the data effectively. Here's what each control does:",
-      "table-controler-description-line-2": "Control",
-      "table-controler-description-line-3": "Description",
-      "table-controler-description-line-4": "Toggle column filters to search and filter data",
-      "show-or-hide-specific-columns": "Show or hide specific columns",
-      "adjust-row-spacing-density": "Adjust row spacing density",
-      "toggle-fullscreen-table-view": "Toggle fullscreen table view"
+      "help": "Help"
     }
   },
   "use-table-columns": {
@@ -634,8 +635,6 @@
       "set-inbound": "Set inbound",
       "set-port": "Set Port",
       "port": "Port",
-      "clear-selection": "Clear selection",
-      "select-all": "Select all",
       "dangling-hosts-skipped": "{{count}} dangling host(s) were skipped and not cloned."
     }
   },
@@ -645,20 +644,9 @@
     "no-changes-title": "Nothing to update",
     "no-changes-description": "You haven't changed any fields."
   },
-  "bulk-user-actions-drawer": {
-    "widget": {
-      "bulk-user-actions": "Bulk User Actions",
-      "users": "users",
-      "actions": "Actions",
-      "danger": "Danger"
-    }
-  },
   "delete-all-users-by-status": {
     "feature": {
-      "processing": "Processing",
-      "deleting-users": "Deleting users...",
-      "success": "Success",
-      "deleted-data-affectedrows-users": "Deleted {{count}} users"
+      "deleting-users": "Deleting users..."
     }
   },
   "bulk-all-user-actions-tabs": {
@@ -694,14 +682,6 @@
           "delete-users-by-status-description": "Permanently deletes all users with the selected status"
         }
       }
-    }
-  },
-  "bulk-all-user-actions-drawer": {
-    "widget": {
-      "bulk-all-user-actions": "Bulk All User Actions",
-      "all-users": "All users",
-      "actions": "Actions",
-      "danger": "Danger"
     }
   },
   "bulk-user-actions": {
@@ -747,14 +727,6 @@
           "update-users": "Update Users"
         }
       }
-    }
-  },
-  "users-table-selection": {
-    "feature": {
-      "row-s-selected": "row(s) selected",
-      "clear-selection": "Clear selection",
-      "select-all": "Select all",
-      "bulk-actions": "Bulk actions"
     }
   },
   "get-user-subscription-links": {
@@ -883,10 +855,7 @@
       "active-nodes": "Active nodes",
       "current-hour": "Current hour",
       "download-speed": "Download Speed",
-      "upload-speed": "Upload Speed",
-      "download-total": "Download Total",
-      "ram-usage": "RAM Usage",
-      "for-all-nodes": "For all nodes"
+      "upload-speed": "Upload Speed"
     }
   },
   "node-users-usage-drawer": {
@@ -1030,8 +999,7 @@
         "favicon-link-description": "A link to the favicon of the provider. It is used to display the favicon of the provider in the UI. You can enter only the domain name.",
         "login-url": "Login URL",
         "enter-login-url": "Enter login URL",
-        "login-url-description": "The URL of the login page of the provider. It will help you to quickly move to the login page of the provider.",
-        "save-changes": "Save Changes"
+        "login-url-description": "The URL of the login page of the provider. It will help you to quickly move to the login page of the provider."
       }
     }
   },
@@ -1042,8 +1010,7 @@
       "new-date": "New Date",
       "today": "Today",
       "tomorrow": "Tomorrow",
-      "next-month": "Next Month",
-      "update-date": "Update Date"
+      "next-month": "Next Month"
     }
   },
   "infra-providers-table": {
@@ -1120,8 +1087,8 @@
         "billing-node": "Billing Node",
         "next-billing-at": "Next Billing At",
         "next-billing-at-description": "The date and time for the next billing of this node. Remnawave will notify you about upcoming billing.",
-        "existing-node": "Existing node",
-        "custom-name": "Custom name",
+        "existing": "Existing",
+        "custom": "Custom",
         "custom-name-description": "Use a custom name when the node is not managed by Remnawave."
       }
     }
@@ -1692,6 +1659,14 @@
       "color-format-note": "💡 Color applies only to the word immediately following the marker. Without markers, text will be white."
     }
   },
+  "visual-settings-card": {
+    "widget": {
+      "layout-style": "Layout Style",
+      "choose-how-the-desktop-navigation-is-displayed": "Choose how the desktop navigation is displayed",
+      "compact": "Compact",
+      "sidebar": "Sidebar"
+    }
+  },
   "api-tokens-card": {
     "widget": {
       "api-tokens-description": "Manage your API access tokens for programmatic access.",
@@ -2229,6 +2204,11 @@
   "keypair-generator": {
     "widget": {
       "generate": "Generate"
+    }
+  },
+  "bulk-all-users-actions": {
+    "modal": {
+      "perform-actions-on-all-users": "Perform actions on all users"
     }
   }
 }

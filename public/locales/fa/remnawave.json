@@ -67,7 +67,17 @@
     "clear": "Clear",
     "color": "Color",
     "all": "All",
-    "without-tags": "Without tags"
+    "without-tags": "Without tags",
+    "reset": "Reset",
+    "actions": "Actions",
+    "clear-selection": "Clear selection",
+    "select-all": "Select all",
+    "selected": "Selected: {{count}}",
+    "bulk-actions": "Bulk actions",
+    "bulk-edit": "Bulk edit",
+    "creation": "Creation",
+    "processing": "Processing",
+    "operation-completed": "Operation completed"
   },
   "bandwidth-metrics": {
     "current-year": "امسال",
@@ -130,16 +140,7 @@
       "new-user": "کاربر جدید",
       "reset-table": "بازنشانی جدول",
       "clear-filters": "پاک کردن فیلترها",
-      "bulk-actions": "عملیات جمعی",
-      "help": "کمک",
-      "table-controls-help": "راهنمای فرمان‌های جدول",
-      "table-controler-description-line-1": "این جدول با فرمان‌های مختلف در مدیریت بهینه داده‌ها به شما کمک می‌کند. عملکرد هر فرمان به این صورت است:",
-      "table-controler-description-line-2": "فرمان",
-      "table-controler-description-line-3": "توضیحات",
-      "table-controler-description-line-4": "روشن یا خاموش کردن فیلترهای ستون‌ها برای جست‌وجو و فیلتر داده‌ها",
-      "show-or-hide-specific-columns": "نمایش یا مخفی کردن ستون‌ها",
-      "adjust-row-spacing-density": "تنظیم فاصله سطرها",
-      "toggle-fullscreen-table-view": "تغییر نمایش تمام صفحه جدول"
+      "help": "کمک"
     }
   },
   "use-table-columns": {
@@ -634,8 +635,6 @@
       "set-inbound": "تنظیم اینباند",
       "set-port": "تنظیم پورت",
       "port": "پورت",
-      "clear-selection": "پاک کردن انتخاب",
-      "select-all": "انتخاب همه",
       "dangling-hosts-skipped": "{{count}} dangling host(s) were skipped and not cloned."
     }
   },
@@ -645,20 +644,9 @@
     "no-changes-title": "Nothing to update",
     "no-changes-description": "You haven't changed any fields."
   },
-  "bulk-user-actions-drawer": {
-    "widget": {
-      "bulk-user-actions": "اقدامات دسته‌جمعی کاربران",
-      "users": "کاربران",
-      "actions": "اقدامات",
-      "danger": "خطر"
-    }
-  },
   "delete-all-users-by-status": {
     "feature": {
-      "processing": "در حال پردازش",
-      "deleting-users": "در حال حذف کاربران...",
-      "success": "عملیات موفقیت‌آمیز",
-      "deleted-data-affectedrows-users": "{{count}} کاربر حذف شد"
+      "deleting-users": "در حال حذف کاربران..."
     }
   },
   "bulk-all-user-actions-tabs": {
@@ -694,14 +682,6 @@
           "delete-users-by-status-description": "همه کاربران با وضعیت انتخاب‌شده را به‌طور دائم حذف می‌کند"
         }
       }
-    }
-  },
-  "bulk-all-user-actions-drawer": {
-    "widget": {
-      "bulk-all-user-actions": "اقدامات دسته‌جمعی برای همه کاربران",
-      "all-users": "همه کاربران",
-      "actions": "اقدامات",
-      "danger": "خطر"
     }
   },
   "bulk-user-actions": {
@@ -747,14 +727,6 @@
           "update-users": "به‌روزرسانی کاربران"
         }
       }
-    }
-  },
-  "users-table-selection": {
-    "feature": {
-      "row-s-selected": "ردیف انتخاب شده",
-      "clear-selection": "لغو انتخاب",
-      "select-all": "انتخاب همه",
-      "bulk-actions": "اقدامات دسته‌جمعی"
     }
   },
   "get-user-subscription-links": {
@@ -883,10 +855,7 @@
       "active-nodes": "نودهای فعال",
       "current-hour": "ساعت کنونی",
       "download-speed": "Download Speed",
-      "upload-speed": "Upload Speed",
-      "download-total": "Download Total",
-      "ram-usage": "RAM Usage",
-      "for-all-nodes": "For all nodes"
+      "upload-speed": "Upload Speed"
     }
   },
   "node-users-usage-drawer": {
@@ -1030,8 +999,7 @@
         "favicon-link-description": "لینک favicon، لینک نماد ارائه‌دهنده است که در رابط کاربری نمایش داده می‌شود. فقط نام دامنه را وارد کنید.",
         "login-url": "آدرس ورود",
         "enter-login-url": "آدرس ورود را وارد کنید",
-        "login-url-description": "آدرس ورود صفحه لاگین ارائه‌دهنده است و برای دسترسی سریع به آن استفاده می‌شود.",
-        "save-changes": "ذخیره تغییرات"
+        "login-url-description": "آدرس ورود صفحه لاگین ارائه‌دهنده است و برای دسترسی سریع به آن استفاده می‌شود."
       }
     }
   },
@@ -1042,8 +1010,7 @@
       "new-date": "تاریخ جدید",
       "today": "امروز",
       "tomorrow": "فردا",
-      "next-month": "ماه بعد",
-      "update-date": "به‌روزرسانی تاریخ"
+      "next-month": "ماه بعد"
     }
   },
   "infra-providers-table": {
@@ -1120,8 +1087,8 @@
         "billing-node": "نود صورتحساب",
         "next-billing-at": "صورتحساب بعدی در",
         "next-billing-at-description": "تاریخ و زمانی که نود صورتحساب بعدی صادر می‌شود. Remnawave شما را مطلع خواهد کرد.",
-        "existing-node": "Existing node",
-        "custom-name": "Custom name",
+        "existing": "Existing",
+        "custom": "Custom",
         "custom-name-description": "Use a custom name when the node is not managed by Remnawave."
       }
     }
@@ -1692,6 +1659,14 @@
       "color-format-note": "💡 رنگ مشخص شده فقط برای کلمه‌ای که به نشانگر رنگ چسبیده اعمال می‌شود. بدون نشانگر، متن سفیدرنگ خواهد بود."
     }
   },
+  "visual-settings-card": {
+    "widget": {
+      "layout-style": "Layout Style",
+      "choose-how-the-desktop-navigation-is-displayed": "Choose how the desktop navigation is displayed",
+      "compact": "Compact",
+      "sidebar": "Sidebar"
+    }
+  },
   "api-tokens-card": {
     "widget": {
       "api-tokens-description": "توکن‌های API خود را مدیریت کنید.",
@@ -2229,6 +2204,11 @@
   "keypair-generator": {
     "widget": {
       "generate": "Generate"
+    }
+  },
+  "bulk-all-users-actions": {
+    "modal": {
+      "perform-actions-on-all-users": "Perform actions on all users"
     }
   }
 }

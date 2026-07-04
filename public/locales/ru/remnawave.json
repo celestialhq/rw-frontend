@@ -66,8 +66,18 @@
     "view": "Посмотреть",
     "clear": "Очистить",
     "color": "Цвет",
-    "all": "All",
-    "without-tags": "Without tags"
+    "all": "Все",
+    "without-tags": "Без тегов",
+    "reset": "Сбросить",
+    "actions": "Actions",
+    "clear-selection": "Clear selection",
+    "select-all": "Select all",
+    "selected": "Selected: {{count}}",
+    "bulk-actions": "Bulk actions",
+    "bulk-edit": "Bulk edit",
+    "creation": "Creation",
+    "processing": "Processing",
+    "operation-completed": "Operation completed"
   },
   "bandwidth-metrics": {
     "current-year": "Текущий год",
@@ -130,16 +140,7 @@
       "new-user": "Создать польз.",
       "reset-table": "Сбросить таблицу",
       "clear-filters": "Очистить фильтры",
-      "bulk-actions": "Масс. действия",
-      "help": "Справка",
-      "table-controls-help": "Помощь по управлению таблицей",
-      "table-controler-description-line-1": "Эта таблица содержит несколько элементов управления, которые помогут вам эффективно просматривать и управлять данными. Вот что делает каждый переключатель:",
-      "table-controler-description-line-2": "Переключатель",
-      "table-controler-description-line-3": "Описание",
-      "table-controler-description-line-4": "Переключение фильтров столбцов для поиска и фильтрации данных",
-      "show-or-hide-specific-columns": "Показать или скрыть определенные столбцы",
-      "adjust-row-spacing-density": "Регулировка плотности таблицы",
-      "toggle-fullscreen-table-view": "Полноэкранный вид таблицы"
+      "help": "Справка"
     }
   },
   "use-table-columns": {
@@ -416,7 +417,7 @@
     "override-sni-from-address": "Переопределить SNI из адреса",
     "override-sni-from-address-description": "Эта опция заменяет значение SNI на указанное значение поля Адрес. Это особенно полезно для опций: мульти-домен или Wildcard-домен.",
     "legacy-options": "Устаревшие настройки",
-    "shuffled-hosts-hover-card": "Перемешиваемые узлы будут помещены в верхней части списка и отсортированы случайным образом.",
+    "shuffled-hosts-hover-card": "Перемешиваемые хосты будут помещены в верхней части списка и отсортированы случайным образом.",
     "vless-route-description": "От 1 до 65535, оставьте пустым (или 0) для отключения",
     "misc-settings": "Прочие настройки",
     "shuffle-host": "Перемешать хост",
@@ -634,8 +635,6 @@
       "set-inbound": "Установить инбаунд",
       "set-port": "Установить порт",
       "port": "Порт",
-      "clear-selection": "Очистить выбор",
-      "select-all": "Выбрать все",
       "dangling-hosts-skipped": "{{count}} хостов было пропущено при клонировании."
     }
   },
@@ -645,20 +644,9 @@
     "no-changes-title": "Обновлять нечего",
     "no-changes-description": "Вы не изменили ни одного поля."
   },
-  "bulk-user-actions-drawer": {
-    "widget": {
-      "bulk-user-actions": "Массовые действия с пользователями",
-      "users": "пользователей",
-      "actions": "Действия",
-      "danger": "Опасно"
-    }
-  },
   "delete-all-users-by-status": {
     "feature": {
-      "processing": "Обработка",
-      "deleting-users": "Удаление пользователей...",
-      "success": "Успешно",
-      "deleted-data-affectedrows-users": "Удалено {{count}} пользователей"
+      "deleting-users": "Удаление пользователей..."
     }
   },
   "bulk-all-user-actions-tabs": {
@@ -694,14 +682,6 @@
           "delete-users-by-status-description": "Навсегда удаляет всех пользователей с выбранным статусом"
         }
       }
-    }
-  },
-  "bulk-all-user-actions-drawer": {
-    "widget": {
-      "bulk-all-user-actions": "Массовые действия со всеми пользователями",
-      "all-users": "Все пользователи",
-      "actions": "Действия",
-      "danger": "Опасно"
     }
   },
   "bulk-user-actions": {
@@ -747,14 +727,6 @@
           "update-users": "Обновить пользователей"
         }
       }
-    }
-  },
-  "users-table-selection": {
-    "feature": {
-      "row-s-selected": "строк(а) выбрано",
-      "clear-selection": "Очистить выбор",
-      "select-all": "Выбрать все",
-      "bulk-actions": "Массовые действия"
     }
   },
   "get-user-subscription-links": {
@@ -883,10 +855,7 @@
       "active-nodes": "Активные ноды",
       "current-hour": "Текущий час",
       "download-speed": "Скорость загрузки",
-      "upload-speed": "Скорость отдачи",
-      "download-total": "Всего загружено",
-      "ram-usage": "Использовано ОЗУ",
-      "for-all-nodes": "Для всех нод"
+      "upload-speed": "Скорость отдачи"
     }
   },
   "node-users-usage-drawer": {
@@ -1030,8 +999,7 @@
         "favicon-link-description": "Это ссылка на иконку провайдера. Она используется для отображения иконки провайдера в UI. Достаточно просто ввести доменное имя.",
         "login-url": "Ссылка для входа",
         "enter-login-url": "Введите URL входа",
-        "login-url-description": "URL-адрес входа — это URL-адрес страницы входа провайдера. Он поможет вам быстро перейти на страницу входа провайдера.",
-        "save-changes": "Сохранить изменения"
+        "login-url-description": "URL-адрес входа — это URL-адрес страницы входа провайдера. Он поможет вам быстро перейти на страницу входа провайдера."
       }
     }
   },
@@ -1042,8 +1010,7 @@
       "new-date": "Новая дата",
       "today": "Сегодня",
       "tomorrow": "Завтра",
-      "next-month": "Следующий месяц",
-      "update-date": "Обновить дату"
+      "next-month": "Следующий месяц"
     }
   },
   "infra-providers-table": {
@@ -1120,9 +1087,9 @@
         "billing-node": "Биллинг нода",
         "next-billing-at": "Следующий платеж",
         "next-billing-at-description": "Дата и время для следующей оплаты этого узла. Remnawave уведомит вас о предстоящем платеже.",
-        "existing-node": "Существующий узел",
-        "custom-name": "Пользовательское название",
-        "custom-name-description": "Если узел не управляется Remnawave, используйте пользовательское имя."
+        "existing": "Существующая",
+        "custom": "Кастомная",
+        "custom-name-description": "Если нода не управляется Remnawave, используйте пользовательское имя."
       }
     }
   },
@@ -1692,6 +1659,14 @@
       "color-format-note": "💡 Цвет применяется только к словам, непосредственно следующим за маркером. Без маркеров текст будет белым."
     }
   },
+  "visual-settings-card": {
+    "widget": {
+      "layout-style": "Стиль оформления",
+      "choose-how-the-desktop-navigation-is-displayed": "Выберите способ навигации по интерфейсу панели",
+      "compact": "Компактный",
+      "sidebar": "Боковая панель"
+    }
+  },
   "api-tokens-card": {
     "widget": {
       "api-tokens-description": "Управление API токенами для доступа из кода.",
@@ -2229,6 +2204,11 @@
   "keypair-generator": {
     "widget": {
       "generate": "Сгенерировать"
+    }
+  },
+  "bulk-all-users-actions": {
+    "modal": {
+      "perform-actions-on-all-users": "Perform actions on all users"
     }
   }
 }

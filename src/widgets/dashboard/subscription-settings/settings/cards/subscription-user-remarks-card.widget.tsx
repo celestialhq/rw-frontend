@@ -1,8 +1,7 @@
 import { Button, Card, Group, Stack } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 import { UpdateSubscriptionSettingsCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiClockCountdown, PiClockUser, PiListChecks, PiProhibit } from 'react-icons/pi'
@@ -57,10 +56,10 @@ export const SubscriptionUserRemarksCardWidget = (props: IProps) => {
         setRemarks((prev) => ({ ...prev, HWIDNotSupported: newRemarks }))
     }
 
-    const form = useForm<UpdateSubscriptionSettingsCommand.Request>({
+    const form = useForm<UpdateSubscriptionSettingsCommand.RequestBody>({
         name: 'subscription-user-remarks-card-form',
         mode: 'uncontrolled',
-        validate: zodResolver(UpdateSubscriptionSettingsCommand.RequestSchema),
+        validate: schemaResolver(UpdateSubscriptionSettingsCommand.RequestBodySchema),
         initialValues: {
             uuid: subscriptionSettings.uuid
         }

@@ -17,7 +17,7 @@ import { SectionCard } from '@shared/ui/section-card'
 interface IProps {
     cardVariants: Variants
     externalSquads: GetExternalSquadsCommand.Response['response'] | undefined
-    form: UseFormReturnType<BulkAllUpdateUsersCommand.Request>
+    form: UseFormReturnType<BulkAllUpdateUsersCommand.RequestBody>
     motionWrapper: ForwardRefComponent<HTMLDivElement, HTMLMotionProps<'div'>>
 }
 
@@ -69,16 +69,13 @@ export const BulkAccessSettingsCard = (props: IProps) => {
                         />
 
                         <DateTimePicker
-                            dropdownType="modal"
+                            dropdownType="popover"
                             headerControlsOrder={['previous', 'next', 'level']}
                             highlightToday
                             key={form.key('expireAt')}
                             label={t('create-user-modal.widget.expiry-date')}
                             locale={i18n.language}
                             minDate={new Date()}
-                            modalProps={{
-                                centered: true
-                            }}
                             styles={{
                                 calendarHeaderLevel: {
                                     justifyContent: 'flex-start',

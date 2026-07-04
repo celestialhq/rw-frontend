@@ -5,7 +5,6 @@ import { LanguageControl } from './LanguageControl'
 import { LogoutControl } from './LogoutControl'
 import { PrimeControl } from './PrimeControl'
 import { RecapControl } from './RecapControl'
-import { RefreshControl } from './RefreshControl'
 import { SupportControl } from './SupportControl'
 import { TelegramControl } from './TelegramControl'
 import { VersionControl } from './VersionControl'
@@ -20,7 +19,6 @@ interface HeaderControlsProps extends BoxProps {
     withLogout?: boolean
     withPrime?: boolean
     withRecap?: boolean
-    withRefresh?: boolean
     withSupport?: boolean
     withTelegram?: boolean
     withVersion?: boolean
@@ -32,7 +30,6 @@ export function HeaderControls({
     withTelegram = true,
     withSupport = true,
     withLogout = true,
-    withRefresh = true,
     withLanguage = true,
     withVersion = true,
     withRecap = false,
@@ -54,7 +51,6 @@ export function HeaderControls({
             )}
             {withRecap && <RecapControl />}
             {withLanguage && <LanguageControl />}
-            {withRefresh && <RefreshControl />}
             {withLogout && <LogoutControl />}
         </Group>
     )

@@ -38,11 +38,11 @@ import { AuthGuard } from '@shared/hocs/guards/auth-guard'
 
 import { ROUTES } from '../../shared/constants'
 import { AuthLayout } from '../layouts/auth'
-import { MainLayout } from '../layouts/dashboard/main-layout/main.layout'
+import { MainLayout } from '../layouts/dashboard/main-layout/layout'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route element={<ErrorBoundaryHoc fallback={<ErrorPageComponent />} />}>
+        <Route element={<ErrorBoundaryHoc FallbackComponent={ErrorPageComponent} />}>
             <Route element={<AuthLayout />} path={ROUTES.OAUTH2.ROOT}>
                 <Route element={<Oauth2CallbackPage />} path={ROUTES.OAUTH2.ROOT} />
             </Route>

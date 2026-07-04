@@ -5,7 +5,6 @@ import {
     Center,
     Group,
     MantineStyleProp,
-    OverflowList,
     Stack,
     Text,
     ThemeIcon,
@@ -16,14 +15,14 @@ import { GetInfraProvidersCommand } from '@remnawave/backend-contract'
 import { useTranslation } from 'react-i18next'
 import { TbCloud, TbEdit, TbLink, TbServer, TbTrash } from 'react-icons/tb'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { queryClient } from '@shared/api'
 import { QueryKeys, useDeleteInfraProvider } from '@shared/api/hooks'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { SectionCard } from '@shared/ui/section-card'
+import { SingleRowOverflowList } from '@shared/ui/single-row-overflow-list'
 import { faviconResolver, formatCurrencyWithIntl } from '@shared/utils/misc'
 import { resolveCountryCode } from '@shared/utils/misc/resolve-country-code'
-
-import { MODALS, useModalsStoreOpenWithData } from '@entities/dashboard/modal-store'
 
 interface IProps {
     providers: GetInfraProvidersCommand.Response['response']['providers']
@@ -32,7 +31,6 @@ interface IProps {
 
 export function MobileProvidersListWidget(props: IProps) {
     const { providers, style } = props
-    const openModalWithData = useModalsStoreOpenWithData()
     const { t } = useTranslation()
 
     const { mutate: deleteProvider } = useDeleteInfraProvider({
@@ -47,12 +45,6 @@ export function MobileProvidersListWidget(props: IProps) {
             }
         }
     })
-
-    const handleOpenProvider = (
-        provider: GetInfraProvidersCommand.Response['response']['providers'][number]
-    ) => {
-        openModalWithData(MODALS.VIEW_INFRA_PROVIDER_DRAWER, provider)
-    }
 
     const handleDeleteProvider = (uuid: string) =>
         modals.openConfirmModal({
@@ -136,7 +128,11 @@ export function MobileProvidersListWidget(props: IProps) {
                                 )}
                                 <ActionIcon
                                     color="blue"
-                                    onClick={() => handleOpenProvider(provider)}
+                                    onClick={() =>
+                                        showModal('infraBilling_viewInfraProviderModal', {
+                                            infraProvider: provider
+                                        })
+                                    }
                                     size="input-xs"
                                     variant="soft"
                                 >
@@ -185,10 +181,9 @@ export function MobileProvidersListWidget(props: IProps) {
 
                     {provider.billingNodes.length > 0 && (
                         <SectionCard.Section>
-                            <OverflowList
+                            <SingleRowOverflowList
                                 data={provider.billingNodes}
                                 gap={4}
-                                maxRows={1}
                                 maxVisibleItems={3}
                                 renderItem={(node) => (
                                     <Badge

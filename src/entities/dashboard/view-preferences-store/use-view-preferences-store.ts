@@ -6,6 +6,7 @@ import {
     HOSTS_VIEW_MODE,
     IActions,
     IState,
+    LAYOUT_STYLE,
     NODES_VIEW_MODE
 } from './interfaces'
 
@@ -14,7 +15,8 @@ const initialState: IState = {
     nodesActiveTag: null,
     configProfilesViewMode: CONFIG_PROFILES_VIEW_MODE.PROFILES,
     hostsViewMode: HOSTS_VIEW_MODE.CARDS,
-    hostsActiveTag: null
+    hostsActiveTag: null,
+    layoutStyle: LAYOUT_STYLE.COMPACT
 }
 
 export const useViewPreferencesStore = create<IActions & IState>()(
@@ -28,6 +30,13 @@ export const useViewPreferencesStore = create<IActions & IState>()(
                     setConfigProfilesViewMode: (mode) => set({ configProfilesViewMode: mode }),
                     setHostsViewMode: (mode) => set({ hostsViewMode: mode }),
                     setHostsActiveTag: (tag) => set({ hostsActiveTag: tag }),
+                    toggleLayoutStyle: () =>
+                        set((state) => ({
+                            layoutStyle:
+                                state.layoutStyle === LAYOUT_STYLE.SIDEBAR
+                                    ? LAYOUT_STYLE.COMPACT
+                                    : LAYOUT_STYLE.SIDEBAR
+                        })),
                     resetState: () => set({ ...initialState })
                 }
             }),
@@ -42,7 +51,8 @@ export const useViewPreferencesStore = create<IActions & IState>()(
                 nodesActiveTag: state.nodesActiveTag,
                 configProfilesViewMode: state.configProfilesViewMode,
                 hostsViewMode: state.hostsViewMode,
-                hostsActiveTag: state.hostsActiveTag
+                hostsActiveTag: state.hostsActiveTag,
+                layoutStyle: state.layoutStyle
             }),
             migrate: () => initialState
         }
@@ -57,3 +67,6 @@ export const useViewPreferencesStoreActions = () =>
     useViewPreferencesStore((state) => state.actions)
 export const useHostsViewMode = () => useViewPreferencesStore((state) => state.hostsViewMode)
 export const useHostsActiveTag = () => useViewPreferencesStore((state) => state.hostsActiveTag)
+export const useLayoutStyle = () => useViewPreferencesStore((state) => state.layoutStyle)
+export const useToggleLayoutStyleAction = () =>
+    useViewPreferencesStore((state) => state.actions.toggleLayoutStyle)
