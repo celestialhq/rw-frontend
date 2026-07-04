@@ -69,7 +69,7 @@ export const CreateConfigProfileContent = (props: IProps) => {
             const result = CreateConfigProfileCommand.RequestBodySchema.omit({
                 config: true
             }).safeParse({ name: value })
-            return result.success ? null : result.error.errors[0]?.message
+            return result.success ? null : result.error.issues[0]?.message
         }
     })
     const { mutate: createConfigProfile, isPending } = useCreateConfigProfile({

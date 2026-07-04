@@ -28,7 +28,7 @@ export const CreateInternalSquadContent = (props: IProps) => {
             const result = CreateInternalSquadCommand.RequestBodySchema.omit({
                 inbounds: true
             }).safeParse({ name: value })
-            return result.success ? null : result.error.errors[0]?.message
+            return result.success ? null : result.error.issues[0]?.message
         }
     })
     const { mutate: createInternalSquad, isPending } = useCreateInternalSquad({

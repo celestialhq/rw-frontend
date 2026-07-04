@@ -12,10 +12,9 @@ import {
     Text,
     Textarea
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { modals } from '@mantine/modals'
 import { BulkNodesUpdateCommand, GetNodesCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { motion } from 'motion/react'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -58,7 +57,7 @@ export const BulkUpdateNodesModalContent = (props: IProps) => {
     const form = useForm<BulkNodesUpdateCommand.RequestBody>({
         name: 'bulk-update-nodes-form',
         mode: 'uncontrolled',
-        validate: zodResolver(BulkNodesUpdateCommand.RequestBodySchema),
+        validate: schemaResolver(BulkNodesUpdateCommand.RequestBodySchema),
         initialValues: {
             uuids,
             fields: {

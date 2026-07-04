@@ -1,8 +1,7 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Drawer } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { UpdateHostCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiListChecks } from 'react-icons/pi'
@@ -61,7 +60,7 @@ export const EditHostDrawer = NiceModal.create((props: IProps) => {
                 form.setFieldValue('vlessRouteId', null)
             }
         },
-        validate: zodResolver(UpdateHostCommand.RequestBodySchema.omit({ uuid: true }))
+        validate: schemaResolver(UpdateHostCommand.RequestBodySchema.omit({ uuid: true }))
     })
 
     const { mutate: updateHost, isPending: isUpdateHostPending } = useUpdateHost({

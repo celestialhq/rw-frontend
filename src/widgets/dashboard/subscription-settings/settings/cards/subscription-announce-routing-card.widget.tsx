@@ -1,7 +1,6 @@
 import { Button, Group, px, Stack, Textarea } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { UpdateSubscriptionSettingsCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useTranslation } from 'react-i18next'
 import { PiDeviceMobile, PiGear } from 'react-icons/pi'
 
@@ -22,7 +21,7 @@ export const SubscriptionAnnounceRoutingCardWidget = (props: IProps) => {
     const form = useForm<UpdateSubscriptionSettingsCommand.RequestBody>({
         name: 'subscription-announce-routing-card-form',
         mode: 'uncontrolled',
-        validate: zodResolver(UpdateSubscriptionSettingsCommand.RequestBodySchema),
+        validate: schemaResolver(UpdateSubscriptionSettingsCommand.RequestBodySchema),
         initialValues: {
             uuid: subscriptionSettings.uuid,
             happAnnounce: subscriptionSettings.happAnnounce,

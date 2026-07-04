@@ -30,7 +30,7 @@ export const CreateSubpageConfigContent = (props: IProps) => {
             const result = CreateSubpageConfigCommand.RequestBodySchema.safeParse({
                 name: value
             })
-            return result.success ? null : result.error.errors[0]?.message
+            return result.success ? null : result.error.issues[0]?.message
         }
     })
 

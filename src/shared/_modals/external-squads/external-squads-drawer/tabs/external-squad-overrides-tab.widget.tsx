@@ -110,7 +110,7 @@ export function ExternalSquadOverridesTab<T extends Record<string, unknown>>(pro
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const newErrors: Record<string, string> = {}
-                error.errors.forEach((err) => {
+                error.issues.forEach((err) => {
                     if (err.path.length > 0) {
                         const fieldName = err.path[0] as string
                         newErrors[fieldName] = err.message

@@ -1,8 +1,7 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Group, Modal, Stack } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { BulkAllUpdateUsersCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { motion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
 import { PiFloppyDiskDuotone } from 'react-icons/pi'
@@ -72,7 +71,7 @@ export const BulkAllUsersUpdateModal = NiceModal.create(() => {
             tag: undefined,
             hwidDeviceLimit: undefined
         },
-        validate: zodResolver(
+        validate: schemaResolver(
             BulkAllUpdateUsersCommand.RequestBodySchema.omit({
                 expireAt: true,
                 telegramId: true,

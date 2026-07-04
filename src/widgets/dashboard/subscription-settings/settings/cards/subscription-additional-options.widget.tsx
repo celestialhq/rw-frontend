@@ -1,7 +1,6 @@
 import { Button, Group, Stack, Switch } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { UpdateSubscriptionSettingsCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useTranslation } from 'react-i18next'
 import { PiGear } from 'react-icons/pi'
 
@@ -21,7 +20,7 @@ export const SubscriptionAdditionalOptionsWidget = (props: IProps) => {
     const form = useForm<UpdateSubscriptionSettingsCommand.RequestBody>({
         name: 'subscription-additional-options-form',
         mode: 'uncontrolled',
-        validate: zodResolver(UpdateSubscriptionSettingsCommand.RequestBodySchema),
+        validate: schemaResolver(UpdateSubscriptionSettingsCommand.RequestBodySchema),
         initialValues: {
             uuid: subscriptionSettings.uuid,
             serveJsonAtBaseSubscription: subscriptionSettings.serveJsonAtBaseSubscription,

@@ -1,11 +1,10 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Modal, NumberInput, Stack } from '@mantine/core'
 import { DatePickerInput } from '@mantine/dates'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 import { CreateInfraBillingRecordCommand } from '@remnawave/backend-contract'
 import dayjs from 'dayjs'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useTranslation } from 'react-i18next'
 import { HiCalendar, HiCurrencyDollar } from 'react-icons/hi'
 import { TbInvoice } from 'react-icons/tb'
@@ -27,7 +26,7 @@ export const CreateInfraBillingRecordModal = NiceModal.create(() => {
     const form = useForm<CreateInfraBillingRecordCommand.RequestBody>({
         name: 'create-infra-billing-record-form',
         mode: 'uncontrolled',
-        validate: zodResolver(
+        validate: schemaResolver(
             CreateInfraBillingRecordCommand.RequestBodySchema.omit({
                 billedAt: true,
                 providerUuid: true

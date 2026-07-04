@@ -1,8 +1,7 @@
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { UpdateNodeCommand } from '@remnawave/backend-contract'
 import { NodeDetailsCardWidget } from '@widgets/dashboard/nodes/node-details-card'
 import { NodeSystemCardWidget } from '@widgets/dashboard/nodes/node-system-card'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { motion } from 'motion/react'
 import { useEffect, useRef } from 'react'
 
@@ -36,7 +35,7 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
                 form.setFieldValue('proxyUrl', null)
             }
         },
-        validate: zodResolver(UpdateNodeCommand.RequestBodySchema.omit({ uuid: true }))
+        validate: schemaResolver(UpdateNodeCommand.RequestBodySchema.omit({ uuid: true }))
     })
 
     const { data: secretKey } = useGetNodeSecretKey()
@@ -53,7 +52,14 @@ export const EditNodeByUuidModalContent = (props: IProps) => {
 
     const { mutate: updateNode, isPending: isUpdateNodePending } = useUpdateNode({
         mutationFns: {
-            onSuccess: async () => {
+            onSuccess: async (data) => {
+                queryClient.setQueryData(
+                    nodesQueryKeys.getNode({
+                        uuid: nodeUuid
+                    }).queryKey,
+                    data
+                )
+
                 queryClient.refetchQueries({
                     queryKey: nodesQueryKeys.getAllNodes.queryKey
                 })

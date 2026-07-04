@@ -72,7 +72,7 @@ export const CreateApiTokenContentWidget = ({ isMobile }: IProps) => {
         validateOnChange: true,
         validate: (value) => {
             const result = CreateApiTokenCommand.RequestBodySchema.shape.name.safeParse(value)
-            return result.success ? null : result.error.errors[0]?.message
+            return result.success ? null : result.error.issues[0]?.message
         }
     })
 

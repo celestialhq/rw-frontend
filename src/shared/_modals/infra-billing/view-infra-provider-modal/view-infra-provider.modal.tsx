@@ -1,8 +1,7 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Modal, Stack, TextInput } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { GetInfraProvidersCommand, UpdateInfraProviderCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbServer } from 'react-icons/tb'
@@ -28,7 +27,7 @@ export const ViewInfraProviderModal = NiceModal.create((props: IProps) => {
     const form = useForm<UpdateInfraProviderCommand.RequestBody>({
         name: 'edit-infra-provider-form',
         mode: 'uncontrolled',
-        validate: zodResolver(UpdateInfraProviderCommand.RequestBodySchema)
+        validate: schemaResolver(UpdateInfraProviderCommand.RequestBodySchema)
     })
 
     const { mutate: updateInfraProvider, isPending: isUpdateInfraProviderPending } =

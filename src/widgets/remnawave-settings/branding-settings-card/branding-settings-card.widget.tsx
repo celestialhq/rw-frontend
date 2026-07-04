@@ -10,13 +10,12 @@ import {
     Text,
     TextInput
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { modals } from '@mantine/modals'
 import {
     GetRemnawaveSettingsCommand,
     UpdateRemnawaveSettingsCommand
 } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useTranslation } from 'react-i18next'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
 import { TbAlertCircle, TbLink, TbStar } from 'react-icons/tb'
@@ -51,7 +50,7 @@ export const BrandingSettingsCardWidget = (props: IProps) => {
                 form.setFieldValue('brandingSettings.logoUrl', null)
             }
         },
-        validate: zodResolver(
+        validate: schemaResolver(
             UpdateRemnawaveSettingsCommand.RequestBodySchema.pick({
                 brandingSettings: true
             })

@@ -1,7 +1,6 @@
 import { ActionIcon, Alert, Button, Card, Group, Stack, TextInput } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { UpdateSubscriptionSettingsCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiChatsCircle, PiInfo, PiPlus, PiTrash } from 'react-icons/pi'
@@ -39,7 +38,7 @@ export const SubscriptionResponseHeadersCardWidget = (props: IProps) => {
     const form = useForm<UpdateSubscriptionSettingsCommand.RequestBody>({
         name: 'subscription-user-remarks-card-form',
         mode: 'uncontrolled',
-        validate: zodResolver(UpdateSubscriptionSettingsCommand.RequestBodySchema),
+        validate: schemaResolver(UpdateSubscriptionSettingsCommand.RequestBodySchema),
         initialValues: {
             uuid: subscriptionSettings.uuid,
             profileTitle: subscriptionSettings.profileTitle,

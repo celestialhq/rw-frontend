@@ -26,7 +26,7 @@ export const CreateExternalSquadContent = (props: IProps) => {
         validateOnChange: true,
         validate: (value) => {
             const result = CreateExternalSquadCommand.RequestBodySchema.safeParse({ name: value })
-            return result.success ? null : result.error.errors[0]?.message
+            return result.success ? null : result.error.issues[0]?.message
         }
     })
 

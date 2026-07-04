@@ -62,6 +62,7 @@ export const useGetStatsUserUsage = createGetQueryHook({
     endpoint: GetStatsUserUsageCommand.TSQ_url,
     responseSchema: GetStatsUserUsageCommand.ResponseSchema,
     requestQuerySchema: GetStatsUserUsageCommand.RequestQuerySchema,
+    routeParamsSchema: GetStatsUserUsageCommand.RequestParamSchema,
     getQueryKey: ({ route, query }) =>
         bandwidthStatsQueryKeys.getStatsUserUsageCommand({ ...route!, ...query! }).queryKey,
     rQueryParams: {
@@ -74,6 +75,7 @@ export const useGetStatsNodeUsersUsage = createGetQueryHook({
     endpoint: GetStatsNodeUsersUsageCommand.TSQ_url,
     responseSchema: GetStatsNodeUsersUsageCommand.ResponseSchema,
     requestQuerySchema: GetStatsNodeUsersUsageCommand.RequestQuerySchema,
+    routeParamsSchema: GetStatsNodeUsersUsageCommand.RequestParamSchema,
     getQueryKey: ({ route, query }) =>
         bandwidthStatsQueryKeys.getStatsNodeUsersUsageCommand({ ...route!, ...query! }).queryKey,
     rQueryParams: {

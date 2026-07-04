@@ -2,11 +2,10 @@ import type { editor } from 'monaco-editor'
 
 import { MonacoSetupSnippetsFeature } from '@features/dashboard/config-profiles/monaco-setup'
 import { Button, Code, Group, Paper, Stack, TextInput } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { modals } from '@mantine/modals'
 import { Editor, Monaco, useMonaco } from '@monaco-editor/react'
 import { CreateSnippetCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -29,7 +28,7 @@ export const CreateSnippetModal = () => {
         name: 'create-snippet-form',
         mode: 'uncontrolled',
         validateInputOnBlur: true,
-        validate: zodResolver(CreateSnippetCommand.RequestBodySchema),
+        validate: schemaResolver(CreateSnippetCommand.RequestBodySchema),
         initialValues: {
             name: '',
             snippet: []
