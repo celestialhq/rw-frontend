@@ -1,26 +1,18 @@
+import { notifications } from '@mantine/notifications'
 import {
+    CloudflareAccessCommand,
     LoginCommand,
     OAuth2AuthorizeCommand,
     OAuth2CallbackCommand,
     RegisterCommand,
     VerifyPasskeyAuthenticationCommand
 } from '@remnawave/backend-contract'
-import { notifications } from '@mantine/notifications'
-import { z } from 'zod'
 
 import { setToken } from '@entities/auth/session-store'
 
 import { createMutationHook } from '../../tsq-helpers'
 
 export const AUTH_QUERY_KEY = 'auth'
-
-const CloudflareAccessResponseSchema = z.object({
-    response: z.object({
-        accessToken: z.string()
-    })
-})
-
-const CloudflareAccessRequestSchema = z.object({})
 
 export const useLogin = createMutationHook({
     endpoint: LoginCommand.TSQ_url,
@@ -94,10 +86,10 @@ export const useOAuth2Authorize = createMutationHook({
 })
 
 export const useCloudflareAccessLogin = createMutationHook({
-    endpoint: '/api/auth/cloudflare-access',
-    bodySchema: CloudflareAccessRequestSchema,
-    responseSchema: CloudflareAccessResponseSchema,
-    requestMethod: 'post',
+    endpoint: CloudflareAccessCommand.TSQ_url,
+    bodySchema: CloudflareAccessCommand.RequestSchema,
+    responseSchema: CloudflareAccessCommand.ResponseSchema,
+    requestMethod: CloudflareAccessCommand.endpointDetails.REQUEST_METHOD,
     rMutationParams: {
         onSuccess: (data) => {
             setToken({ token: data.accessToken })

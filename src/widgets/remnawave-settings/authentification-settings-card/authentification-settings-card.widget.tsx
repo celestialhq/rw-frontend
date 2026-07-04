@@ -11,35 +11,33 @@ import {
     TextInput,
     ThemeIcon
 } from '@mantine/core'
+import { useForm } from '@mantine/form'
+import { useDisclosure } from '@mantine/hooks'
+import { modals } from '@mantine/modals'
 import {
     GetRemnawaveSettingsCommand,
+    TCloudflareAccessSettings,
     UpdateRemnawaveSettingsCommand
 } from '@remnawave/backend-contract'
-import { TbAlertCircle, TbFingerprint, TbKey, TbPassword, TbServer } from 'react-icons/tb'
-import { BiLogoGithub, BiLogoTelegram } from 'react-icons/bi'
-import { SiCloudflare, SiKeycloak } from 'react-icons/si'
-import { zodResolver } from 'mantine-form-zod-resolver'
-import { PiGlobe, PiKey } from 'react-icons/pi'
-import { useDisclosure } from '@mantine/hooks'
-import { useTranslation } from 'react-i18next'
-import { modals } from '@mantine/modals'
-import { useForm } from '@mantine/form'
-import { TFunction } from 'i18next'
-
-import {
-    TCloudflareAccessSettings,
-    UpdateRemnawaveSettingsRequestSchema,
-    useUpdateRemnawaveSettings
-} from '@shared/api/hooks/remnawave-settings/remnawave-settings.mutation.hooks'
 import { PasskeysDrawerComponent } from '@widgets/remnawave-settings/passkeys-settings-drawer/passkeys-drawer.component'
-import { HelpActionIconShared, THelpDrawerAvailableScreen } from '@shared/ui/help-drawer'
+import { TFunction } from 'i18next'
+import { zodResolver } from 'mantine-form-zod-resolver'
+import { useTranslation } from 'react-i18next'
+import { BiLogoGithub, BiLogoTelegram } from 'react-icons/bi'
+import { PiGlobe, PiKey } from 'react-icons/pi'
+import { SiCloudflare, SiKeycloak } from 'react-icons/si'
+import { TbAlertCircle, TbFingerprint, TbKey, TbPassword, TbServer } from 'react-icons/tb'
+
+import { queryClient } from '@shared/api'
+import { QueryKeys } from '@shared/api/hooks/keys-factory'
+import { useUpdateRemnawaveSettings } from '@shared/api/hooks/remnawave-settings/remnawave-settings.mutation.hooks'
 import { CheckboxCardShared } from '@shared/ui/checkbox-card/checkbox-card.shared'
+import { HelpActionIconShared, THelpDrawerAvailableScreen } from '@shared/ui/help-drawer'
+import { PocketidLogo, YandexLogo } from '@shared/ui/logos'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { SettingsCardShared } from '@shared/ui/settings-card'
-import { PocketidLogo, YandexLogo } from '@shared/ui/logos'
-import { QueryKeys } from '@shared/api/hooks/keys-factory'
+import { TagInputPill } from '@shared/ui/tag-input-pill'
 import { handleFormErrors } from '@shared/utils/misc'
-import { queryClient } from '@shared/api'
 
 interface IProps {
     cloudflareAccessSettings?: null | TCloudflareAccessSettings
@@ -202,15 +200,11 @@ export const AuthentificationSettingsCardWidget = (props: IProps) => {
     const { t } = useTranslation()
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
 
-    const form = useForm<
-        NonNullable<UpdateRemnawaveSettingsCommand.Request> & {
-            cloudflareAccessSettings: TCloudflareAccessSettings
-        }
-    >({
+    const form = useForm<NonNullable<UpdateRemnawaveSettingsCommand.Request>>({
         name: 'auth-settings',
         mode: 'uncontrolled',
         validate: zodResolver(
-            UpdateRemnawaveSettingsRequestSchema.pick({
+            UpdateRemnawaveSettingsCommand.RequestSchema.pick({
                 passkeySettings: true,
                 passwordSettings: true,
                 oauth2Settings: true,
@@ -365,6 +359,9 @@ export const AuthentificationSettingsCardWidget = (props: IProps) => {
                                         placeholder={fieldConfig.placeholder}
                                         splitChars={[',', ' ', ';']}
                                         {...form.getInputProps(formPath)}
+                                        renderPill={({ value, onRemove }) => (
+                                            <TagInputPill onRemove={onRemove} value={value} />
+                                        )}
                                     />
                                 )
                             }
@@ -604,6 +601,9 @@ export const AuthentificationSettingsCardWidget = (props: IProps) => {
                                             {...form.getInputProps(
                                                 'cloudflareAccessSettings.allowedEmails'
                                             )}
+                                            renderPill={({ value, onRemove }) => (
+                                                <TagInputPill onRemove={onRemove} value={value} />
+                                            )}
                                         />
 
                                         <TagsInput
@@ -617,6 +617,9 @@ export const AuthentificationSettingsCardWidget = (props: IProps) => {
                                             splitChars={[',', ' ', ';']}
                                             {...form.getInputProps(
                                                 'cloudflareAccessSettings.allowedDomains'
+                                            )}
+                                            renderPill={({ value, onRemove }) => (
+                                                <TagInputPill onRemove={onRemove} value={value} />
                                             )}
                                         />
                                     </Stack>
