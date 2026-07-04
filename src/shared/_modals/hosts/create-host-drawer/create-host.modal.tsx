@@ -1,9 +1,8 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Drawer } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 import { CreateHostCommand, SECURITY_LAYERS } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiListChecks } from 'react-icons/pi'
@@ -49,7 +48,7 @@ export const CreateHostDrawer = NiceModal.create(() => {
                 form.setFieldValue('vlessRouteId', null)
             }
         },
-        validate: zodResolver(CreateHostCommand.RequestBodySchema),
+        validate: schemaResolver(CreateHostCommand.RequestBodySchema),
 
         initialValues: {
             securityLayer: SECURITY_LAYERS.DEFAULT,

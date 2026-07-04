@@ -1,10 +1,9 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Code, Drawer, List, Stack, Text } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { modals } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
 import { UpdateManyHostsCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiListChecks } from 'react-icons/pi'
@@ -55,7 +54,7 @@ export const EditManyHostsDrawer = NiceModal.create((props: IProps) => {
                 form.setFieldValue('vlessRouteId', null)
             }
         },
-        validate: zodResolver(UpdateManyHostsCommand.RequestBodySchema.omit({ uuids: true }))
+        validate: schemaResolver(UpdateManyHostsCommand.RequestBodySchema.omit({ uuids: true }))
     })
 
     const { mutate: updateManyHosts, isPending: isUpdateManyHostsPending } = useUpdateManyHosts({

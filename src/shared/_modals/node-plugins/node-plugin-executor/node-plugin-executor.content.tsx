@@ -47,7 +47,7 @@ const UNBLOCK_PLACEHOLDER = `192.168.1.1
 10.0.0.1
 172.16.0.1`
 
-const ipSchema = z.string().ip({ message: 'Invalid IP address' })
+const ipSchema = z.union([z.ipv4(), z.ipv6()])
 
 export const NodePluginExecutorContent = (props: IProps) => {
     const { nodes, onClose } = props
@@ -124,7 +124,7 @@ export const NodePluginExecutorContent = (props: IProps) => {
 
             const result = ipSchema.safeParse(ip)
             if (!result.success) {
-                errors.push(`Line ${i + 1}: "${ip}" — ${result.error.errors[0].message}`)
+                errors.push(`Line ${i + 1}: "${ip}" — ${result.error.issues[0].message}`)
             } else {
                 entries.push({ ip, timeout: Number.isNaN(timeout) ? 0 : timeout })
             }
@@ -144,7 +144,7 @@ export const NodePluginExecutorContent = (props: IProps) => {
         lines.forEach((line, i) => {
             const result = ipSchema.safeParse(line)
             if (!result.success) {
-                errors.push(`Line ${i + 1}: "${line}" — ${result.error.errors[0].message}`)
+                errors.push(`Line ${i + 1}: "${line}" — ${result.error.issues[0].message}`)
             } else {
                 ips.push(line)
             }

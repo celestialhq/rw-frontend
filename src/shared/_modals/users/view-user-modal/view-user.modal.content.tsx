@@ -3,15 +3,15 @@ import { ResetUsageUserFeature } from '@features/ui/dashboard/users/reset-usage-
 import { RevokeSubscriptionUserFeature } from '@features/ui/dashboard/users/revoke-subscription-user'
 import { ToggleUserStatusButtonFeature } from '@features/ui/dashboard/users/toggle-user-status-button'
 import { Button, Group, Menu, px, Stack } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { UpdateUserCommand } from '@remnawave/backend-contract'
 import dayjs from 'dayjs'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { motion } from 'motion/react'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiFloppyDiskDuotone } from 'react-icons/pi'
 import { TbDots } from 'react-icons/tb'
+import { z } from 'zod'
 
 import { queryClient } from '@shared/api'
 import {
@@ -83,8 +83,8 @@ export const ViewUserModalContent = (props: IProps) => {
                 form.setFieldValue('email', null)
             }
         },
-        validate: zodResolver(
-            UpdateUserCommand.RequestBodySchema._def.schema.omit({
+        validate: schemaResolver(
+            z.object(UpdateUserCommand.RequestBodySchema.shape).omit({
                 expireAt: true,
                 hwidDeviceLimit: true
             })

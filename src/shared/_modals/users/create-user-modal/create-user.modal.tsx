@@ -1,9 +1,8 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Group, Modal, Stack } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { CreateUserCommand, USERS_STATUS } from '@remnawave/backend-contract'
 import dayjs from 'dayjs'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { motion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
 import { PiFloppyDiskDuotone } from 'react-icons/pi'
@@ -95,7 +94,7 @@ export const CreateUserModal = NiceModal.create(() => {
                 form.setFieldValue('email', null)
             }
         },
-        validate: zodResolver(
+        validate: schemaResolver(
             CreateUserCommand.RequestBodySchema.omit({
                 expireAt: true,
                 hwidDeviceLimit: true

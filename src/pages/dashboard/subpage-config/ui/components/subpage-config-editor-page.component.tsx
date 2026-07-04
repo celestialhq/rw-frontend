@@ -9,7 +9,7 @@ import {
     ThemeIcon,
     Tooltip
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { modals } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
 import { GetSubpageConfigCommand } from '@remnawave/backend-contract'
@@ -32,7 +32,6 @@ import {
     showSubpageConfigSavedModal,
     showValidationErrorsModal
 } from '@widgets/dashboard/subpage-configs/subpage-config-editor/modals'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiCheck, PiCopy } from 'react-icons/pi'
@@ -72,7 +71,7 @@ export const SubpageConfigEditorPageComponent = (props: Props) => {
     const form = useForm<TSubscriptionPageRawConfig>({
         mode: 'uncontrolled',
         initialValues: config.config as TSubscriptionPageRawConfig,
-        validate: zodResolver(SubscriptionPageRawConfigSchema)
+        validate: schemaResolver(SubscriptionPageRawConfigSchema)
     })
 
     const { mutate: updateSubscriptionPageConfig, isPending: isUpdatingSubscriptionPageConfig } =
@@ -195,7 +194,7 @@ export const SubpageConfigEditorPageComponent = (props: Props) => {
             const validatedConfig = SubscriptionPageRawConfigSchema.safeParse(configData)
 
             if (!validatedConfig.success) {
-                const errors = validatedConfig.error.errors.map((err) => ({
+                const errors = validatedConfig.error.issues.map((err) => ({
                     path: err.path.join('.'),
                     message: err.message
                 }))

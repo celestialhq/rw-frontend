@@ -34,7 +34,7 @@ export const CreateTemplateContent = (props: IProps) => {
             const result = CreateSubscriptionTemplateCommand.RequestBodySchema.omit({
                 templateType: true
             }).safeParse({ name: value, templateType })
-            return result.success ? null : result.error.errors[0]?.message
+            return result.success ? null : result.error.issues[0]?.message
         }
     })
     const { mutate: createTemplate, isPending } = useCreateSubscriptionTemplate({

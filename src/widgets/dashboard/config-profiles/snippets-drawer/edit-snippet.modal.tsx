@@ -2,12 +2,11 @@ import type { editor } from 'monaco-editor'
 
 import { MonacoSetupSnippetsFeature } from '@features/dashboard/config-profiles/monaco-setup'
 import { Button, Code, Group, Paper, Stack } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { modals } from '@mantine/modals'
 import { Editor, Monaco, useMonaco } from '@monaco-editor/react'
 import { UpdateSnippetCommand } from '@remnawave/backend-contract'
 import { t } from 'i18next'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -46,7 +45,7 @@ export const EditSnippetModal = (props: IProps) => {
         name: 'edit-snippet-form',
         mode: 'uncontrolled',
         validateInputOnBlur: true,
-        validate: zodResolver(UpdateSnippetCommand.RequestBodySchema),
+        validate: schemaResolver(UpdateSnippetCommand.RequestBodySchema),
         initialValues: {
             name: snippet.name,
             snippet: snippet.snippet as unknown as UpdateSnippetCommand.RequestBody['snippet']

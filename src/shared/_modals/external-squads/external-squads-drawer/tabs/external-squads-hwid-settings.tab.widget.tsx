@@ -85,7 +85,7 @@ export const ExternalSquadsHwidSettingsTabWidget = (props: IProps) => {
         const validatetionResult = HwidSettingsSchema.safeParse(hwidSettings)
         if (!validatetionResult.success) {
             const newErrors: Record<string, string> = {}
-            validatetionResult.error.errors.forEach((err) => {
+            validatetionResult.error.issues.forEach((err) => {
                 if (err.path.length > 0) {
                     const fieldName = err.path[0] as string
                     newErrors[fieldName] = err.message

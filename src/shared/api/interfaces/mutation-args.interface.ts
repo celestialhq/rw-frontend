@@ -1,17 +1,27 @@
-/* eslint-disable perfectionist/sort-interfaces */
-
 import { z } from 'zod'
 
 import { EnhancedMutationParams } from './enhanced-mutations-params.interface'
 
-export type MutationResponse<ResponseSchema extends undefined | z.ZodType> =
-    ResponseSchema extends z.ZodType ? z.infer<ResponseSchema>['response'] : void
+export type MutationResponse<ResponseSchema extends undefined | z.ZodType<{ response: unknown }>> =
+    ResponseSchema extends z.ZodType<{ response: unknown }>
+        ? z.infer<ResponseSchema>['response']
+        : void
+
+export interface MutationVariables<
+    RouteParamsSchema extends z.ZodType<Record<string, unknown>>,
+    RequestQuerySchema extends z.ZodType<Record<string, unknown>>,
+    BodySchema extends z.ZodType
+> {
+    query?: z.infer<RequestQuerySchema>
+    route?: z.infer<RouteParamsSchema>
+    variables?: z.infer<BodySchema>
+}
 
 export interface CreateMutationHookArgs<
-    RouteParamsSchema extends z.ZodType,
-    RequestQuerySchema extends z.ZodType,
+    RouteParamsSchema extends z.ZodType<Record<string, unknown>>,
+    RequestQuerySchema extends z.ZodType<Record<string, unknown>>,
     BodySchema extends z.ZodType,
-    ResponseSchema extends undefined | z.ZodType
+    ResponseSchema extends undefined | z.ZodType<{ response: unknown }>
 > {
     /** The endpoint for the POST request */
     endpoint: string
@@ -41,7 +51,7 @@ export interface CreateMutationHookArgs<
     rMutationParams?: EnhancedMutationParams<
         MutationResponse<ResponseSchema>,
         Error,
-        z.infer<BodySchema>,
+        MutationVariables<RouteParamsSchema, RequestQuerySchema, BodySchema>,
         unknown
     >
 

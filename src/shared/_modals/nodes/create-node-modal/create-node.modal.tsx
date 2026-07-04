@@ -1,8 +1,7 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Group, Modal, Progress, Stack, Transition } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { CreateNodeCommand } from '@remnawave/backend-contract'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbCpu } from 'react-icons/tb'
@@ -41,7 +40,7 @@ export const CreateNodeModal = NiceModal.create(() => {
     const form = useForm<CreateNodeCommand.RequestBody>({
         name: 'create-node-form',
         mode: 'uncontrolled',
-        validate: zodResolver(CreateNodeCommand.RequestBodySchema)
+        validate: schemaResolver(CreateNodeCommand.RequestBodySchema)
     })
 
     const { mutate: createNode, isPending: isCreateNodePending } = useCreateNode({

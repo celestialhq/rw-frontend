@@ -11,14 +11,13 @@ import {
     TextInput,
     ThemeIcon
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { modals } from '@mantine/modals'
 import {
     GetRemnawaveSettingsCommand,
     UpdateRemnawaveSettingsCommand
 } from '@remnawave/backend-contract'
 import { TFunction } from 'i18next'
-import { zodResolver } from 'mantine-form-zod-resolver'
 import { useTranslation } from 'react-i18next'
 import { BiLogoGithub, BiLogoTelegram } from 'react-icons/bi'
 import { PiGlobe, PiKey } from 'react-icons/pi'
@@ -186,7 +185,7 @@ export const AuthentificationSettingsCardWidget = (props: IProps) => {
     const form = useForm<NonNullable<UpdateRemnawaveSettingsCommand.RequestBody>>({
         name: 'auth-settings',
         mode: 'uncontrolled',
-        validate: zodResolver(
+        validate: schemaResolver(
             UpdateRemnawaveSettingsCommand.RequestBodySchema.pick({
                 passkeySettings: true,
                 passwordSettings: true,

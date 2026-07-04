@@ -6,10 +6,10 @@ import { createUrl, handleRequestError } from '../helpers'
 import { CreateMutationHookArgs, MutationResponse } from '../interfaces'
 
 export function createMutationHook<
-    RouteParamsSchema extends z.ZodType,
-    RequestQuerySchema extends z.ZodType,
+    RouteParamsSchema extends z.ZodType<Record<string, unknown>>,
+    RequestQuerySchema extends z.ZodType<Record<string, unknown>>,
     BodySchema extends z.ZodType,
-    ResponseSchema extends undefined | z.ZodType = undefined
+    ResponseSchema extends undefined | z.ZodType<{ response: unknown }> = undefined
 >({
     endpoint,
     requestMethod,
