@@ -170,6 +170,9 @@ export function UserTableWidget() {
             density: 'xxs',
             pagination: DEFAULT_PAGINATION_STATE
         },
+        mantineFilterTextInputProps: () => ({
+            placeholder: 'Filter by...'
+        }),
         mantineTopToolbarProps: {
             style: {
                 '--mrt-base-background-color': '#1b2027'
