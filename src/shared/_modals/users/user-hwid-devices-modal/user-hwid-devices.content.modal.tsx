@@ -82,7 +82,10 @@ export const UserHwidDevicesContentModal = (props: IProps) => {
                 confirm: t('common.delete'),
                 cancel: t('common.cancel')
             },
-            confirmProps: { color: 'red' },
+            confirmProps: { color: 'red', variant: 'soft' },
+            cancelProps: {
+                variant: 'subtle'
+            },
             centered: true,
             onConfirm: () => {
                 deleteDevice({
@@ -103,7 +106,10 @@ export const UserHwidDevicesContentModal = (props: IProps) => {
                 confirm: t('common.delete'),
                 cancel: t('common.cancel')
             },
-            confirmProps: { color: 'red' },
+            confirmProps: { color: 'red', variant: 'soft' },
+            cancelProps: {
+                variant: 'subtle'
+            },
             centered: true,
             onConfirm: () => {
                 deleteAllDevices({

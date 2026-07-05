@@ -40,7 +40,10 @@ export function ConfigProfilesGridWidget(props: IProps) {
                 confirm: t('common.delete'),
                 cancel: t('common.cancel')
             },
-            confirmProps: { color: 'red' },
+            confirmProps: { color: 'red', variant: 'soft' },
+            cancelProps: {
+                variant: 'subtle'
+            },
             centered: true,
             onConfirm: () => {
                 deleteConfigProfile({

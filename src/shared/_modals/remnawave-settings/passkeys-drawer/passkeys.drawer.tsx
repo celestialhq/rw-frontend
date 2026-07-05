@@ -78,15 +78,15 @@ export const PasskeysDrawer = NiceModal.create(() => {
 
     const handleDelete = (passkeyId: string) => {
         modals.openConfirmModal({
-            title: t('common.delete'),
+            title: t('common.confirm-action'),
             centered: true,
             children: t('common.confirm-action-description'),
             labels: {
                 confirm: t('common.delete'),
                 cancel: t('common.cancel')
             },
-            cancelProps: { variant: 'subtle', color: 'gray' },
-            confirmProps: { color: 'red' },
+            cancelProps: { variant: 'subtle' },
+            confirmProps: { color: 'red', variant: 'soft' },
             onConfirm: () => {
                 deletePasskey({
                     variables: { id: passkeyId }

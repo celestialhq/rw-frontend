@@ -85,7 +85,7 @@ export const MultiSelectHostsFeature = (props: IProps) => {
 
     const deleteSelectedHosts = () => {
         modals.openConfirmModal({
-            title: t('common.delete'),
+            title: t('common.confirm-action'),
             centered: true,
             children: t('common.confirm-action-description'),
             labels: {
@@ -93,7 +93,11 @@ export const MultiSelectHostsFeature = (props: IProps) => {
                 cancel: t('common.cancel')
             },
             confirmProps: {
-                color: 'red'
+                color: 'red',
+                variant: 'soft'
+            },
+            cancelProps: {
+                variant: 'subtle'
             },
             onConfirm: () => {
                 bulkDeleteHosts({ variables: { uuids: selectedHosts } })
