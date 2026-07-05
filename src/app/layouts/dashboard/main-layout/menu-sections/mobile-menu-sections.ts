@@ -1,10 +1,7 @@
-import { useHotkeys } from '@mantine/hooks'
 import { SUBSCRIPTION_TEMPLATE_TYPE } from '@remnawave/backend-contract'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { HiChartPie, HiServer } from 'react-icons/hi'
 import {
-    PiAirTrafficControlDuotone,
     PiArrowsInCardinalFill,
     PiChartLine,
     PiCpu,
@@ -35,9 +32,6 @@ import { MenuItem } from './interfaces'
 
 export const useMobileMenuSections = (): MenuItem[] => {
     const { t } = useTranslation()
-    const [showDevMenu, setShowDevMenu] = useState(false)
-
-    useHotkeys([['mod+shift+J', () => setShowDevMenu((prev) => !prev)]])
 
     const menuSections: MenuItem[] = [
         {
@@ -248,22 +242,6 @@ export const useMobileMenuSections = (): MenuItem[] => {
             ]
         }
     ]
-
-    if (showDevMenu) {
-        menuSections.unshift({
-            header: 'Dev Menu',
-            id: 'dev-menu',
-            section: [
-                {
-                    name: 'Queues Viewer',
-                    href: '/api/queues',
-                    icon: PiAirTrafficControlDuotone,
-                    id: 'queues-viewer',
-                    newTab: true
-                }
-            ]
-        })
-    }
 
     return menuSections
 }

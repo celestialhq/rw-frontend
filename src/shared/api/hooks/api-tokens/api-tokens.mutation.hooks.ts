@@ -1,5 +1,9 @@
 import { notifications } from '@mantine/notifications'
-import { CreateApiTokenCommand, DeleteApiTokenCommand } from '@remnawave/backend-contract'
+import {
+    CreateApiTokenCommand,
+    DeleteApiTokenCommand,
+    GetOttCommand
+} from '@remnawave/backend-contract'
 
 import { createMutationHook } from '@shared/api/tsq-helpers/create-mutation-hook'
 
@@ -48,4 +52,10 @@ export const useDeleteApiToken = createMutationHook({
             })
         }
     }
+})
+
+export const useIssueOtt = createMutationHook({
+    endpoint: GetOttCommand.TSQ_url,
+    responseSchema: GetOttCommand.ResponseSchema,
+    requestMethod: GetOttCommand.endpointDetails.REQUEST_METHOD
 })
