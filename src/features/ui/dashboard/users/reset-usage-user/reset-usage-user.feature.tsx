@@ -38,6 +38,9 @@ export function ResetUsageUserFeature(props: IProps) {
             labels: { confirm: t('reset-usage-user.feature.reset'), cancel: t('common.cancel') },
             centered: true,
             confirmProps: { color: 'red', variant: 'soft' },
+            cancelProps: {
+                variant: 'subtle'
+            },
             onConfirm: () => handleResetUsage()
         })
 

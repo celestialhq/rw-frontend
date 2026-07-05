@@ -1278,11 +1278,7 @@ export const BaseHostForm = <
                         </Button>
                     </Group>
 
-                    {!!hostUuid && (
-                        <Group>
-                            <DeleteHostFeature hostUuid={hostUuid} />
-                        </Group>
-                    )}
+                    {!!hostUuid && <DeleteHostFeature hostUuid={hostUuid} />}
                 </Group>
             </DrawerFooter>
         </form>

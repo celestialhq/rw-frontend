@@ -169,6 +169,7 @@ export const EditHostDrawer = NiceModal.create((props: IProps) => {
                 internalSquads={internalSquads?.internalSquads ?? []}
                 isSubmitting={isUpdateHostPending}
                 nodes={nodes!}
+                hostUuid={host.uuid}
                 setAdvancedOpened={setAdvancedOpened}
                 subscriptionTemplates={templates?.templates ?? []}
             />
