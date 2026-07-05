@@ -23,6 +23,8 @@ if (isDomainOverride) {
     BASE_DOMAIN = __DOMAIN_BACKEND__
 }
 
+export const getBackendDomain = () => BASE_DOMAIN
+
 export const instance = axios.create({
     baseURL: BASE_DOMAIN,
     headers: {
