@@ -30,14 +30,17 @@ import { AuthProvider } from '@shared/hocs/auth-provider'
 // import { StrictMode } from 'react'
 import { IsMobileProvider } from '@shared/hocs/is-mobile-provider'
 import { LoadingScreen } from '@shared/ui'
+import { ConnectionStatusOverlay } from '@shared/ui/connection-status-overlay'
 
 import i18n from './app/i18n/i18n'
 import { Router } from './app/router/router'
-import { queryClient } from './shared/api'
+import { initConnectionWatchdog, queryClient } from './shared/api'
 
 dayjs.extend(customParseFormat)
 
 polyfillCountryFlagEmojis()
+
+initConnectionWatchdog()
 
 export function App() {
     const isDev = __NODE_ENV__ === 'development'
@@ -72,6 +75,7 @@ export function App() {
                                 <NiceModal.Provider>
                                     <ModalsProvider>
                                         <Notifications position="top-right" />
+                                        <ConnectionStatusOverlay />
                                         <NavigationProgress />
                                         <Suspense
                                             fallback={

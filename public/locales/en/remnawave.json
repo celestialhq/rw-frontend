@@ -1263,6 +1263,10 @@
     "license-acknowledgement": "By continuing you acknowledge that you have read and agree to the <anchor>license terms</anchor>.",
     "accept-button": "I understand and accept"
   },
+  "connection-status-overlay": {
+    "connection-lost": "Connection lost",
+    "reconnecting": "Reconnecting..."
+  },
   "mobile-warning-overlay": {
     "mobile-device-detected": "Mobile Device Detected",
     "description-line-1": "This page contains complex tables that may not be comfortable to use on mobile devices.",
