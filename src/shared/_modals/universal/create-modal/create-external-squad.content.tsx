@@ -67,7 +67,7 @@ export const CreateExternalSquadContent = (props: IProps) => {
                     {...nameField.getInputProps()}
                 />
                 <Group justify="flex-end">
-                    <Button color="gray" onClick={close} variant="subtle">
+                    <Button color="gray" onClick={onClose} variant="subtle">
                         {t('common.cancel')}
                     </Button>
 

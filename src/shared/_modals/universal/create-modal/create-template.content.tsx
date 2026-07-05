@@ -74,7 +74,7 @@ export const CreateTemplateContent = (props: IProps) => {
                     {...nameField.getInputProps()}
                 />
                 <Group justify="flex-end">
-                    <Button color="gray" onClick={close} variant="light">
+                    <Button color="gray" onClick={onClose} variant="light">
                         {t('common.cancel')}
                     </Button>
 
