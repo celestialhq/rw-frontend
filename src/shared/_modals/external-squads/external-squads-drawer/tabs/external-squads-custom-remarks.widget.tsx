@@ -1,4 +1,6 @@
+import { CodeHighlight } from '@mantine/code-highlight'
 import { Button, Card, Group, Paper, Stack, Switch, Text, Transition } from '@mantine/core'
+import { modals } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
 import { GetExternalSquadByUuidCommand } from '@remnawave/backend-contract'
 import { RemarksManager } from '@widgets/dashboard/subscription-settings/settings/cards/managers/remarks-manager.widget'
@@ -9,6 +11,7 @@ import { TbDeviceFloppy, TbDevices2, TbListLetters, TbX } from 'react-icons/tb'
 
 import { queryClient } from '@shared/api'
 import { QueryKeys, useUpdateExternalSquad } from '@shared/api/hooks'
+import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 
 interface IProps {
     externalSquad: GetExternalSquadByUuidCommand.Response['response']
@@ -107,6 +110,23 @@ export const ExternalSquadsCustomRemarksTabWidget = (props: IProps) => {
                             }).queryKey,
                             data
                         )
+                    }
+                },
+                onError: (error) => {
+                    if ((error.cause as unknown as { errorCode: string })?.errorCode === 'A231') {
+                        modals.open({
+                            centered: true,
+                            size: 'auto',
+                            title: (
+                                <BaseOverlayHeader
+                                    iconColor="red"
+                                    IconComponent={TbX}
+                                    iconVariant="soft"
+                                    title={t('subscription-settings.widget.validation-error')}
+                                />
+                            ),
+                            children: <CodeHighlight language="json" code={error.message} />
+                        })
                     }
                 }
             }
