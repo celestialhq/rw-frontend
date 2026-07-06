@@ -5,7 +5,6 @@ import {
     Center,
     Code,
     DataList,
-    Drawer,
     Group,
     Stack,
     Text,
@@ -34,6 +33,7 @@ import {
     usePasskeyRegistrationOptions,
     usePasskeyRegistrationVerify
 } from '@shared/api/hooks'
+import { CompoundDrawerShared } from '@shared/ui/compound-drawer/compound-drawer.shared'
 import { CopyableDataListItem } from '@shared/ui/copyable-field/copyable-data-list-item'
 import { LoaderModalShared } from '@shared/ui/loader-modal'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
@@ -172,164 +172,149 @@ export const PasskeysDrawer = NiceModal.create(() => {
     const passkeys = passkeysData?.passkeys || []
 
     return (
-        <Drawer.Root {...modalProps} padding="md" position="right" size="lg">
-            <Drawer.Overlay />
-            <Drawer.Content>
-                <Drawer.Header>
-                    <Drawer.Title>
-                        <BaseOverlayHeader
-                            iconColor="blue"
-                            IconComponent={TbFingerprint}
-                            iconVariant="soft"
-                            title={t('passkeys-drawer.component.passkeys')}
-                        />
-                    </Drawer.Title>
+        <CompoundDrawerShared
+            drawerProps={{
+                ...modalProps,
+                padding: 'md',
+                position: 'right',
+                size: 'lg'
+            }}
+            title={
+                <BaseOverlayHeader
+                    iconColor="blue"
+                    IconComponent={TbFingerprint}
+                    iconVariant="soft"
+                    title={t('passkeys-drawer.component.passkeys')}
+                />
+            }
+            buttons={
+                <Tooltip label={t('common.add')}>
+                    <ActionIcon
+                        color="teal"
+                        onClick={handleRegisterPasskey}
+                        loading={isPasskeyRegistering}
+                        size="lg"
+                        variant="soft"
+                    >
+                        <TbPlus size={20} />
+                    </ActionIcon>
+                </Tooltip>
+            }
+        >
+            {isLoading && (
+                <SectionCard.Root>
+                    <SectionCard.Section>
+                        <LoaderModalShared h="224px" />
+                    </SectionCard.Section>
+                </SectionCard.Root>
+            )}
 
-                    <Group gap="xs" wrap="nowrap">
-                        <Tooltip label={t('common.add')}>
-                            <ActionIcon
-                                color="teal"
-                                onClick={handleRegisterPasskey}
-                                loading={isPasskeyRegistering}
-                                size="lg"
-                                variant="soft"
-                            >
-                                <TbPlus size={20} />
-                            </ActionIcon>
-                        </Tooltip>
-                        <Drawer.CloseButton />
-                    </Group>
-                </Drawer.Header>
-                <Drawer.Body>
-                    {isLoading && (
-                        <SectionCard.Root>
+            {!isLoading && passkeys.length === 0 && (
+                <SectionCard.Root>
+                    <SectionCard.Section>
+                        <Center py="xl">
+                            <Stack align="center" gap="lg">
+                                <ThemeIcon color="gray" radius="xl" size={64} variant="soft">
+                                    <TbFingerprint size={32} />
+                                </ThemeIcon>
+
+                                <Stack align="center" gap="xs">
+                                    <Text c="dimmed" fw={600} size="md" ta="center">
+                                        {t('passkeys-drawer.component.no-passkeys-registered-yet')}
+                                    </Text>
+                                    <Text c="dimmed" maw={300} size="sm" ta="center">
+                                        {t('passkeys-drawer.component.add-passkeys-description')}
+                                    </Text>
+                                    <Button
+                                        color="teal"
+                                        onClick={handleRegisterPasskey}
+                                        loading={isPasskeyRegistering}
+                                        size="md"
+                                        variant="soft"
+                                        leftSection={<TbFingerprint size={20} />}
+                                    >
+                                        {t('passkeys-drawer.component.register')}
+                                    </Button>
+                                </Stack>
+                            </Stack>
+                        </Center>
+                    </SectionCard.Section>
+                </SectionCard.Root>
+            )}
+
+            {!isLoading && passkeys.length > 0 && (
+                <Stack gap="xs">
+                    {passkeys.map((passkey) => (
+                        <SectionCard.Root key={passkey.id}>
                             <SectionCard.Section>
-                                <LoaderModalShared h="224px" />
-                            </SectionCard.Section>
-                        </SectionCard.Root>
-                    )}
-
-                    {!isLoading && passkeys.length === 0 && (
-                        <SectionCard.Root>
-                            <SectionCard.Section>
-                                <Center py="xl">
-                                    <Stack align="center" gap="lg">
-                                        <ThemeIcon
-                                            color="gray"
-                                            radius="xl"
-                                            size={64}
-                                            variant="soft"
-                                        >
-                                            <TbFingerprint size={32} />
-                                        </ThemeIcon>
-
-                                        <Stack align="center" gap="xs">
-                                            <Text c="dimmed" fw={600} size="md" ta="center">
-                                                {t(
-                                                    'passkeys-drawer.component.no-passkeys-registered-yet'
-                                                )}
-                                            </Text>
-                                            <Text c="dimmed" maw={300} size="sm" ta="center">
-                                                {t(
-                                                    'passkeys-drawer.component.add-passkeys-description'
-                                                )}
-                                            </Text>
-                                            <Button
-                                                color="teal"
-                                                onClick={handleRegisterPasskey}
-                                                loading={isPasskeyRegistering}
-                                                size="md"
+                                <Group gap="xs" justify="space-between" wrap="nowrap">
+                                    <BaseOverlayHeader
+                                        iconColor="teal"
+                                        IconComponent={TbPasswordFingerprint}
+                                        iconSize={20}
+                                        iconVariant="soft"
+                                        titleOrder={4}
+                                        title={passkey.name}
+                                    />
+                                    <Group gap="xs">
+                                        <Tooltip label={t('common.rename')}>
+                                            <ActionIcon
+                                                onClick={() =>
+                                                    showModal('renameModal', {
+                                                        renameFrom: 'passkey',
+                                                        name: passkey.name,
+                                                        uuid: passkey.id
+                                                    })
+                                                }
+                                                size="lg"
                                                 variant="soft"
-                                                leftSection={<TbFingerprint size={20} />}
                                             >
-                                                {t('passkeys-drawer.component.register')}
-                                            </Button>
-                                        </Stack>
-                                    </Stack>
-                                </Center>
+                                                <PiPencil size={18} />
+                                            </ActionIcon>
+                                        </Tooltip>
+
+                                        <Tooltip label={t('common.delete')}>
+                                            <ActionIcon
+                                                color="red"
+                                                disabled={isDeleting}
+                                                loading={isDeleting}
+                                                onClick={() => handleDelete(passkey.id)}
+                                                size="lg"
+                                                variant="soft"
+                                            >
+                                                <PiTrash size={18} />
+                                            </ActionIcon>
+                                        </Tooltip>
+                                    </Group>
+                                </Group>
+                            </SectionCard.Section>
+                            <SectionCard.Section>
+                                <DataList withDivider orientation="vertical" size="xs">
+                                    <CopyableDataListItem label="ID" monospace value={passkey.id} />
+                                    <CopyableDataListItem
+                                        label={t('passkeys-drawer.component.last-used-at')}
+                                        monospace
+                                        value={formatTimeUtil({
+                                            time: passkey.lastUsedAt,
+                                            template: 'TIME_FIRST_DATETIME',
+                                            language: i18n.language
+                                        })}
+                                    />
+                                    <CopyableDataListItem
+                                        label={t('passkeys-drawer.component.created-at')}
+                                        monospace
+                                        value={formatTimeUtil({
+                                            time: passkey.createdAt,
+                                            template: 'TIME_FIRST_DATETIME',
+                                            language: i18n.language
+                                        })}
+                                    />
+                                </DataList>
                             </SectionCard.Section>
                         </SectionCard.Root>
-                    )}
-
-                    {!isLoading && passkeys.length > 0 && (
-                        <Stack gap="xs">
-                            {passkeys.map((passkey) => (
-                                <SectionCard.Root key={passkey.id}>
-                                    <SectionCard.Section>
-                                        <Group gap="xs" justify="space-between" wrap="nowrap">
-                                            <BaseOverlayHeader
-                                                iconColor="teal"
-                                                IconComponent={TbPasswordFingerprint}
-                                                iconSize={20}
-                                                iconVariant="soft"
-                                                titleOrder={4}
-                                                title={passkey.name}
-                                            />
-                                            <Group gap="xs">
-                                                <Tooltip label={t('common.rename')}>
-                                                    <ActionIcon
-                                                        onClick={() =>
-                                                            showModal('renameModal', {
-                                                                renameFrom: 'passkey',
-                                                                name: passkey.name,
-                                                                uuid: passkey.id
-                                                            })
-                                                        }
-                                                        size="lg"
-                                                        variant="soft"
-                                                    >
-                                                        <PiPencil size={18} />
-                                                    </ActionIcon>
-                                                </Tooltip>
-
-                                                <Tooltip label={t('common.delete')}>
-                                                    <ActionIcon
-                                                        color="red"
-                                                        disabled={isDeleting}
-                                                        loading={isDeleting}
-                                                        onClick={() => handleDelete(passkey.id)}
-                                                        size="lg"
-                                                        variant="soft"
-                                                    >
-                                                        <PiTrash size={18} />
-                                                    </ActionIcon>
-                                                </Tooltip>
-                                            </Group>
-                                        </Group>
-                                    </SectionCard.Section>
-                                    <SectionCard.Section>
-                                        <DataList withDivider orientation="vertical" size="xs">
-                                            <CopyableDataListItem
-                                                label="ID"
-                                                monospace
-                                                value={passkey.id}
-                                            />
-                                            <CopyableDataListItem
-                                                label={t('passkeys-drawer.component.last-used-at')}
-                                                monospace
-                                                value={formatTimeUtil({
-                                                    time: passkey.lastUsedAt,
-                                                    template: 'TIME_FIRST_DATETIME',
-                                                    language: i18n.language
-                                                })}
-                                            />
-                                            <CopyableDataListItem
-                                                label={t('passkeys-drawer.component.created-at')}
-                                                monospace
-                                                value={formatTimeUtil({
-                                                    time: passkey.createdAt,
-                                                    template: 'TIME_FIRST_DATETIME',
-                                                    language: i18n.language
-                                                })}
-                                            />
-                                        </DataList>
-                                    </SectionCard.Section>
-                                </SectionCard.Root>
-                            ))}
-                        </Stack>
-                    )}
-                </Drawer.Body>
-            </Drawer.Content>
-        </Drawer.Root>
+                    ))}
+                </Stack>
+            )}
+        </CompoundDrawerShared>
     )
 })
