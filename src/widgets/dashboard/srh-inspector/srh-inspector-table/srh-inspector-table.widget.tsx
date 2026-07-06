@@ -2,13 +2,21 @@ import { useSrhInspectorTableColumns } from '@features/dashboard/srh-inspector/s
 import {
     MantineReactTable,
     MRT_ColumnFilterFnsState,
-    MRT_SortingState,
+    MRT_ShowHideColumnsButton,
+    MRT_ToggleDensePaddingButton,
+    MRT_ToggleFullScreenButton,
     useMantineReactTable
 } from '@kastov/mantine-react-table-open'
 import { ActionIcon, ActionIconGroup, Tooltip } from '@mantine/core'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TbExternalLink, TbRefresh, TbReportAnalytics, TbRestore } from 'react-icons/tb'
+import {
+    TbExternalLink,
+    TbFilterOff,
+    TbRefresh,
+    TbReportAnalytics,
+    TbRestore
+} from 'react-icons/tb'
 
 import { useGetSubscriptionRequestHistory } from '@shared/api/hooks'
 import { usePreventTableBackScroll } from '@shared/hooks'
@@ -17,17 +25,19 @@ import { ResolveUserActionShared } from '@shared/ui/resolve-user-action-icon'
 import { DataTableShared } from '@shared/ui/table'
 import { sToMs } from '@shared/utils/time-utils'
 
-import { useSrhInspectorTableStore } from '@entities/dashboard/srh-inspector/srh-inspector-table-store'
+import {
+    useSrhInspectorTableStore,
+    useSrhInspectorTableStoreActions
+} from '@entities/dashboard/srh-inspector/srh-inspector-table-store'
 
 export function SrhInspectorTableWidget() {
     const { t } = useTranslation()
 
+    const actions = useSrhInspectorTableStoreActions()
     const tableColumns = useSrhInspectorTableColumns()
 
     const { state: persistedTableState, handlers: persistedTableHandlers } =
         useMrtTableBinding(useSrhInspectorTableStore)
-
-    const [sorting, setSorting] = useState<MRT_SortingState>([])
 
     const [columnFilterFns, setColumnFilterFns] = useState<MRT_ColumnFilterFnsState>(
         Object.fromEntries(tableColumns.map(({ accessorKey }) => [accessorKey, 'contains']))
@@ -40,7 +50,7 @@ export function SrhInspectorTableWidget() {
         size: persistedTableState.pagination.pageSize,
         filters: persistedTableState.columnFilters,
         filterModes: columnFilterFns,
-        sorting
+        sorting: persistedTableState.sorting
     }
 
     const {
@@ -67,7 +77,8 @@ export function SrhInspectorTableWidget() {
         columnFilterModeOptions: ['contains'],
         initialState: {
             density: 'xxs',
-            pagination: DEFAULT_PAGINATION_STATE
+            pagination: DEFAULT_PAGINATION_STATE,
+            sorting: [{ id: 'id', desc: true }]
         },
         manualFiltering: true,
         manualPagination: true,
@@ -83,12 +94,6 @@ export function SrhInspectorTableWidget() {
 
         ...persistedTableHandlers,
         onColumnFilterFnsChange: setColumnFilterFns,
-        onSortingChange: setSorting,
-
-        mantinePaperProps: {
-            style: { '--paper-radius': 'var(--mantine-radius-xs)' },
-            withBorder: false
-        },
         rowCount: usersResponse?.total ?? 0,
         enableRowSelection: false,
         enableColumnPinning: true,
@@ -98,11 +103,35 @@ export function SrhInspectorTableWidget() {
             ...persistedTableState,
             columnFilterFns,
             isLoading,
+            showColumnFilters: true,
             showAlertBanner: isError,
-            showProgressBars: isFetching,
-            sorting
+            showProgressBars: isFetching
         },
         enableRowActions: true,
+        mantineFilterTextInputProps: () => ({
+            placeholder: 'Filter by...'
+        }),
+        mantineTopToolbarProps: {
+            style: {
+                '--mrt-base-background-color': '#1b2027'
+            }
+        },
+        mantineTableHeadProps: {
+            style: {
+                '--mrt-base-background-color': '#1b2027'
+            }
+        },
+        mantineBottomToolbarProps: {
+            style: {
+                '--mrt-base-background-color': '#1b2027'
+            }
+        },
+        mantinePaperProps: {
+            style: {
+                '--paper-radius': 'var(--mantine-radius-xs)'
+            },
+            withBorder: false
+        },
         renderRowActions: ({ row }) => (
             <ActionIconGroup>
                 <ResolveUserActionShared userId={row.original.userId} />
@@ -122,7 +151,14 @@ export function SrhInspectorTableWidget() {
         getRowId: (originalRow) => `${originalRow.id}`,
         displayColumnDefOptions: {
             'mrt-row-actions': { size: 110 }
-        }
+        },
+        renderToolbarInternalActions: ({ table: tableInstance }) => (
+            <>
+                <MRT_ToggleDensePaddingButton table={tableInstance} />
+                <MRT_ToggleFullScreenButton table={tableInstance} />
+                <MRT_ShowHideColumnsButton table={tableInstance} />
+            </>
+        )
     })
 
     return (
@@ -135,9 +171,29 @@ export function SrhInspectorTableWidget() {
                                 loading={isLoading}
                                 onClick={() => refetch()}
                                 size="input-md"
-                                variant="light"
+                                variant="soft"
                             >
                                 <TbRefresh size="24px" />
+                            </ActionIcon>
+                        </Tooltip>
+
+                        <Tooltip label={t('action-group.feature.clear-filters')} withArrow>
+                            <ActionIcon
+                                color="gray"
+                                loading={isLoading}
+                                onClick={() => {
+                                    refetch()
+
+                                    table.resetPageIndex(false)
+                                    table.resetSorting(false)
+                                    table.resetPagination(false)
+                                    table.resetColumnFilters(true)
+                                    table.resetGlobalFilter(true)
+                                }}
+                                size="input-md"
+                                variant="soft"
+                            >
+                                <TbFilterOff size="24px" />
                             </ActionIcon>
                         </Tooltip>
 
@@ -146,17 +202,17 @@ export function SrhInspectorTableWidget() {
                                 color="gray"
                                 loading={isLoading}
                                 onClick={() => {
+                                    refetch()
+                                    actions.resetState()
+
                                     table.resetPageIndex(false)
-                                    table.resetSorting(true)
+                                    table.resetSorting(false)
                                     table.resetPagination(false)
                                     table.resetColumnFilters(true)
                                     table.resetGlobalFilter(true)
-                                    table.resetColumnOrder(true)
-                                    table.resetColumnPinning(true)
-                                    table.resetColumnVisibility(true)
                                 }}
                                 size="input-md"
-                                variant="light"
+                                variant="soft"
                             >
                                 <TbRestore size="24px" />
                             </ActionIcon>

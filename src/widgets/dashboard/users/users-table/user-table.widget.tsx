@@ -5,7 +5,6 @@ import {
     MantineReactTable,
     MRT_ColumnFilterFnsState,
     MRT_ShowHideColumnsButton,
-    MRT_SortingState,
     MRT_ToggleDensePaddingButton,
     MRT_ToggleFullScreenButton,
     useMantineReactTable
@@ -15,7 +14,7 @@ import { notifications } from '@mantine/notifications'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiUsersDuotone } from 'react-icons/pi'
-import { TbBolt, TbEdit, TbSearch, TbSearchOff } from 'react-icons/tb'
+import { TbBolt, TbEdit } from 'react-icons/tb'
 import { useSearchParams } from 'react-router'
 
 import { showModal } from '@shared/_modals/show-modal'
@@ -54,8 +53,6 @@ export function UserTableWidget() {
     const { state: persistedTableState, handlers: persistedTableHandlers } =
         useMrtTableBinding(useUsersTableStore)
 
-    const [sorting, setSorting] = useState<MRT_SortingState>([])
-
     const defaultFilterFns: Record<string, string> = {
         hwidDeviceLimit: 'equals',
         tag: 'equals',
@@ -82,7 +79,7 @@ export function UserTableWidget() {
                 : value !== null && value !== undefined && value !== ''
         ),
         filterModes: columnFilterFns,
-        sorting
+        sorting: persistedTableState.sorting
     }
 
     const {
@@ -152,12 +149,6 @@ export function UserTableWidget() {
                 })
             }
         },
-        icons: {
-            // oxlint-disable-next-line
-            IconFilter: (props: any) => <TbSearch size={24} {...props} />,
-            // oxlint-disable-next-line
-            IconFilterOff: (props: any) => <TbSearchOff size={24} {...props} />
-        },
         // mantineTableBodyCellProps: { style: { padding: '2px 6px' } },
         enableFullScreenToggle: true,
         enableSortingRemoval: true,
@@ -168,7 +159,8 @@ export function UserTableWidget() {
         columnFilterModeOptions: ['contains'],
         initialState: {
             density: 'xxs',
-            pagination: DEFAULT_PAGINATION_STATE
+            pagination: DEFAULT_PAGINATION_STATE,
+            sorting: [{ id: 'id', desc: true }]
         },
         mantineFilterTextInputProps: () => ({
             placeholder: 'Filter by...'
@@ -188,17 +180,17 @@ export function UserTableWidget() {
                 '--mrt-base-background-color': '#1b2027'
             }
         },
+        mantinePaperProps: {
+            style: {
+                '--paper-radius': 'var(--mantine-radius-xs)'
+            },
+            withBorder: false
+        },
         enableDensityToggle: true,
         manualFiltering: true,
         manualPagination: true,
         manualSorting: true,
-        // mantinePaginationProps: {
-        //     rowsPerPageOptions: ['25', '50', '100']
-        // },
-
-        // icons: customIcons,
         enableColumnResizing: true,
-
         /* prettier-ignore */
         mantineToolbarAlertBannerProps: isError ? {
             color: 'red',
@@ -207,13 +199,6 @@ export function UserTableWidget() {
 
         ...persistedTableHandlers,
         onColumnFilterFnsChange: setColumnFilterFns,
-        onSortingChange: setSorting,
-        mantinePaperProps: {
-            style: {
-                '--paper-radius': 'var(--mantine-radius-xs)'
-            },
-            withBorder: false
-        },
         rowCount: usersResponse?.total ?? 0,
         enableRowSelection: true,
         mantineSelectCheckboxProps: {
@@ -275,7 +260,6 @@ export function UserTableWidget() {
             showAlertBanner: isError,
             showColumnFilters: true,
             showProgressBars: isFetching,
-            sorting,
             rowSelection: tableSelection
         },
         mantineTableBodyRowProps: ({ row }) => ({
