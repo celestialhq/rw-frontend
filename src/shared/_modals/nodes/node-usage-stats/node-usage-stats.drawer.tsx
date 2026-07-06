@@ -1,14 +1,17 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
-import { ActionIcon, Drawer, Group, NativeSelect, Stack } from '@mantine/core'
+import { ActionIcon, Group, NativeSelect, Stack } from '@mantine/core'
 import { DatePickerInput, DatesRangeValue } from '@mantine/dates'
+import { nprogress } from '@mantine/nprogress'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbCalendar, TbChartArcs, TbRefresh, TbUsers } from 'react-icons/tb'
 
+import { showModal } from '@shared/_modals/show-modal'
 import { useNiceMantineModal } from '@shared/_modals/use-nice-modal'
-import { useGetStatsNodeUsersUsage } from '@shared/api/hooks'
-import { TopLeaderboardCardShared } from '@shared/ui/leaderboard-item-card'
+import { useGetStatsNodeUsersUsage, useResolveUser } from '@shared/api/hooks'
+import { CompoundDrawerShared } from '@shared/ui/compound-drawer/compound-drawer.shared'
+import { ITopLeaderboardItem, TopLeaderboardCardShared } from '@shared/ui/leaderboard-item-card'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { getDefaultDateRange } from '@shared/utils/time-utils'
 
@@ -92,30 +95,56 @@ export const NodeUsageStatsDrawer = NiceModal.create((props: IProps) => {
         }
     })
 
+    const { mutateAsync: resolveUser } = useResolveUser()
+
+    const handleViewUser = async (user: ITopLeaderboardItem) => {
+        nprogress.start()
+        try {
+            const result = await resolveUser({ variables: { username: user.name } })
+            if (result.uuid) {
+                showModal('users_viewUserModal', { userUuid: result.uuid })
+            }
+        } finally {
+            nprogress.complete()
+        }
+    }
+
     return (
-        <Drawer
-            {...modalProps}
-            padding="lg"
-            position="right"
-            size="600px"
+        <CompoundDrawerShared
+            drawerProps={{
+                ...modalProps,
+                padding: 'lg',
+                position: 'right',
+                size: '600px'
+            }}
             title={
                 <BaseOverlayHeader
                     iconColor="teal"
                     IconComponent={TbChartArcs}
                     iconVariant="soft"
-                    title={t('node-users-usage-drawer.widget.user-traffic-statistics')}
+                    title={t('common.usage-stats')}
                 />
+            }
+            buttons={
+                <ActionIcon
+                    onClick={() => refetch()}
+                    size="lg"
+                    variant="soft"
+                    loading={isRefetching || isLoading}
+                >
+                    <TbRefresh size="20px" />
+                </ActionIcon>
             }
         >
             <Stack gap="md">
-                <Group justify="space-between">
+                <Group gap="xs" justify="space-between" wrap="nowrap">
                     <NativeSelect
                         data={TOP_USERS_LIMIT_OPTIONS}
                         leftSection={<TbUsers size="20px" />}
                         onChange={(value) => setTopUsersLimit(Number(value.target.value))}
                         size="md"
                         value={String(topUsersLimit)}
-                        w={200}
+                        miw="fit-content"
                     />
 
                     <DatePickerInput
@@ -185,27 +214,24 @@ export const NodeUsageStatsDrawer = NiceModal.create((props: IProps) => {
                             }
                         ]}
                         size="md"
+                        miw={0}
                         styles={{
                             calendarHeaderLevel: {
                                 justifyContent: 'flex-end'
                             },
                             presetsList: {
                                 justifyContent: 'center'
+                            },
+                            input: {
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis'
                             }
                         }}
                         type="range"
                         value={rawRange}
                         valueFormat="DD MMM, YYYY"
                     />
-
-                    <ActionIcon
-                        loading={isRefetching}
-                        onClick={() => refetch()}
-                        size="input-md"
-                        variant="soft"
-                    >
-                        <TbRefresh size="24px" />
-                    </ActionIcon>
                 </Group>
 
                 <NodeUsersSparklineCardWidget
@@ -221,10 +247,13 @@ export const NodeUsageStatsDrawer = NiceModal.create((props: IProps) => {
                         name: user.username,
                         total: user.total
                     }))}
+                    onItemClick={(user) => {
+                        handleViewUser(user)
+                    }}
                     maxHeight={500}
                     skeletonCount={11}
                 />
             </Stack>
-        </Drawer>
+        </CompoundDrawerShared>
     )
 })

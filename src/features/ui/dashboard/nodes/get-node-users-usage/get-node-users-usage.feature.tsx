@@ -1,7 +1,7 @@
 import { ActionIcon, Tooltip } from '@mantine/core'
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PiChartBarDuotone } from 'react-icons/pi'
+import { TbChartArcs } from 'react-icons/tb'
 
 import { showModal } from '@shared/_modals/show-modal'
 
@@ -12,7 +12,7 @@ const GetNodeUsersUsageFeatureComponent = (props: IProps) => {
     const { t } = useTranslation()
 
     return (
-        <Tooltip label={t('get-user-usage.feature.show-usage')}>
+        <Tooltip label={t('common.usage-stats')}>
             <ActionIcon
                 color="indigo"
                 onClick={() => {
@@ -23,7 +23,7 @@ const GetNodeUsersUsageFeatureComponent = (props: IProps) => {
                 size="lg"
                 variant="soft"
             >
-                <PiChartBarDuotone size="22px" />
+                <TbChartArcs size="22px" />
             </ActionIcon>
         </Tooltip>
     )
