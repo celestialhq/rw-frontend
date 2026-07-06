@@ -1638,7 +1638,6 @@
   "passkeys-drawer": {
     "component": {
       "passkeys": "Passkeys",
-      "passkeys-description": "Passkeys allow you to sign in securely without passwords. You can register multiple passkeys across different devices.",
       "active-passkeys": "Active Passkeys",
       "no-passkeys-registered-yet": "No passkeys registered yet",
       "add-passkeys-description": "Add your first passkey to enable secure, passwordless sign-in across your devices",

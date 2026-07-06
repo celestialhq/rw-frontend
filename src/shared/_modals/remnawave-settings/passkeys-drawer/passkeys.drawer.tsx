@@ -1,19 +1,15 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import {
     ActionIcon,
-    Box,
     Button,
+    Center,
     Code,
-    Divider,
+    DataList,
     Drawer,
-    Flex,
     Group,
-    Paper,
-    ScrollArea,
     Stack,
     Text,
     ThemeIcon,
-    Title,
     Tooltip
 } from '@mantine/core'
 import { modals } from '@mantine/modals'
@@ -25,8 +21,8 @@ import {
 import consola from 'consola/browser'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PiClockDuotone, PiKey, PiPencil, PiTrash } from 'react-icons/pi'
-import { TbFingerprint } from 'react-icons/tb'
+import { PiPencil, PiTrash } from 'react-icons/pi'
+import { TbFingerprint, TbPasswordFingerprint, TbPlus } from 'react-icons/tb'
 
 import { showModal } from '@shared/_modals/show-modal'
 import { useNiceMantineModal } from '@shared/_modals/use-nice-modal'
@@ -38,13 +34,14 @@ import {
     usePasskeyRegistrationOptions,
     usePasskeyRegistrationVerify
 } from '@shared/api/hooks'
-import { LoadingScreen } from '@shared/ui'
-import { CopyableFieldShared } from '@shared/ui/copyable-field/copyable-field'
+import { CopyableDataListItem } from '@shared/ui/copyable-field/copyable-data-list-item'
+import { LoaderModalShared } from '@shared/ui/loader-modal'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
-import { formatDate } from '@shared/utils/misc/date'
+import { SectionCard } from '@shared/ui/section-card'
+import { formatTimeUtil } from '@shared/utils/time-utils'
 
 export const PasskeysDrawer = NiceModal.create(() => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const modal = useModal()
     const { modalProps } = useNiceMantineModal({
@@ -175,165 +172,164 @@ export const PasskeysDrawer = NiceModal.create(() => {
     const passkeys = passkeysData?.passkeys || []
 
     return (
-        <Drawer
-            {...modalProps}
-            padding="md"
-            position="right"
-            size="lg"
-            title={
-                <BaseOverlayHeader
-                    iconColor="teal"
-                    IconComponent={TbFingerprint}
-                    iconVariant="soft"
-                    title={t('passkeys-drawer.component.passkeys')}
-                />
-            }
-        >
-            <Flex direction="column" gap="md" h="100%">
-                <Text c="dimmed" size="sm">
-                    {t('passkeys-drawer.component.passkeys-description')}
-                </Text>
+        <Drawer.Root {...modalProps} padding="md" position="right" size="lg">
+            <Drawer.Overlay />
+            <Drawer.Content>
+                <Drawer.Header>
+                    <Drawer.Title>
+                        <BaseOverlayHeader
+                            iconColor="blue"
+                            IconComponent={TbFingerprint}
+                            iconVariant="soft"
+                            title={t('passkeys-drawer.component.passkeys')}
+                        />
+                    </Drawer.Title>
 
-                <Divider />
+                    <Group gap="xs" wrap="nowrap">
+                        <Tooltip label={t('common.add')}>
+                            <ActionIcon
+                                color="teal"
+                                onClick={handleRegisterPasskey}
+                                loading={isPasskeyRegistering}
+                                size="lg"
+                                variant="soft"
+                            >
+                                <TbPlus size={20} />
+                            </ActionIcon>
+                        </Tooltip>
+                        <Drawer.CloseButton />
+                    </Group>
+                </Drawer.Header>
+                <Drawer.Body>
+                    {isLoading && (
+                        <SectionCard.Root>
+                            <SectionCard.Section>
+                                <LoaderModalShared h="224px" />
+                            </SectionCard.Section>
+                        </SectionCard.Root>
+                    )}
 
-                <Group justify="space-between">
-                    <Title order={4}>
-                        {t('passkeys-drawer.component.active-passkeys')} ({passkeys.length})
-                    </Title>
+                    {!isLoading && passkeys.length === 0 && (
+                        <SectionCard.Root>
+                            <SectionCard.Section>
+                                <Center py="xl">
+                                    <Stack align="center" gap="lg">
+                                        <ThemeIcon
+                                            color="gray"
+                                            radius="xl"
+                                            size={64}
+                                            variant="soft"
+                                        >
+                                            <TbFingerprint size={32} />
+                                        </ThemeIcon>
 
-                    <Button
-                        leftSection={<TbFingerprint size={20} />}
-                        loading={isPasskeyRegistering}
-                        onClick={handleRegisterPasskey}
-                        size="md"
-                        variant="light"
-                    >
-                        {t('common.add')}
-                    </Button>
-                </Group>
+                                        <Stack align="center" gap="xs">
+                                            <Text c="dimmed" fw={600} size="md" ta="center">
+                                                {t(
+                                                    'passkeys-drawer.component.no-passkeys-registered-yet'
+                                                )}
+                                            </Text>
+                                            <Text c="dimmed" maw={300} size="sm" ta="center">
+                                                {t(
+                                                    'passkeys-drawer.component.add-passkeys-description'
+                                                )}
+                                            </Text>
+                                            <Button
+                                                color="teal"
+                                                onClick={handleRegisterPasskey}
+                                                loading={isPasskeyRegistering}
+                                                size="md"
+                                                variant="soft"
+                                                leftSection={<TbFingerprint size={20} />}
+                                            >
+                                                {t('passkeys-drawer.component.register')}
+                                            </Button>
+                                        </Stack>
+                                    </Stack>
+                                </Center>
+                            </SectionCard.Section>
+                        </SectionCard.Root>
+                    )}
 
-                {isLoading && <LoadingScreen />}
-
-                {!isLoading && passkeys.length === 0 && (
-                    <Box
-                        mih="280px"
-                        p="xl"
-                        style={{
-                            border: '1px dashed var(--mantine-color-gray-4)',
-                            borderRadius: 'var(--mantine-radius-md)',
-                            textAlign: 'center',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        <Stack align="center" gap="xl">
-                            <ThemeIcon color="blue" radius="xl" size={80} variant="light">
-                                <TbFingerprint size={40} />
-                            </ThemeIcon>
-                            <Stack align="center" gap="xs">
-                                <Text fw={600} size="lg" ta="center">
-                                    {t('passkeys-drawer.component.no-passkeys-registered-yet')}
-                                </Text>
-                                <Text c="dimmed" maw={300} size="sm" ta="center">
-                                    {t('passkeys-drawer.component.add-passkeys-description')}
-                                </Text>
-                                <Button
-                                    leftSection={<TbFingerprint size={16} />}
-                                    loading={isPasskeyRegistering}
-                                    mt="md"
-                                    onClick={handleRegisterPasskey}
-                                    size="md"
-                                    variant="light"
-                                >
-                                    {t('passkeys-drawer.component.register')}
-                                </Button>
-                            </Stack>
-                        </Stack>
-                    </Box>
-                )}
-
-                {!isLoading && passkeys.length > 0 && (
-                    <ScrollArea flex={1} offsetScrollbars type="auto">
+                    {!isLoading && passkeys.length > 0 && (
                         <Stack gap="xs">
-                            {passkeys.map(
-                                (passkey: {
-                                    createdAt: Date
-                                    id: string
-                                    lastUsedAt: Date
-                                    name: string
-                                }) => (
-                                    <Paper bg="dark.6" key={passkey.id} p="md">
-                                        <Stack gap="xs">
-                                            <Group justify="space-between">
-                                                <Group>
-                                                    <ThemeIcon
-                                                        color="violet"
+                            {passkeys.map((passkey) => (
+                                <SectionCard.Root key={passkey.id}>
+                                    <SectionCard.Section>
+                                        <Group gap="xs" justify="space-between" wrap="nowrap">
+                                            <BaseOverlayHeader
+                                                iconColor="teal"
+                                                IconComponent={TbPasswordFingerprint}
+                                                iconSize={20}
+                                                iconVariant="soft"
+                                                titleOrder={4}
+                                                title={passkey.name}
+                                            />
+                                            <Group gap="xs">
+                                                <Tooltip label={t('common.rename')}>
+                                                    <ActionIcon
+                                                        onClick={() =>
+                                                            showModal('renameModal', {
+                                                                renameFrom: 'passkey',
+                                                                name: passkey.name,
+                                                                uuid: passkey.id
+                                                            })
+                                                        }
                                                         size="lg"
-                                                        variant="default"
+                                                        variant="soft"
                                                     >
-                                                        <TbFingerprint size={24} />
-                                                    </ThemeIcon>
-                                                    <Title order={5}>{passkey.name}</Title>
-                                                </Group>
+                                                        <PiPencil size={18} />
+                                                    </ActionIcon>
+                                                </Tooltip>
 
-                                                <Group gap="xs">
-                                                    <Tooltip label={t('common.rename')}>
-                                                        <ActionIcon
-                                                            onClick={() =>
-                                                                showModal('renameModal', {
-                                                                    renameFrom: 'passkey',
-                                                                    name: passkey.name,
-                                                                    uuid: passkey.id
-                                                                })
-                                                            }
-                                                            size="lg"
-                                                            variant="light"
-                                                        >
-                                                            <PiPencil size={18} />
-                                                        </ActionIcon>
-                                                    </Tooltip>
-
-                                                    <Tooltip label={t('common.delete')}>
-                                                        <ActionIcon
-                                                            color="red"
-                                                            disabled={isDeleting}
-                                                            loading={isDeleting}
-                                                            onClick={() => handleDelete(passkey.id)}
-                                                            size="lg"
-                                                            variant="light"
-                                                        >
-                                                            <PiTrash size={18} />
-                                                        </ActionIcon>
-                                                    </Tooltip>
-                                                </Group>
+                                                <Tooltip label={t('common.delete')}>
+                                                    <ActionIcon
+                                                        color="red"
+                                                        disabled={isDeleting}
+                                                        loading={isDeleting}
+                                                        onClick={() => handleDelete(passkey.id)}
+                                                        size="lg"
+                                                        variant="soft"
+                                                    >
+                                                        <PiTrash size={18} />
+                                                    </ActionIcon>
+                                                </Tooltip>
                                             </Group>
-
-                                            <CopyableFieldShared
+                                        </Group>
+                                    </SectionCard.Section>
+                                    <SectionCard.Section>
+                                        <DataList withDivider orientation="vertical" size="xs">
+                                            <CopyableDataListItem
                                                 label="ID"
-                                                leftSection={<PiKey size={16} />}
+                                                monospace
                                                 value={passkey.id}
                                             />
-
-                                            <CopyableFieldShared
+                                            <CopyableDataListItem
                                                 label={t('passkeys-drawer.component.last-used-at')}
-                                                leftSection={<PiClockDuotone size={16} />}
-                                                value={formatDate(passkey.lastUsedAt)}
+                                                monospace
+                                                value={formatTimeUtil({
+                                                    time: passkey.lastUsedAt,
+                                                    template: 'TIME_FIRST_DATETIME',
+                                                    language: i18n.language
+                                                })}
                                             />
-
-                                            <CopyableFieldShared
+                                            <CopyableDataListItem
                                                 label={t('passkeys-drawer.component.created-at')}
-                                                leftSection={<PiClockDuotone size={16} />}
-                                                value={formatDate(passkey.createdAt)}
+                                                monospace
+                                                value={formatTimeUtil({
+                                                    time: passkey.createdAt,
+                                                    template: 'TIME_FIRST_DATETIME',
+                                                    language: i18n.language
+                                                })}
                                             />
-                                        </Stack>
-                                    </Paper>
-                                )
-                            )}
+                                        </DataList>
+                                    </SectionCard.Section>
+                                </SectionCard.Root>
+                            ))}
                         </Stack>
-                    </ScrollArea>
-                )}
-            </Flex>
-        </Drawer>
+                    )}
+                </Drawer.Body>
+            </Drawer.Content>
+        </Drawer.Root>
     )
 })
