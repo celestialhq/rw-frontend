@@ -21,7 +21,7 @@ import { ForwardRefComponent, HTMLMotionProps, Variants } from 'motion/react'
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
-import { PiChartBarDuotone, PiLinkBreak, PiLinkDuotone, PiUserCircle } from 'react-icons/pi'
+import { PiLinkBreak, PiLinkDuotone, PiUserCircle } from 'react-icons/pi'
 import {
     TbCalendar,
     TbChartArcs,
@@ -270,7 +270,7 @@ export const UserIdentificationCard = memo((props: IProps) => {
                         <Divider opacity={0.3} orientation="vertical" />
 
                         <Group gap={5} justify="center">
-                            <Tooltip label={t('user-usage-modal.widget.traffic-statistics')}>
+                            <Tooltip label={t('common.usage-stats')}>
                                 <ActionIcon
                                     color="indigo"
                                     onClick={() => {
@@ -281,7 +281,7 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                     size="lg"
                                     variant="soft"
                                 >
-                                    <PiChartBarDuotone size="24px" />
+                                    <TbChartArcs size="24px" />
                                 </ActionIcon>
                             </Tooltip>
                             <Tooltip
@@ -337,7 +337,7 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                 </ActionIcon>
                             </Tooltip>
 
-                            <Tooltip label={t('get-user-usage.feature.active-sessions')}>
+                            <Tooltip label={t('common.active-sessions')}>
                                 <ActionIcon
                                     color="indigo"
                                     onClick={() => {

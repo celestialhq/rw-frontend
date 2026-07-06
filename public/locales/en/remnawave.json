@@ -77,7 +77,9 @@
     "bulk-edit": "Bulk edit",
     "creation": "Creation",
     "processing": "Processing",
-    "operation-completed": "Operation completed"
+    "operation-completed": "Operation completed",
+    "usage-stats": "Usage stats",
+    "active-sessions": "Active sessions"
   },
   "bandwidth-metrics": {
     "current-year": "Current year",
@@ -741,7 +743,6 @@
     "widget": {
       "no-data-available-for-the-selected-period": "No data available for the selected period",
       "no-data-available": "No data available",
-      "traffic-statistics": "Traffic statistics",
       "click-to-show-all": "Click to show all",
       "click-to-highlight-only-this-node": "Click to highlight only this node",
       "usage-by-period": "Usage by period",
@@ -762,16 +763,8 @@
       "click-to-see-all": "Click to see all"
     }
   },
-  "get-user-usage": {
-    "feature": {
-      "show-usage": "Show usage",
-      "usage": "Usage",
-      "active-sessions": "Active Sessions"
-    }
-  },
   "active-sessions-drawer": {
     "widget": {
-      "title": "Active Sessions",
       "requirements": "Requirements",
       "warning-activity": "An IP address will be shown when <highlight>Xray-Core</highlight> considers the <highlight>connection still open</highlight>. This may result in some displayed IP addresses that are no longer actually connected. Use the <highlight>clock</highlight> icon to track the last activity of a given IP.",
       "warning-version": "Remnawave Node version <highlight>{{version}}</highlight> or higher",
@@ -867,7 +860,6 @@
       "click-to-show-all-users": "Click to show all users",
       "click-to-highlight-only-this-user": "Click to highlight only this user",
       "users-accordeon": "Users (showing top {{displayedUserCount}} of {{significantUserCount}} active out of {{userCount}} total)",
-      "user-traffic-statistics": "User Traffic Statistics",
       "usage-by-period": "Usage by period",
       "7-days": "7 days",
       "14-days": "14 days",
