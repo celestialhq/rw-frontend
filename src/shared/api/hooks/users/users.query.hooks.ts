@@ -6,7 +6,8 @@ import {
     GetUserAccessibleNodesCommand,
     GetUserByUuidCommand,
     GetUserMetadataCommand,
-    GetUserSubscriptionRequestHistoryCommand
+    GetUserSubscriptionRequestHistoryCommand,
+    GetRawSubscriptionByShortUuidCommand
 } from '@remnawave/backend-contract'
 import { keepPreviousData } from '@tanstack/react-query'
 
@@ -22,6 +23,9 @@ export const usersQueryKeys = createQueryKeys('users', {
         queryKey: [route]
     }),
     getConnectionKeysByUuid: (route: GetConnectionKeysByUuidCommand.RequestParam) => ({
+        queryKey: [route]
+    }),
+    getRawSubscription: (route: GetRawSubscriptionByShortUuidCommand.RequestParam) => ({
         queryKey: [route]
     }),
     getUserTags: {
@@ -115,6 +119,16 @@ export const useGetUserMetadata = createGetQueryHook({
     responseSchema: GetUserMetadataCommand.ResponseSchema,
     routeParamsSchema: GetUserMetadataCommand.RequestParamsSchema,
     getQueryKey: ({ route }) => usersQueryKeys.getUserMetadata(route!).queryKey,
+    rQueryParams: {
+        staleTime: sToMs(60)
+    }
+})
+
+export const useGetRawSubscription = createGetQueryHook({
+    endpoint: GetRawSubscriptionByShortUuidCommand.TSQ_url,
+    responseSchema: GetRawSubscriptionByShortUuidCommand.ResponseSchema,
+    routeParamsSchema: GetRawSubscriptionByShortUuidCommand.RequestParamSchema,
+    getQueryKey: ({ route }) => usersQueryKeys.getRawSubscription(route!).queryKey,
     rQueryParams: {
         staleTime: sToMs(60)
     }

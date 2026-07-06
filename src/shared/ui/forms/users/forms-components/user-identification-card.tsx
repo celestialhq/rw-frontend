@@ -181,7 +181,8 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                     color="teal"
                                     onClick={() => {
                                         showModal('users_connectionKeysDrawer', {
-                                            userUuid: user.uuid
+                                            userUuid: user.uuid,
+                                            shortUuid: user.shortUuid
                                         })
                                     }}
                                     size="lg"
