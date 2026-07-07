@@ -69,7 +69,7 @@
 
 .desktopGrid {
     display: grid;
-    grid-template-columns: 5.5fr 2.5fr 2fr 2fr;
+    grid-template-columns: minmax(0, 5.5fr) minmax(0, 2.5fr) minmax(0, 2fr) minmax(0, 2fr);
     gap: var(--mantine-spacing-md);
     align-items: center;
 }
