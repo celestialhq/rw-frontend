@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { HiChartPie, HiServer } from 'react-icons/hi'
 import { PiArrowsInCardinalFill, PiChartLine, PiListChecks, PiUsers } from 'react-icons/pi'
 import {
+    TbApi,
     TbChartArcs,
     TbCirclesRelation,
     TbCreditCard,
@@ -236,6 +237,12 @@ export const useDesktopMenuSections = (): MenuItem[] => {
                     href: ROUTES.DASHBOARD.TOOLS.SESSIONS_EXPLORER,
                     icon: TbRadar2,
                     id: 'sessions-explorer'
+                },
+                {
+                    name: t('constants.http-stats'),
+                    href: ROUTES.DASHBOARD.TOOLS.HTTP_STATS,
+                    icon: TbApi,
+                    id: 'http-stats'
                 }
             ]
         },
