@@ -23,11 +23,11 @@ import { UserSubscriptionRequestsTable } from './user-subscription-requests.tabl
 
 interface IProps {
     mobile: boolean
-    userUuid: string
+    userId: number
 }
 
 export const UserSubscriptionRequestsModalContent = (props: IProps) => {
-    const { userUuid, mobile } = props
+    const { userId, mobile } = props
     const { t } = useTranslation()
 
     const {
@@ -37,7 +37,7 @@ export const UserSubscriptionRequestsModalContent = (props: IProps) => {
         refetch
     } = useGetUserSubscriptionRequestHistory({
         route: {
-            uuid: userUuid
+            userId: userId
         }
     })
 
