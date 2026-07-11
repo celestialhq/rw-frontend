@@ -78,7 +78,7 @@ export const NodesUsageStatsModal = NiceModal.create((props: IProps) => {
 
             if (result.uuid) {
                 showModal('users_viewUserModal', {
-                    userUuid: result.uuid
+                    userId: result.id
                 })
             }
         } finally {

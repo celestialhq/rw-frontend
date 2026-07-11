@@ -20,11 +20,11 @@ type ActiveSquad = ActiveNode['activeSquads'][number]
 type ActiveInbound = ActiveSquad['activeInbounds'][number]
 
 interface IProps {
-    userUuid: string
+    userId: number
 }
 
 export const UserAccessibleNodesModal = NiceModal.create((props: IProps) => {
-    const { userUuid } = props
+    const { userId } = props
 
     const modal = useModal()
     const { modalProps } = useNiceMantineModal({
@@ -39,7 +39,7 @@ export const UserAccessibleNodesModal = NiceModal.create((props: IProps) => {
 
     const { data: userAccessibleNodes, isLoading } = useGetUserAccessibleNodes({
         route: {
-            uuid: userUuid
+            userId: userId
         }
     })
 
