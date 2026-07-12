@@ -28,7 +28,8 @@
     "remnawave-settings": "Remnawave 设置",
     "node-plugins": "插件",
     "tb-reports": "Torrent 屏蔽报告",
-    "sessions-explorer": "会话管理器"
+    "sessions-explorer": "会话管理器",
+    "http-stats": "HTTP 状态"
   },
   "common": {
     "delete": "删除",
@@ -76,8 +77,10 @@
     "bulk-actions": "批量操作",
     "bulk-edit": "批量编辑",
     "creation": "创建",
-    "processing": "Processing",
-    "operation-completed": "Operation completed"
+    "processing": "处理中",
+    "operation-completed": "操作已完成",
+    "usage-stats": "使用状态",
+    "active-sessions": "活跃会话"
   },
   "bandwidth-metrics": {
     "current-year": "今年",
@@ -741,7 +744,6 @@
     "widget": {
       "no-data-available-for-the-selected-period": "所选时段无可用数据",
       "no-data-available": "无可用数据",
-      "traffic-statistics": "流量统计",
       "click-to-show-all": "点击显示全部",
       "click-to-highlight-only-this-node": "点击仅高亮此节点",
       "usage-by-period": "时段用量",
@@ -762,16 +764,8 @@
       "click-to-see-all": "点击查看全部"
     }
   },
-  "get-user-usage": {
-    "feature": {
-      "show-usage": "显示用量",
-      "usage": "使用情况",
-      "active-sessions": "活跃会话"
-    }
-  },
   "active-sessions-drawer": {
     "widget": {
-      "title": "活跃会话",
       "requirements": "需求",
       "warning-activity": "当 <highlight>Xray-Core</highlight> 认为 <highlight>连接仍然打开</highlight>时，将显示IP地址。 这可能导致某些显示的IP地址实际未连接。 使用 <highlight>时钟</highlight> 图标跟踪指定IP的最后活动。",
       "warning-version": "Remnawave 节点版本 <highlight>{{version}}</highlight> 或者更高",
@@ -867,7 +861,6 @@
       "click-to-show-all-users": "点击显示所有用户",
       "click-to-highlight-only-this-user": "点击仅高亮此用户",
       "users-accordeon": "用户 (显示 {{displayedUserCount}} 个活跃用户中的前 {{significantUserCount}} 个 / 总用户数 {{userCount}})",
-      "user-traffic-statistics": "用户流量统计",
       "usage-by-period": "时段用量",
       "7-days": "7 天",
       "14-days": "14 天",
@@ -1263,6 +1256,10 @@
     "license-acknowledgement": "继续操作即表示您已阅读并同意<anchor>许可协议条款</anchor>。",
     "accept-button": "我已了解并接受"
   },
+  "connection-status-overlay": {
+    "connection-lost": "连接中断",
+    "reconnecting": "正在重新连接..."
+  },
   "mobile-warning-overlay": {
     "mobile-device-detected": "检测到移动设备",
     "description-line-1": "此页面包含复杂的表格，可能不适合在移动设备上使用。",
@@ -1634,7 +1631,6 @@
   "passkeys-drawer": {
     "component": {
       "passkeys": "通行密钥",
-      "passkeys-description": "通行密钥允许您在没有密码的情况下安全登录。您可以在不同的设备上注册多个通行密钥。",
       "active-passkeys": "激活的通行密钥",
       "no-passkeys-registered-yet": "尚无通行密钥注册",
       "add-passkeys-description": "添加您的第一个通行密钥以启用无密码登录您的设备",
@@ -2209,6 +2205,32 @@
   "bulk-all-users-actions": {
     "modal": {
       "perform-actions-on-all-users": "对所有用户执行操作"
+    }
+  },
+  "backend-tools-card": {
+    "widget": {
+      "queue-viewer": "队列查看器",
+      "queue-viewer-description": "监视和管理后台作业队列。",
+      "scalar-description": "现代交互式API参考资料。",
+      "swagger-description": "经典的 OpenAPI 文档浏览器。",
+      "backend-tools-description": "访问队列查看器，Scalar 或Swagger。",
+      "login": "登录",
+      "backend-tools": "后端工具"
+    }
+  },
+  "http-stats": {
+    "page": {
+      "component": {
+        "http-stats-description": "自上次面板重新启动以来，每一个 API 路由的综合请求计数。"
+      }
+    }
+  },
+  "http-stats-table": {
+    "widget": {
+      "total-requests": "总请求数",
+      "tracked-routes": "路由追踪",
+      "peak-requests": "峰值请求",
+      "avg-route": "平均／路由"
     }
   }
 }

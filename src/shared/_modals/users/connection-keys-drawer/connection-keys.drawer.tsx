@@ -9,9 +9,13 @@ import {
     Stack,
     TextInput,
     ThemeIcon,
-    Text
+    Text,
+    Box,
+    Button
 } from '@mantine/core'
 import { modals } from '@mantine/modals'
+import { githubDarkTheme } from 'json-edit-react'
+import { JsonEditor } from 'json-edit-react'
 import { useTranslation } from 'react-i18next'
 import {
     PiEyeSlashDuotone,
@@ -23,9 +27,10 @@ import {
     PiEmptyDuotone,
     PiQrCodeDuotone
 } from 'react-icons/pi'
+import { TbJson } from 'react-icons/tb'
 
 import { useNiceMantineModal } from '@shared/_modals/use-nice-modal'
-import { useGetConnectionKeysByUuid } from '@shared/api/hooks'
+import { useGetConnectionKeysByUserId, useGetRawSubscription } from '@shared/api/hooks'
 import { LoaderModalShared } from '@shared/ui/loader-modal'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { QrCodeBuilder } from '@shared/ui/qr-code-builder'
@@ -33,11 +38,12 @@ import { SectionCardRoot } from '@shared/ui/section-card/section-card.root'
 import { SectionCardSection } from '@shared/ui/section-card/section-card.section'
 
 interface IProps {
-    userUuid: string
+    userId: number
+    shortUuid: string
 }
 
 export const ConnectionKeysDrawer = NiceModal.create((props: IProps) => {
-    const { userUuid } = props
+    const { userId, shortUuid } = props
     const { t } = useTranslation()
 
     const modal = useModal()
@@ -46,10 +52,14 @@ export const ConnectionKeysDrawer = NiceModal.create((props: IProps) => {
         drawer: true
     })
 
-    const { data: connectionKeys, isLoading } = useGetConnectionKeysByUuid({
+    const { data: connectionKeys, isLoading } = useGetConnectionKeysByUserId({
         route: {
-            uuid: userUuid
+            userId: userId
         }
+    })
+
+    const { data: rawSubscription, isLoading: isRawSubscriptionLoading } = useGetRawSubscription({
+        route: { shortUuid }
     })
 
     const renderQrCode = (link: string, remark: string) => {
@@ -169,6 +179,44 @@ export const ConnectionKeysDrawer = NiceModal.create((props: IProps) => {
         )
     }
 
+    const renderRawSubscription = () => {
+        modals.open({
+            centered: true,
+            size: 'xl',
+            title: (
+                <BaseOverlayHeader
+                    iconColor="teal"
+                    IconComponent={TbJson}
+                    iconVariant="soft"
+                    title="Raw Subscription"
+                />
+            ),
+            children: (
+                <Box>
+                    <JsonEditor
+                        collapse={({ path }) => {
+                            if (path.length === 0) return false
+                            if (path[0] !== 'resolvedProxyConfigs') return true
+                            return path.length > 2
+                        }}
+                        data={JSON.parse(JSON.stringify(rawSubscription))}
+                        indent={4}
+                        keySort={([a], [b]) => {
+                            if (a === 'resolvedProxyConfigs') return -1
+                            if (b === 'resolvedProxyConfigs') return 1
+                            return 0
+                        }}
+                        maxWidth="100%"
+                        rootName=""
+                        theme={githubDarkTheme}
+                        viewOnly
+                        jsonStringify={(data) => JSON.stringify(data)}
+                    />
+                </Box>
+            )
+        })
+    }
+
     return (
         <Drawer
             {...modalProps}
@@ -184,13 +232,24 @@ export const ConnectionKeysDrawer = NiceModal.create((props: IProps) => {
                 />
             }
         >
-            {isLoading ? (
-                <LoaderModalShared
-                    text={t('get-user-subscription-links.feature.loading-subscription-links')}
-                />
-            ) : (
-                <Stack>{renderLinks()}</Stack>
-            )}
+            <Stack>
+                <Button
+                    fullWidth
+                    onClick={renderRawSubscription}
+                    leftSection={<TbJson size="16px" />}
+                    variant="soft"
+                    loading={isRawSubscriptionLoading}
+                >
+                    Raw Subscription
+                </Button>
+                {isLoading ? (
+                    <LoaderModalShared
+                        text={t('get-user-subscription-links.feature.loading-subscription-links')}
+                    />
+                ) : (
+                    <Stack>{renderLinks()}</Stack>
+                )}
+            </Stack>
         </Drawer>
     )
 })

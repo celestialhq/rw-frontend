@@ -1,5 +1,7 @@
+import { CodeHighlight } from '@mantine/code-highlight'
 import { Button, Card, Group, Stack } from '@mantine/core'
 import { useForm, schemaResolver } from '@mantine/form'
+import { modals } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
 import { UpdateSubscriptionSettingsCommand } from '@remnawave/backend-contract'
 import { useState } from 'react'
@@ -10,6 +12,7 @@ import Masonry from 'react-layout-masonry'
 
 import { queryClient } from '@shared/api'
 import { QueryKeys, useUpdateSubscriptionSettings } from '@shared/api/hooks'
+import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
 import { SettingsCardShared } from '@shared/ui/settings-card'
 import { handleFormErrors } from '@shared/utils/misc'
 
@@ -77,6 +80,24 @@ export const SubscriptionUserRemarksCardWidget = (props: IProps) => {
             },
 
             onError(error) {
+                if ((error.cause as unknown as { errorCode: string })?.errorCode === 'A231') {
+                    modals.open({
+                        centered: true,
+                        size: 'auto',
+                        title: (
+                            <BaseOverlayHeader
+                                iconColor="red"
+                                IconComponent={TbX}
+                                iconVariant="soft"
+                                title={t('subscription-settings.widget.validation-error')}
+                            />
+                        ),
+                        children: <CodeHighlight language="json" code={error.message} />
+                    })
+
+                    return
+                }
+
                 handleFormErrors(form, error)
             }
         }

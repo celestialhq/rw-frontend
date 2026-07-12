@@ -12,7 +12,7 @@ import {
 import { modals } from '@mantine/modals'
 import { GetNodesCommand } from '@remnawave/backend-contract'
 import { useTranslation } from 'react-i18next'
-import { TbCategoryPlus, TbChartArcs3, TbDots } from 'react-icons/tb'
+import { TbCategoryPlus, TbChartArcs, TbDots } from 'react-icons/tb'
 
 import { showModal } from '@shared/_modals/show-modal'
 import { queryClient } from '@shared/api'
@@ -96,7 +96,7 @@ export const MultiSelectNodesFeature = (props: IProps) => {
                                 <Button
                                     color="cyan"
                                     fullWidth
-                                    leftSection={<TbChartArcs3 size={18} />}
+                                    leftSection={<TbChartArcs size={18} />}
                                     onClick={() => {
                                         showModal('nodes_nodesUsageStatsModal', {
                                             nodeUuids: selectedRecords.map((record) => record.uuid)
@@ -105,7 +105,7 @@ export const MultiSelectNodesFeature = (props: IProps) => {
                                     size="sm"
                                     variant="soft"
                                 >
-                                    {t('node-users-usage-drawer.widget.user-traffic-statistics')}
+                                    {t('common.usage-stats')}
                                 </Button>
 
                                 <Button

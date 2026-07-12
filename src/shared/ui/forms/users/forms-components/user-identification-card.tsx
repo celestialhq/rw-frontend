@@ -13,7 +13,7 @@ import {
     Tooltip
 } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { GetUserByUuidCommand, USERS_STATUS } from '@remnawave/backend-contract'
+import { GetUserByIdCommand, USERS_STATUS } from '@remnawave/backend-contract'
 import { UserStatusBadge } from '@widgets/dashboard/users/user-status-badge'
 import dayjs from 'dayjs'
 import { githubDarkTheme, JsonEditor } from 'json-edit-react'
@@ -21,7 +21,7 @@ import { ForwardRefComponent, HTMLMotionProps, Variants } from 'motion/react'
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { HiQuestionMarkCircle } from 'react-icons/hi'
-import { PiChartBarDuotone, PiLinkBreak, PiLinkDuotone, PiUserCircle } from 'react-icons/pi'
+import { PiLinkBreak, PiLinkDuotone, PiUserCircle } from 'react-icons/pi'
 import {
     TbCalendar,
     TbChartArcs,
@@ -50,7 +50,7 @@ interface IProps {
     cardVariants: Variants
     lastConnectedNode?: null | { countryCode: string; name: string }
     motionWrapper: ForwardRefComponent<HTMLDivElement, HTMLMotionProps<'div'>>
-    user: GetUserByUuidCommand.Response['response']
+    user: GetUserByIdCommand.Response['response']
 }
 
 const statusIconColorMap = {
@@ -76,7 +76,7 @@ export const UserIdentificationCard = memo((props: IProps) => {
     const MotionWrapper = motionWrapper
 
     const { data: metadata, isLoading: isMetadataLoading } = useGetUserMetadata({
-        route: { uuid: user.uuid }
+        route: { userId: user.id }
     })
 
     const statusIconColor = statusIconColorMap[user.status] ?? 'gray'
@@ -181,7 +181,8 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                     color="teal"
                                     onClick={() => {
                                         showModal('users_connectionKeysDrawer', {
-                                            userUuid: user.uuid
+                                            userId: user.id,
+                                            shortUuid: user.shortUuid
                                         })
                                     }}
                                     size="lg"
@@ -240,7 +241,7 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                     color="cyan"
                                     onClick={() =>
                                         showModal('users_detailedUserInfoDrawer', {
-                                            userUuid: user.uuid
+                                            userId: user.id
                                         })
                                     }
                                     size="lg"
@@ -255,7 +256,7 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                     color="cyan"
                                     onClick={() => {
                                         showModal('users_userAccessibleNodesModal', {
-                                            userUuid: user.uuid
+                                            userId: user.id
                                         })
                                     }}
                                     size="lg"
@@ -269,18 +270,18 @@ export const UserIdentificationCard = memo((props: IProps) => {
                         <Divider opacity={0.3} orientation="vertical" />
 
                         <Group gap={5} justify="center">
-                            <Tooltip label={t('user-usage-modal.widget.traffic-statistics')}>
+                            <Tooltip label={t('common.usage-stats')}>
                                 <ActionIcon
                                     color="indigo"
                                     onClick={() => {
                                         showModal('users_userUsageModal', {
-                                            userUuid: user.uuid
+                                            userId: user.id
                                         })
                                     }}
                                     size="lg"
                                     variant="soft"
                                 >
-                                    <PiChartBarDuotone size="24px" />
+                                    <TbChartArcs size="24px" />
                                 </ActionIcon>
                             </Tooltip>
                             <Tooltip
@@ -292,7 +293,7 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                     color="indigo"
                                     onClick={() =>
                                         showModal('users_userTorrentBlockerReportsModal', {
-                                            userUuid: user.uuid
+                                            userId: user.id
                                         })
                                     }
                                     size="lg"
@@ -311,7 +312,7 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                     color="indigo"
                                     onClick={() =>
                                         showModal('users_userSubscriptionRequestsModal', {
-                                            userUuid: user.uuid
+                                            userId: user.id
                                         })
                                     }
                                     size="lg"
@@ -326,7 +327,7 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                     color="indigo"
                                     onClick={() => {
                                         showModal('users_userHwidDevicesModal', {
-                                            userUuid: user.uuid
+                                            userId: user.id
                                         })
                                     }}
                                     size="lg"
@@ -336,12 +337,12 @@ export const UserIdentificationCard = memo((props: IProps) => {
                                 </ActionIcon>
                             </Tooltip>
 
-                            <Tooltip label={t('get-user-usage.feature.active-sessions')}>
+                            <Tooltip label={t('common.active-sessions')}>
                                 <ActionIcon
                                     color="indigo"
                                     onClick={() => {
                                         showModal('users_userActiveSessionDrawer', {
-                                            userUuid: user.uuid
+                                            userId: user.id
                                         })
                                     }}
                                     size="lg"

@@ -5,7 +5,6 @@ import {
     MantineReactTable,
     MRT_ColumnFilterFnsState,
     MRT_ShowHideColumnsButton,
-    MRT_SortingState,
     MRT_ToggleDensePaddingButton,
     MRT_ToggleFullScreenButton,
     useMantineReactTable
@@ -15,7 +14,7 @@ import { notifications } from '@mantine/notifications'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PiUsersDuotone } from 'react-icons/pi'
-import { TbBolt, TbEdit, TbSearch, TbSearchOff } from 'react-icons/tb'
+import { TbBolt, TbEdit } from 'react-icons/tb'
 import { useSearchParams } from 'react-router'
 
 import { showModal } from '@shared/_modals/show-modal'
@@ -54,8 +53,6 @@ export function UserTableWidget() {
     const { state: persistedTableState, handlers: persistedTableHandlers } =
         useMrtTableBinding(useUsersTableStore)
 
-    const [sorting, setSorting] = useState<MRT_SortingState>([])
-
     const defaultFilterFns: Record<string, string> = {
         hwidDeviceLimit: 'equals',
         tag: 'equals',
@@ -82,7 +79,7 @@ export function UserTableWidget() {
                 : value !== null && value !== undefined && value !== ''
         ),
         filterModes: columnFilterFns,
-        sorting
+        sorting: persistedTableState.sorting
     }
 
     const {
@@ -96,16 +93,16 @@ export function UserTableWidget() {
         rQueryParams: {
             // enabled: bulkUsersActionsStoreActions.getUuidLength() === 0,
             refetchInterval:
-                usersTableSelectionStoreActions.getUuidLength() === 0 ? sToMs(25) : false
+                usersTableSelectionStoreActions.getIdsLength() === 0 ? sToMs(25) : false
         }
     })
 
     useEffect(() => {
         if (isLoading) return
-        const userUuid = searchParams.get(SEARCH_PARAMS.USER)
-        if (!userUuid) return
+        const userId = searchParams.get(SEARCH_PARAMS.USER)
+        if (!userId) return
 
-        showModal('users_viewUserModal', { userUuid })
+        showModal('users_viewUserModal', { userId: Number(userId) })
 
         setSearchParams(
             (prev) => {
@@ -152,12 +149,6 @@ export function UserTableWidget() {
                 })
             }
         },
-        icons: {
-            // oxlint-disable-next-line
-            IconFilter: (props: any) => <TbSearch size={24} {...props} />,
-            // oxlint-disable-next-line
-            IconFilterOff: (props: any) => <TbSearchOff size={24} {...props} />
-        },
         // mantineTableBodyCellProps: { style: { padding: '2px 6px' } },
         enableFullScreenToggle: true,
         enableSortingRemoval: true,
@@ -168,7 +159,8 @@ export function UserTableWidget() {
         columnFilterModeOptions: ['contains'],
         initialState: {
             density: 'xxs',
-            pagination: DEFAULT_PAGINATION_STATE
+            pagination: DEFAULT_PAGINATION_STATE,
+            sorting: [{ id: 'id', desc: true }]
         },
         mantineFilterTextInputProps: () => ({
             placeholder: 'Filter by...'
@@ -188,17 +180,17 @@ export function UserTableWidget() {
                 '--mrt-base-background-color': '#1b2027'
             }
         },
+        mantinePaperProps: {
+            style: {
+                '--paper-radius': 'var(--mantine-radius-xs)'
+            },
+            withBorder: false
+        },
         enableDensityToggle: true,
         manualFiltering: true,
         manualPagination: true,
         manualSorting: true,
-        // mantinePaginationProps: {
-        //     rowsPerPageOptions: ['25', '50', '100']
-        // },
-
-        // icons: customIcons,
         enableColumnResizing: true,
-
         /* prettier-ignore */
         mantineToolbarAlertBannerProps: isError ? {
             color: 'red',
@@ -207,13 +199,6 @@ export function UserTableWidget() {
 
         ...persistedTableHandlers,
         onColumnFilterFnsChange: setColumnFilterFns,
-        onSortingChange: setSorting,
-        mantinePaperProps: {
-            style: {
-                '--paper-radius': 'var(--mantine-radius-xs)'
-            },
-            withBorder: false
-        },
         rowCount: usersResponse?.total ?? 0,
         enableRowSelection: true,
         mantineSelectCheckboxProps: {
@@ -275,12 +260,11 @@ export function UserTableWidget() {
             showAlertBanner: isError,
             showColumnFilters: true,
             showProgressBars: isFetching,
-            sorting,
             rowSelection: tableSelection
         },
         mantineTableBodyRowProps: ({ row }) => ({
             onClick: async () => {
-                if (row.id === 'mrt-row-empty' || row.original.uuid === undefined) {
+                if (row.id === 'mrt-row-empty' || row.original.id === undefined) {
                     notifications.show({
                         title: 'Nice try!',
                         message: 'Nothing to show...',
@@ -289,7 +273,7 @@ export function UserTableWidget() {
                     return
                 }
 
-                showModal('users_viewUserModal', { userUuid: row.original.uuid })
+                showModal('users_viewUserModal', { userId: row.original.id })
 
                 // await userModalActions.setUserUuid(row.original.uuid)
                 // userModalActions.changeModalState(true)
@@ -299,7 +283,7 @@ export function UserTableWidget() {
             }
         }),
         onRowSelectionChange: usersTableSelectionStoreActions.setTableSelection,
-        getRowId: (originalRow) => originalRow.uuid
+        getRowId: (originalRow) => originalRow.id?.toString() ?? 'unknown'
     })
 
     return (

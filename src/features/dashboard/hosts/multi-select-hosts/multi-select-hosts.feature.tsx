@@ -27,7 +27,7 @@ import {
 } from 'react-icons/tb'
 
 import { showModal } from '@shared/_modals/show-modal'
-import { useBulkEnableHosts, useCreateHost, useGetHosts } from '@shared/api/hooks'
+import { useBulkEnableHosts, useCreateHost, useGetHosts, useReorderHosts } from '@shared/api/hooks'
 import {
     useBulkDeleteHosts,
     useBulkDisableHosts
@@ -74,6 +74,7 @@ export const MultiSelectHostsFeature = (props: IProps) => {
         }
     })
     const { mutateAsync: createHost } = useCreateHost()
+    const { mutateAsync: reorderHosts } = useReorderHosts()
 
     const selectAllHosts = () => {
         setSelectedHosts(hosts?.map((host) => host.uuid) || [])
@@ -85,7 +86,7 @@ export const MultiSelectHostsFeature = (props: IProps) => {
 
     const deleteSelectedHosts = () => {
         modals.openConfirmModal({
-            title: t('common.delete'),
+            title: t('common.confirm-action'),
             centered: true,
             children: t('common.confirm-action-description'),
             labels: {
@@ -93,7 +94,11 @@ export const MultiSelectHostsFeature = (props: IProps) => {
                 cancel: t('common.cancel')
             },
             confirmProps: {
-                color: 'red'
+                color: 'red',
+                variant: 'soft'
+            },
+            cancelProps: {
+                variant: 'subtle'
             },
             onConfirm: () => {
                 bulkDeleteHosts({ variables: { uuids: selectedHosts } })
@@ -152,9 +157,10 @@ export const MultiSelectHostsFeature = (props: IProps) => {
                     })
                 }
 
-                await Promise.allSettled(
-                    cloneableHosts.map((host) =>
-                        createHost({
+                const cloneResults = await Promise.allSettled(
+                    cloneableHosts.map(async (host) => ({
+                        parentUuid: host.uuid,
+                        clone: await createHost({
                             variables: {
                                 ...host,
                                 remark: cloneString(host.remark),
@@ -165,8 +171,31 @@ export const MultiSelectHostsFeature = (props: IProps) => {
                                 }
                             }
                         })
-                    )
+                    }))
                 )
+
+                const cloneUuidByParent = new Map<string, string>()
+                for (const result of cloneResults) {
+                    if (result.status === 'fulfilled' && result.value.clone) {
+                        cloneUuidByParent.set(result.value.parentUuid, result.value.clone.uuid)
+                    }
+                }
+
+                if (cloneUuidByParent.size > 0) {
+                    const orderedUuids = (hosts ?? []).flatMap((host) => {
+                        const cloneUuid = cloneUuidByParent.get(host.uuid)
+                        return cloneUuid ? [host.uuid, cloneUuid] : [host.uuid]
+                    })
+
+                    await reorderHosts({
+                        variables: {
+                            hosts: orderedUuids.map((uuid, index) => ({
+                                uuid,
+                                viewPosition: index
+                            }))
+                        }
+                    })
+                }
 
                 refetchHosts()
                 clearSelection()

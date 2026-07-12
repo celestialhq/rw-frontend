@@ -28,7 +28,8 @@
     "remnawave-settings": "Remnawave Settings",
     "node-plugins": "Plugins",
     "tb-reports": "Torrent Blocker Reports",
-    "sessions-explorer": "Sessions Explorer"
+    "sessions-explorer": "Sessions Explorer",
+    "http-stats": "HTTP Stats"
   },
   "common": {
     "delete": "Delete",
@@ -77,7 +78,9 @@
     "bulk-edit": "Bulk edit",
     "creation": "Creation",
     "processing": "Processing",
-    "operation-completed": "Operation completed"
+    "operation-completed": "Operation completed",
+    "usage-stats": "Usage stats",
+    "active-sessions": "Active sessions"
   },
   "bandwidth-metrics": {
     "current-year": "Current year",
@@ -741,7 +744,6 @@
     "widget": {
       "no-data-available-for-the-selected-period": "No data available for the selected period",
       "no-data-available": "No data available",
-      "traffic-statistics": "Traffic statistics",
       "click-to-show-all": "Click to show all",
       "click-to-highlight-only-this-node": "Click to highlight only this node",
       "usage-by-period": "Usage by period",
@@ -762,16 +764,8 @@
       "click-to-see-all": "Click to see all"
     }
   },
-  "get-user-usage": {
-    "feature": {
-      "show-usage": "Show usage",
-      "usage": "Usage",
-      "active-sessions": "Active Sessions"
-    }
-  },
   "active-sessions-drawer": {
     "widget": {
-      "title": "Active Sessions",
       "requirements": "Requirements",
       "warning-activity": "An IP address will be shown when <highlight>Xray-Core</highlight> considers the <highlight>connection still open</highlight>. This may result in some displayed IP addresses that are no longer actually connected. Use the <highlight>clock</highlight> icon to track the last activity of a given IP.",
       "warning-version": "Remnawave Node version <highlight>{{version}}</highlight> or higher",
@@ -867,7 +861,6 @@
       "click-to-show-all-users": "Click to show all users",
       "click-to-highlight-only-this-user": "Click to highlight only this user",
       "users-accordeon": "Users (showing top {{displayedUserCount}} of {{significantUserCount}} active out of {{userCount}} total)",
-      "user-traffic-statistics": "User Traffic Statistics",
       "usage-by-period": "Usage by period",
       "7-days": "7 days",
       "14-days": "14 days",
@@ -1263,6 +1256,10 @@
     "license-acknowledgement": "By continuing you acknowledge that you have read and agree to the <anchor>license terms</anchor>.",
     "accept-button": "I understand and accept"
   },
+  "connection-status-overlay": {
+    "connection-lost": "Connection lost",
+    "reconnecting": "Reconnecting..."
+  },
   "mobile-warning-overlay": {
     "mobile-device-detected": "Mobile Device Detected",
     "description-line-1": "This page contains complex tables that may not be comfortable to use on mobile devices.",
@@ -1634,7 +1631,6 @@
   "passkeys-drawer": {
     "component": {
       "passkeys": "Passkeys",
-      "passkeys-description": "Passkeys allow you to sign in securely without passwords. You can register multiple passkeys across different devices.",
       "active-passkeys": "Active Passkeys",
       "no-passkeys-registered-yet": "No passkeys registered yet",
       "add-passkeys-description": "Add your first passkey to enable secure, passwordless sign-in across your devices",
@@ -2209,6 +2205,32 @@
   "bulk-all-users-actions": {
     "modal": {
       "perform-actions-on-all-users": "Perform actions on all users"
+    }
+  },
+  "backend-tools-card": {
+    "widget": {
+      "queue-viewer": "Queue Viewer",
+      "queue-viewer-description": "Monitor and manage background job queues.",
+      "scalar-description": "Modern interactive API reference.",
+      "swagger-description": "Classic OpenAPI documentation explorer.",
+      "backend-tools-description": "Access to Queue Viewer, Scalar or Swagger.",
+      "login": "Login",
+      "backend-tools": "Backend tools"
+    }
+  },
+  "http-stats": {
+    "page": {
+      "component": {
+        "http-stats-description": "Aggregated request counts per API route since the last panel restart."
+      }
+    }
+  },
+  "http-stats-table": {
+    "widget": {
+      "total-requests": "Total Requests",
+      "tracked-routes": "Tracked Routes",
+      "peak-requests": "Peak Requests",
+      "avg-route": "Avg / Route"
     }
   }
 }

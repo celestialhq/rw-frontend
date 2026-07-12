@@ -52,8 +52,8 @@ export function SubpageConfigsGridWidget(props: IProps) {
                 confirm: t('common.delete'),
                 cancel: t('common.cancel')
             },
-            cancelProps: { variant: 'subtle', color: 'gray' },
-            confirmProps: { color: 'red' },
+            cancelProps: { variant: 'subtle' },
+            confirmProps: { color: 'red', variant: 'soft' },
             centered: true,
             onConfirm: () => {
                 deleteSubpageConfig({

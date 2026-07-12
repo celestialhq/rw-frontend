@@ -7,10 +7,12 @@ import { hideModal } from '@shared/_modals/show-modal'
 import { QueryKeys, useDeleteUser } from '@shared/api/hooks'
 import { queryClient } from '@shared/api/query-client'
 
-import { IProps } from './interfaces'
+interface IProps {
+    userId: number
+}
 
 export function DeleteUserFeature(props: IProps) {
-    const { userUuid } = props
+    const { userId } = props
     const { t } = useTranslation()
 
     const { mutate: deleteUser, isPending: isDeleteUserPending } = useDeleteUser({
@@ -34,21 +36,24 @@ export function DeleteUserFeature(props: IProps) {
     const handleDeleteUser = () => {
         deleteUser({
             route: {
-                uuid: userUuid
+                userId: userId
             }
         })
     }
 
     const openModal = () =>
         modals.openConfirmModal({
-            title: t('common.delete'),
+            title: t('common.confirm-action'),
             children: t('common.confirm-action-description'),
             labels: {
                 confirm: t('common.delete'),
                 cancel: t('common.cancel')
             },
             centered: true,
-            confirmProps: { color: 'red' },
+            confirmProps: { color: 'red', variant: 'soft' },
+            cancelProps: {
+                variant: 'subtle'
+            },
             onConfirm: () => handleDeleteUser()
         })
 

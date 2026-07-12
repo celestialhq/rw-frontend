@@ -1,7 +1,5 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory'
 import {
-    GetLegacyStatsNodeUserUsageCommand,
-    GetLegacyStatsUserUsageCommand,
     GetStatsNodesUsageCommand,
     GetStatsNodesUsersUsageCommand,
     GetStatsNodeUsersUsageCommand,
@@ -32,18 +30,6 @@ export const bandwidthStatsQueryKeys = createQueryKeys('bandwidthStats', {
             GetStatsNodesUsersUsageCommand.RequestQuery
     ) => ({
         queryKey: [params]
-    }),
-    getLegacyStatsUserUsageCommand: (
-        query: GetLegacyStatsUserUsageCommand.RequestParam &
-            GetLegacyStatsUserUsageCommand.RequestQuery
-    ) => ({
-        queryKey: [query]
-    }),
-    getLegacyStatsNodeUserUsageCommand: (
-        query: GetLegacyStatsNodeUserUsageCommand.RequestParam &
-            GetLegacyStatsNodeUserUsageCommand.RequestQuery
-    ) => ({
-        queryKey: [query]
     })
 })
 
@@ -96,31 +82,4 @@ export const useGetStatsNodesUsersUsage = createBodyQueryHook({
         staleTime: sToMs(60)
     },
     errorHandler: (error) => errorHandler(error, 'Get Nodes Users Usage By Range')
-})
-
-export const useGetLegacyStatsNodeUserUsage = createGetQueryHook({
-    endpoint: GetLegacyStatsNodeUserUsageCommand.TSQ_url,
-    responseSchema: GetLegacyStatsNodeUserUsageCommand.ResponseSchema,
-    requestQuerySchema: GetLegacyStatsNodeUserUsageCommand.RequestQuerySchema,
-    routeParamsSchema: GetLegacyStatsNodeUserUsageCommand.RequestParamSchema,
-    getQueryKey: ({ route, query }) =>
-        bandwidthStatsQueryKeys.getLegacyStatsNodeUserUsageCommand({ ...route!, ...query! })
-            .queryKey,
-    rQueryParams: {
-        staleTime: sToMs(60)
-    },
-    errorHandler: (error) => errorHandler(error, 'Get Node Users Usage By Range')
-})
-
-export const useGetLegacyStatsUserUsage = createGetQueryHook({
-    endpoint: GetLegacyStatsUserUsageCommand.TSQ_url,
-    responseSchema: GetLegacyStatsUserUsageCommand.ResponseSchema,
-    requestQuerySchema: GetLegacyStatsUserUsageCommand.RequestQuerySchema,
-    routeParamsSchema: GetLegacyStatsUserUsageCommand.RequestParamSchema,
-    getQueryKey: ({ route, query }) =>
-        bandwidthStatsQueryKeys.getLegacyStatsUserUsageCommand({ ...route!, ...query! }).queryKey,
-    rQueryParams: {
-        staleTime: sToMs(15)
-    },
-    errorHandler: (error) => errorHandler(error, 'Get User Usage By Range')
 })

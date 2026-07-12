@@ -27,7 +27,7 @@ export const UserActionGroupFeature = (props: IProps) => {
             actions.resetState()
 
             table.resetPageIndex(false)
-            table.resetSorting(true)
+            table.resetSorting(false)
             table.resetPagination(false)
             table.resetColumnFilters(true)
             table.resetGlobalFilter(true)
@@ -39,7 +39,7 @@ export const UserActionGroupFeature = (props: IProps) => {
             refetch()
 
             table.resetPageIndex(false)
-            table.resetSorting(true)
+            table.resetSorting(false)
             table.resetPagination(false)
             table.resetColumnFilters(true)
             table.resetGlobalFilter(true)

@@ -55,7 +55,6 @@ import {
     TbServer2,
     TbStar
 } from 'react-icons/tb'
-import { Link } from 'react-router'
 
 import { useIsMobile } from '@shared/hooks'
 import { ChipMultiSelect } from '@shared/ui/chip-multi-select'
@@ -220,62 +219,6 @@ export const BaseHostForm = <
                                     </Text>
                                 </Stack>
                             )}
-                        </Stack>
-                    </Stack>
-                </HoverCard.Dropdown>
-            </HoverCard>
-        )
-    }
-
-    const vlessRouteHoverCard = () => {
-        return (
-            <HoverCard shadow="md" width={300} withArrow>
-                <HoverCard.Target>
-                    <ActionIcon color="gray" size="xs" variant="subtle">
-                        <HiQuestionMarkCircle size={20} />
-                    </ActionIcon>
-                </HoverCard.Target>
-                <HoverCard.Dropdown>
-                    <Stack gap="md">
-                        <Stack gap="sm">
-                            <Text c="dimmed" size="sm">
-                                Refer to the{' '}
-                                <Link
-                                    target="_blank"
-                                    to="https://xtls.github.io/config/routing.html"
-                                >
-                                    XTLS Documentation
-                                </Link>{' '}
-                                for more information.
-                            </Text>
-                        </Stack>
-                    </Stack>
-                </HoverCard.Dropdown>
-            </HoverCard>
-        )
-    }
-
-    const mihomoX25519HoverCard = () => {
-        return (
-            <HoverCard shadow="md" width={280} withArrow>
-                <HoverCard.Target>
-                    <ActionIcon color="gray" size="xs" variant="subtle">
-                        <HiQuestionMarkCircle size={20} />
-                    </ActionIcon>
-                </HoverCard.Target>
-                <HoverCard.Dropdown>
-                    <Stack gap="md">
-                        <Stack gap="sm">
-                            <Text c="dimmed" size="sm">
-                                Refer to the{' '}
-                                <Link
-                                    target="_blank"
-                                    to="https://wiki.metacubex.one/en/config/proxies/tls/#reality-optssupport-x25519mlkem768"
-                                >
-                                    Mihomo Documentation
-                                </Link>{' '}
-                                for more information.
-                            </Text>
                         </Stack>
                     </Stack>
                 </HoverCard.Dropdown>
@@ -853,7 +796,21 @@ export const BaseHostForm = <
                                                 hideControls
                                                 max={65535}
                                                 min={0}
-                                                rightSection={vlessRouteHoverCard()}
+                                                rightSection={
+                                                    <ActionIcon
+                                                        color="gray"
+                                                        onClick={() => {
+                                                            window.open(
+                                                                'https://xtls.github.io/config/routing.html',
+                                                                '_blank'
+                                                            )
+                                                        }}
+                                                        size="xs"
+                                                        variant="subtle"
+                                                    >
+                                                        <HiQuestionMarkCircle size={20} />
+                                                    </ActionIcon>
+                                                }
                                             />
                                         </Stack>
                                     </SectionCard.Section>
@@ -1242,7 +1199,19 @@ export const BaseHostForm = <
                                                     <Text fw={600} size="sm">
                                                         {t('base-host-form.enable-x25519mlkem768')}
                                                     </Text>
-                                                    {mihomoX25519HoverCard()}
+                                                    <ActionIcon
+                                                        color="gray"
+                                                        onClick={() => {
+                                                            window.open(
+                                                                'https://wiki.metacubex.one/en/config/proxies/tls/#reality-optssupport-x25519mlkem768',
+                                                                '_blank'
+                                                            )
+                                                        }}
+                                                        size="xs"
+                                                        variant="subtle"
+                                                    >
+                                                        <HiQuestionMarkCircle size={20} />
+                                                    </ActionIcon>
                                                 </Group>
                                                 <Switch
                                                     color="teal.8"
@@ -1309,11 +1278,7 @@ export const BaseHostForm = <
                         </Button>
                     </Group>
 
-                    {!!hostUuid && (
-                        <Group>
-                            <DeleteHostFeature hostUuid={hostUuid} />
-                        </Group>
-                    )}
+                    {!!hostUuid && <DeleteHostFeature hostUuid={hostUuid} />}
                 </Group>
             </DrawerFooter>
         </form>

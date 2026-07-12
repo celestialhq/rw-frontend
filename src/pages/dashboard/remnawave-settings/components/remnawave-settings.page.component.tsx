@@ -2,6 +2,7 @@ import { Container } from '@mantine/core'
 import { GetApiTokensCommand, GetRemnawaveSettingsCommand } from '@remnawave/backend-contract'
 import { ApiTokensCardWidget } from '@widgets/remnawave-settings/api-tokens-card/api-tokens-card.widget'
 import { AuthentificationSettingsCardWidget } from '@widgets/remnawave-settings/authentification-settings-card/authentification-settings-card.widget'
+import { BackendToolsCardWidget } from '@widgets/remnawave-settings/backend-tools-card/backend-tools-card.widget'
 import { BrandingSettingsCardWidget } from '@widgets/remnawave-settings/branding-settings-card/branding-settings-card.widget'
 import { VisualSettingsCardWidget } from '@widgets/remnawave-settings/visual-settings-card/visual-settings-card.widget'
 import { useTranslation } from 'react-i18next'
@@ -43,10 +44,9 @@ export const RemnawaveSettingsPageComponent = (props: IProps) => {
                         passkeySettings={remnawaveSettings.passkeySettings}
                         passwordSettings={remnawaveSettings.passwordSettings}
                     />
-
                     <ApiTokensCardWidget apiTokensData={apiTokensData} />
-
                     <VisualSettingsCardWidget />
+                    <BackendToolsCardWidget />
                     <BrandingSettingsCardWidget
                         brandingSettings={remnawaveSettings.brandingSettings}
                     />

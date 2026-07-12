@@ -45,8 +45,8 @@ export function HwidInspectorLeaderboardWidget() {
     return (
         <DataTable
             borderRadius="sm"
-            columns={getHwidInspectorLeaderboardColumns(t, async (userUuid) => {
-                showModal('users_viewUserModal', { userUuid })
+            columns={getHwidInspectorLeaderboardColumns(t, async (userId) => {
+                showModal('users_viewUserModal', { userId })
             })}
             defaultColumnProps={{
                 noWrap: true,

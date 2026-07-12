@@ -12,21 +12,20 @@ import {
 } from 'react-icons/pi'
 
 import { useNiceMantineModal } from '@shared/_modals/use-nice-modal'
-import { useGetUserByUuid } from '@shared/api/hooks'
+import { useGetUserById } from '@shared/api/hooks'
 import { CopyableDataListItem } from '@shared/ui/copyable-field/copyable-data-list-item'
 import { LoaderModalShared } from '@shared/ui/loader-modal'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
-import { SectionCardRoot } from '@shared/ui/section-card/section-card.root'
-import { SectionCardSection } from '@shared/ui/section-card/section-card.section'
+import { SectionCard } from '@shared/ui/section-card'
 import { prettifyBytesUtil } from '@shared/utils/bytes'
 import { formatTimeUtil } from '@shared/utils/time-utils'
 
 interface IProps {
-    userUuid: string
+    userId: number
 }
 
 export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
-    const { userUuid } = props
+    const { userId } = props
 
     const modal = useModal()
     const { modalProps } = useNiceMantineModal({
@@ -36,9 +35,9 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
 
     const { t, i18n } = useTranslation()
 
-    const { data: user, isLoading: isUserLoading } = useGetUserByUuid({
+    const { data: user, isLoading: isUserLoading } = useGetUserById({
         route: {
-            uuid: userUuid
+            userId: userId
         }
     })
 
@@ -69,8 +68,8 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
 
             {!isUserLoading && user && (
                 <Stack gap="md">
-                    <SectionCardRoot>
-                        <SectionCardSection>
+                    <SectionCard.Root>
+                        <SectionCard.Section>
                             <Group align="center" justify="space-between">
                                 <BaseOverlayHeader
                                     iconColor="blue"
@@ -88,15 +87,11 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
                                     />
                                 </Group>
                             </Group>
-                        </SectionCardSection>
-                        <SectionCardSection>
+                        </SectionCard.Section>
+                        <SectionCard.Section>
                             <DataList withDivider orientation="vertical">
                                 <CopyableDataListItem label="ID" monospace value={user.id} />
-                                <CopyableDataListItem
-                                    label={t('detailed-user-info-drawer.widget.uuid')}
-                                    monospace
-                                    value={user.uuid}
-                                />
+
                                 <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.short-uuid')}
                                     monospace
@@ -124,18 +119,18 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
                                     value={user.tag}
                                 />
                             </DataList>
-                        </SectionCardSection>
-                    </SectionCardRoot>
-                    <SectionCardRoot>
-                        <SectionCardSection>
+                        </SectionCard.Section>
+                    </SectionCard.Root>
+                    <SectionCard.Root>
+                        <SectionCard.Section>
                             <BaseOverlayHeader
                                 iconColor="teal"
                                 IconComponent={PiArrowsDownUpDuotone}
                                 iconVariant="soft"
                                 title={t('detailed-user-info-drawer.widget.traffic-information')}
                             />
-                        </SectionCardSection>
-                        <SectionCardSection>
+                        </SectionCard.Section>
+                        <SectionCard.Section>
                             <DataList withDivider orientation="vertical">
                                 <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.used-traffic')}
@@ -168,10 +163,10 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
                                     })}
                                 />
                             </DataList>
-                        </SectionCardSection>
-                    </SectionCardRoot>
-                    <SectionCardRoot>
-                        <SectionCardSection>
+                        </SectionCard.Section>
+                    </SectionCard.Root>
+                    <SectionCard.Root>
+                        <SectionCard.Section>
                             <BaseOverlayHeader
                                 iconColor="orange"
                                 IconComponent={PiCalendarDotDuotone}
@@ -181,8 +176,8 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
                                     'detailed-user-info-drawer.widget.subscription-information'
                                 )}
                             />
-                        </SectionCardSection>
-                        <SectionCardSection>
+                        </SectionCard.Section>
+                        <SectionCard.Section>
                             <DataList withDivider orientation="vertical">
                                 <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.subscription-url')}
@@ -206,19 +201,19 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
                                     })}
                                 />
                             </DataList>
-                        </SectionCardSection>
-                    </SectionCardRoot>
+                        </SectionCard.Section>
+                    </SectionCard.Root>
 
-                    <SectionCardRoot>
-                        <SectionCardSection>
+                    <SectionCard.Root>
+                        <SectionCard.Section>
                             <BaseOverlayHeader
                                 iconColor="violet"
                                 IconComponent={PiNetworkDuotone}
                                 iconVariant="soft"
                                 title={t('detailed-user-info-drawer.widget.connection-information')}
                             />
-                        </SectionCardSection>
-                        <SectionCardSection>
+                        </SectionCard.Section>
+                        <SectionCard.Section>
                             <DataList withDivider orientation="vertical">
                                 <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.trojan-password')}
@@ -259,12 +254,12 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
                                     value={user.userTraffic.lastConnectedNodeUuid}
                                 />
                             </DataList>
-                        </SectionCardSection>
-                    </SectionCardRoot>
+                        </SectionCard.Section>
+                    </SectionCard.Root>
 
                     {user.activeInternalSquads && user.activeInternalSquads.length > 0 && (
-                        <SectionCardRoot>
-                            <SectionCardSection>
+                        <SectionCard.Root>
+                            <SectionCard.Section>
                                 <BaseOverlayHeader
                                     iconColor="green"
                                     IconComponent={PiTagDuotone}
@@ -273,8 +268,8 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
                                         'detailed-user-info-drawer.widget.active-internal-squads'
                                     )}
                                 />
-                            </SectionCardSection>
-                            <SectionCardSection>
+                            </SectionCard.Section>
+                            <SectionCard.Section>
                                 <DataList withDivider orientation="vertical">
                                     {user.activeInternalSquads.map((squad) => (
                                         <CopyableDataListItem
@@ -285,19 +280,19 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
                                         />
                                     ))}
                                 </DataList>
-                            </SectionCardSection>
-                        </SectionCardRoot>
+                            </SectionCard.Section>
+                        </SectionCard.Root>
                     )}
-                    <SectionCardRoot>
-                        <SectionCardSection>
+                    <SectionCard.Root>
+                        <SectionCard.Section>
                             <BaseOverlayHeader
                                 iconColor="gray"
                                 IconComponent={PiClockDuotone}
                                 iconVariant="soft"
                                 title={t('detailed-user-info-drawer.widget.timestamps')}
                             />
-                        </SectionCardSection>
-                        <SectionCardSection>
+                        </SectionCard.Section>
+                        <SectionCard.Section>
                             <DataList withDivider orientation="vertical">
                                 <CopyableDataListItem
                                     label={t('detailed-user-info-drawer.widget.created-at')}
@@ -316,8 +311,8 @@ export const DetailedUserInfoDrawer = NiceModal.create((props: IProps) => {
                                     })}
                                 />
                             </DataList>
-                        </SectionCardSection>
-                    </SectionCardRoot>
+                        </SectionCard.Section>
+                    </SectionCard.Root>
                 </Stack>
             )}
         </Drawer>

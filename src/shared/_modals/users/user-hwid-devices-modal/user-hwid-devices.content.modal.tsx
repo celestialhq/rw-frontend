@@ -30,11 +30,11 @@ import { UserHwidDevicesTable } from './user-hwid-devices.table'
 
 interface IProps {
     mobile: boolean
-    userUuid: string
+    userId: number
 }
 
 export const UserHwidDevicesContentModal = (props: IProps) => {
-    const { userUuid, mobile } = props
+    const { userId, mobile } = props
     const { t } = useTranslation()
 
     const {
@@ -44,7 +44,7 @@ export const UserHwidDevicesContentModal = (props: IProps) => {
         refetch
     } = useGetUserHwidDevices({
         route: {
-            userUuid
+            userId
         }
     })
 
@@ -53,7 +53,7 @@ export const UserHwidDevicesContentModal = (props: IProps) => {
             onSuccess: (data) => {
                 queryClient.setQueryData(
                     QueryKeys['hwid-user-devices'].getUserHwidDevices({
-                        userUuid
+                        userId
                     }).queryKey,
                     data
                 )
@@ -66,7 +66,7 @@ export const UserHwidDevicesContentModal = (props: IProps) => {
             onSuccess: (data) => {
                 queryClient.setQueryData(
                     QueryKeys['hwid-user-devices'].getUserHwidDevices({
-                        userUuid
+                        userId
                     }).queryKey,
                     data
                 )
@@ -82,13 +82,16 @@ export const UserHwidDevicesContentModal = (props: IProps) => {
                 confirm: t('common.delete'),
                 cancel: t('common.cancel')
             },
-            confirmProps: { color: 'red' },
+            confirmProps: { color: 'red', variant: 'soft' },
+            cancelProps: {
+                variant: 'subtle'
+            },
             centered: true,
             onConfirm: () => {
                 deleteDevice({
                     variables: {
                         hwid,
-                        userUuid
+                        userId
                     }
                 })
             }
@@ -103,11 +106,14 @@ export const UserHwidDevicesContentModal = (props: IProps) => {
                 confirm: t('common.delete'),
                 cancel: t('common.cancel')
             },
-            confirmProps: { color: 'red' },
+            confirmProps: { color: 'red', variant: 'soft' },
+            cancelProps: {
+                variant: 'subtle'
+            },
             centered: true,
             onConfirm: () => {
                 deleteAllDevices({
-                    variables: { userUuid }
+                    variables: { userId }
                 })
             }
         })

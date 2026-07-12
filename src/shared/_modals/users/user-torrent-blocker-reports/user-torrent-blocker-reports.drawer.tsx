@@ -3,6 +3,7 @@ import {
     ActionIcon,
     Box,
     Card,
+    Center,
     Drawer,
     Group,
     Stack,
@@ -17,19 +18,19 @@ import { Virtuoso } from 'react-virtuoso'
 
 import { useNiceMantineModal } from '@shared/_modals/use-nice-modal'
 import { useGetTorrentBlockerReports } from '@shared/api/hooks'
-import { EmptyPageLayout } from '@shared/ui/layouts/empty-page'
 import { LoaderModalShared } from '@shared/ui/loader-modal'
 import { BaseOverlayHeader } from '@shared/ui/overlays/base-overlay-header'
+import { SectionCard } from '@shared/ui/section-card'
 
 import { UserTorrentBlockerReportItem } from './user-torrent-blocker-report-item'
 import classes from './user-torrent-blocker-reports.module.css'
 
 interface IProps {
-    userUuid: string
+    userId: number
 }
 
 export const UserTorrentBlockerReportsModal = NiceModal.create((props: IProps) => {
-    const { userUuid } = props
+    const { userId } = props
     const { t } = useTranslation()
 
     const modal = useModal()
@@ -49,12 +50,12 @@ export const UserTorrentBlockerReportsModal = NiceModal.create((props: IProps) =
             size: 1000,
             filters: [
                 {
-                    id: 'user.uuid',
-                    value: userUuid
+                    id: 'userId',
+                    value: userId
                 }
             ],
             filterModes: {
-                'user.uuid': 'equals'
+                userId: 'equals'
             }
         }
     })
@@ -120,7 +121,27 @@ export const UserTorrentBlockerReportsModal = NiceModal.create((props: IProps) =
                     </Stack>
                 </Card>
 
-                {reports && reports.total > 0 ? renderListContent() : <EmptyPageLayout />}
+                {reports && reports.total > 0 ? (
+                    renderListContent()
+                ) : (
+                    <SectionCard.Root p="xl">
+                        <SectionCard.Section>
+                            <Center py="xl">
+                                <Stack align="center" gap="lg">
+                                    <ThemeIcon color="gray" radius="xl" size={64} variant="soft">
+                                        <TbFlame size={32} />
+                                    </ThemeIcon>
+
+                                    <Stack align="center" gap="xs">
+                                        <Text c="dimmed" fw={600} size="md" ta="center">
+                                            {t('common.nothing-found')}
+                                        </Text>
+                                    </Stack>
+                                </Stack>
+                            </Center>
+                        </SectionCard.Section>
+                    </SectionCard.Root>
+                )}
             </Stack>
         )
     }
