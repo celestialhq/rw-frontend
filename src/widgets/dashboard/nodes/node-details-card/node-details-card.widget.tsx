@@ -309,6 +309,7 @@ export const NodeDetailsCardWidget = memo((props: IProps) => {
 
                     <Group gap="xs" justify="center">
                         <GetNodeUsersUsageFeature nodeUuid={node.uuid} />
+                        <GetActiveSessionsOnNodeFeature nodeUuid={node.uuid} />
                     </Group>
                 </Group>
             </SectionCard.Section>
