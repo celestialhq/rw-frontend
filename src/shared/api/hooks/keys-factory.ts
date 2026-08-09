@@ -1,5 +1,6 @@
 import { inferQueryKeyStore, mergeQueryKeys } from '@lukemorales/query-key-factory'
 
+import { acmeQueryKeys } from './acme/acme.query.hooks'
 import { apiTokensQueryKeys } from './api-tokens/api-tokens.query.hooks'
 import { authQueryKeys } from './auth/auth.query.hooks'
 import { bandwidthStatsQueryKeys } from './bandwidth-stats/bandwidth-stats.query.hooks'
@@ -45,7 +46,8 @@ export const QueryKeys = mergeQueryKeys(
     bandwidthStatsQueryKeys,
     connectionsQueryKeys,
     nodePluginsQueryKeys,
-    nodeIntegrationsQueryKeys
+    nodeIntegrationsQueryKeys,
+    acmeQueryKeys
 )
 
 export type TQueryKeys = inferQueryKeyStore<typeof QueryKeys>
