@@ -1,15 +1,16 @@
-import { Monaco } from '@monaco-editor/react'
 import {
+    GetSharedListsCommand,
     GetSnippetsCommand,
+    HostMapperSchema,
     ResponseRulesConfigSchema,
     TSubscriptionTemplateType
 } from '@remnawave/backend-contract'
-import { NodePluginSchema } from '@remnawave/node-plugins'
+import { NodePluginEditorSchema, SharedListConfigSchema } from '@remnawave/node-plugins'
 import axios from 'axios'
 import consola from 'consola'
 import { app } from 'src/config'
 
-import { monacoTheme } from '@shared/constants/monaco-theme'
+import { registerJsonSchema } from '@shared/utils/monaco/json-schema-registry'
 
 interface ISchemaNode {
     allOf?: ISchemaNode[]
@@ -18,7 +19,72 @@ interface ISchemaNode {
     properties?: Record<string, unknown>
 }
 
-const injectSnippetProperty = (node: ISchemaNode | undefined, snippetSchema: object): number => {
+interface IXraySchema {
+    $ref?: unknown
+    definitions?: Record<string, ISchemaNode | undefined>
+}
+
+const DEFINITIONS_REF_PREFIX = '#/definitions/'
+const PROTECTED_ROOT_KEYS = new Set(['api', 'inbounds', 'metrics', 'snippets', 'stats'])
+
+const CUSTOM_CORE_SCHEMA = {
+    title: 'Remnawave Custom Core',
+    markdownDescription: [
+        '**Remnawave custom field.** Not part of Xray-Core – it is handled by the Remnawave Node.',
+        '',
+        '> ⚠️ **Beta feature. Use strictly at your own risk.**',
+        '>',
+        '> It may be changed or removed at any time without prior notice.',
+        '',
+        'Replaces the Xray-Core binary on every node running this config profile with the one downloaded from `url`.',
+        '',
+        'The node verifies the `sha256` checksum before installing anything, keeps the bundled core untouched, and rolls back to it as soon as this section is removed.',
+        '',
+        '```json',
+        '{',
+        '  "geodata": {',
+        '    "core": {',
+        '      "url": "https://example.com/xray-linux-amd64",',
+        '      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"',
+        '    }',
+        '  }',
+        '}',
+        '```'
+    ].join('\n'),
+    type: 'object',
+    additionalProperties: false,
+    required: ['url', 'sha256'],
+    properties: {
+        url: {
+            title: 'Core URL',
+            markdownDescription: [
+                'Direct link to the Xray-Core binary to install on the node.',
+                '',
+                '> Only `https` is accepted. The file is downloaded on every node that runs this config profile.'
+            ].join('\n'),
+            type: 'string',
+            pattern: '^https://\\S+$',
+            patternErrorMessage: 'URL must start with https:// '
+        },
+        sha256: {
+            title: 'Core SHA-256',
+            markdownDescription: [
+                'SHA-256 checksum of the binary, 64 hexadecimal characters.',
+                '',
+                '> The node refuses to install the binary if the checksum does not match, so a wrong value here leaves the currently installed core in place.'
+            ].join('\n'),
+            type: 'string',
+            pattern: '^[A-Fa-f0-9]{64}$',
+            patternErrorMessage: 'SHA-256 must be exactly 64 hexadecimal characters'
+        }
+    }
+}
+
+const injectProperty = (
+    node: ISchemaNode | undefined,
+    propertyName: string,
+    propertySchema: object
+): number => {
     if (!node || typeof node !== 'object') {
         return 0
     }
@@ -26,20 +92,97 @@ const injectSnippetProperty = (node: ISchemaNode | undefined, snippetSchema: obj
     let injected = 0
 
     if (node.properties) {
-        node.properties.snippet = snippetSchema
+        node.properties[propertyName] = propertySchema
         injected += 1
     }
 
     for (const branch of [...(node.anyOf ?? []), ...(node.oneOf ?? []), ...(node.allOf ?? [])]) {
-        injected += injectSnippetProperty(branch, snippetSchema)
+        injected += injectProperty(branch, propertyName, propertySchema)
     }
 
     return injected
 }
 
+const MAX_INBOUND_PATHS = 400
+const MAX_INBOUND_DEPTH = 10
+const MAX_INBOUND_VALUE_PREVIEW = 400
+
+const collectInboundPaths = (
+    value: unknown,
+    prefix: string,
+    depth: number,
+    collected: Map<string, unknown>
+) => {
+    if (collected.size >= MAX_INBOUND_PATHS || depth > MAX_INBOUND_DEPTH) return
+    if (value === null || typeof value !== 'object') return
+
+    const entries = Array.isArray(value)
+        ? value.map((item, index) => [String(index), item] as const)
+        : Object.entries(value as Record<string, unknown>)
+
+    for (const [key, child] of entries) {
+        if (collected.size >= MAX_INBOUND_PATHS) return
+
+        const path = prefix ? `${prefix}.${key}` : key
+
+        collected.set(path, child)
+        collectInboundPaths(child, path, depth + 1, collected)
+    }
+}
+
+const injectInboundPaths = (schema: unknown, rawInbound: unknown) => {
+    const collected = new Map<string, unknown>()
+    collectInboundPaths(rawInbound, '', 0, collected)
+
+    if (collected.size === 0) return
+
+    const snippets = [...collected.entries()].map(([path, value]) => {
+        const json = JSON.stringify(value, null, 2) ?? 'undefined'
+        const preview =
+            json.length > MAX_INBOUND_VALUE_PREVIEW
+                ? `${json.slice(0, MAX_INBOUND_VALUE_PREVIEW)}\n…`
+                : json
+
+        return {
+            label: path,
+            body: path,
+            markdownDescription: [
+                '',
+                'Current value in the inbound:',
+                '',
+                '```json',
+                preview,
+                '```'
+            ].join('\n')
+        }
+    })
+
+    const properties = (schema as { properties?: Record<string, { items?: ISchemaNode }> })
+        .properties
+
+    for (const client of ['xrayJson', 'mihomo', 'base64']) {
+        for (const branch of properties?.[client]?.items?.oneOf ?? []) {
+            const from = branch.properties?.from as Record<string, unknown> | undefined
+
+            if (!from) continue
+
+            from.defaultSnippets = snippets
+        }
+    }
+}
+
+const resolveRootNode = (schema: IXraySchema | undefined): ISchemaNode | undefined => {
+    const ref = schema?.$ref
+
+    if (typeof ref !== 'string' || !ref.startsWith(DEFINITIONS_REF_PREFIX)) {
+        return undefined
+    }
+
+    return schema?.definitions?.[ref.slice(DEFINITIONS_REF_PREFIX.length)]
+}
+
 export const MonacoSetupFeature = {
     setup: async (
-        monaco: Monaco,
         currentLanguage: string,
         snippets: GetSnippetsCommand.Response['response']['snippets']
     ) => {
@@ -79,12 +222,40 @@ export const MonacoSetupFeature = {
                     'Snippet name can only contain: letters, numbers, spaces, _ and -'
             }
 
-            const notInjected = (
+            const rootSnippetsSchema = {
+                name: 'snippets',
+                title: 'Remnawave Snippets',
+                markdownDescription: [
+                    'Snippets merged into the **root** of this config.',
+                    '',
+                    'Every object of a listed snippet must hold root-level sections, for example:',
+                    '```json',
+                    '[{ "log": { "loglevel": "debug" } }]',
+                    '```',
+                    'Sections already written in this config are kept – a snippet never overwrites them.',
+                    '',
+                    '`inbounds`, `api`, `stats` and `metrics` are always skipped.'
+                ].join('\n'),
+                type: 'array',
+                items: {
+                    ...snippetSchema,
+                    title: 'Snippet name'
+                },
+                minItems: 1
+            }
+
+            const notInjected: string[] = (
                 ['OutboundObject', 'RuleObject', 'BalancerObject'] as const
             ).filter(
                 (definition) =>
-                    injectSnippetProperty(schema.definitions?.[definition], snippetSchema) === 0
+                    injectProperty(schema.definitions?.[definition], 'snippet', snippetSchema) === 0
             )
+
+            const rootNode = resolveRootNode(schema)
+
+            if (injectProperty(rootNode, 'snippets', rootSnippetsSchema) === 0) {
+                notInjected.push('config root')
+            }
 
             if (notInjected.length > 0) {
                 consola.error(
@@ -92,26 +263,27 @@ export const MonacoSetupFeature = {
                 )
             }
 
-            monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-                allowComments: false,
-                enableSchemaRequest: true,
-                schemaRequest: 'warning',
-                schemas: [
-                    {
-                        fileMatch: ['*'],
-                        schema,
-                        uri: 'https://xray-config-schema.json'
-                    }
-                ],
-                validate: true
+            if (
+                injectProperty(schema.definitions?.GeodataObject, 'core', CUSTOM_CORE_SCHEMA) ===
+                    0 &&
+                rootNode?.properties?.geodata
+            ) {
+                consola.error('Failed to inject the custom core property into GeodataObject.')
+            }
+
+            registerJsonSchema({
+                fileMatch: ['xray-config://*'],
+                schema,
+                uri: 'https://xray-config-schema.json'
             })
         } catch (error) {
             consola.error('Failed to load JSON schema:', error)
         }
     }
 }
+
 export const MonacoSetupSnippetsFeature = {
-    setup: async (monaco: Monaco, currentLanguage: string) => {
+    setup: async (currentLanguage: string) => {
         try {
             let { jsonSchemaUrl } = app.configEditor
             switch (currentLanguage) {
@@ -125,10 +297,14 @@ export const MonacoSetupSnippetsFeature = {
             const response = await axios.get(jsonSchemaUrl)
             const schema = await response.data
 
+            const rootNode = resolveRootNode(schema)
+
+            injectProperty(schema.definitions?.GeodataObject, 'core', CUSTOM_CORE_SCHEMA)
+
             const snippetArraySchema = {
                 $schema: 'http://json-schema.org/draft-07/schema#',
                 title: 'Snippet Array',
-                description: 'Array of Outbound, Rule or Balancer objects for snippets',
+                description: 'Array of Root, Outbound, Rule or Balancer objects for snippets',
                 type: 'array',
                 items: {
                     oneOf: [
@@ -146,25 +322,34 @@ export const MonacoSetupSnippetsFeature = {
                             ...schema.definitions?.BalancerObject,
                             title: 'Balancer Object',
                             description: 'Balancer configuration (for routing.balancers[])'
-                        }
+                        },
+                        ...(rootNode?.properties
+                            ? [
+                                  {
+                                      ...rootNode,
+                                      properties: Object.fromEntries(
+                                          Object.entries(rootNode.properties).filter(
+                                              ([key]) => !PROTECTED_ROOT_KEYS.has(key)
+                                          )
+                                      ),
+                                      title: 'Root Object',
+                                      description:
+                                          'Root-level sections (for configs referencing this snippet in the root "snippets" array)',
+                                      markdownDescription:
+                                          'Root-level sections, merged into the **root** of every config that lists this snippet in its root `snippets` array. \n\n\n`inbounds`, `api`, `stats` and `metrics` cannot be provided by a snippet.'
+                                  }
+                              ]
+                            : [])
                     ]
                 },
                 minItems: 1,
                 definitions: schema.definitions || {}
             }
 
-            monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-                allowComments: false,
-                enableSchemaRequest: true,
-                schemaRequest: 'warning',
-                schemas: [
-                    {
-                        fileMatch: ['snippet://*'],
-                        schema: snippetArraySchema,
-                        uri: 'https://snippet-schema.json'
-                    }
-                ],
-                validate: true
+            registerJsonSchema({
+                fileMatch: ['snippet://*'],
+                schema: snippetArraySchema,
+                uri: 'https://snippet-schema.json'
             })
 
             return snippetArraySchema
@@ -176,10 +361,7 @@ export const MonacoSetupSnippetsFeature = {
 }
 
 export const MonacoSetupResponseRulesFeature = {
-    setup: async (
-        monaco: Monaco,
-        groupedTemplates: Record<TSubscriptionTemplateType, string[]>
-    ) => {
+    setup: async (groupedTemplates: Record<TSubscriptionTemplateType, string[]>) => {
         try {
             const schema = ResponseRulesConfigSchema.toJSONSchema({
                 target: 'draft-07'
@@ -258,81 +440,124 @@ export const MonacoSetupResponseRulesFeature = {
                 })
             }
 
-            monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-                schemaValidation: 'error',
-                comments: 'error',
-                trailingCommas: 'error',
-
-                schemas: [
-                    {
-                        fileMatch: ['response-rules://*'],
-                        schema,
-                        uri: 'https://response-rules-schema.json'
-                    }
-                ],
-                validate: true
-            })
-
-            monaco.languages.json.jsonDefaults.setModeConfiguration({
-                documentFormattingEdits: true,
-                documentRangeFormattingEdits: true,
-                completionItems: true,
-                hovers: true,
-                documentSymbols: true,
-                tokens: true,
-                colors: true,
-                foldingRanges: true,
-                diagnostics: true,
-                selectionRanges: true
-            })
-
-            monaco.editor.defineTheme('GithubDark', {
-                ...monacoTheme,
-                base: 'vs-dark'
-            })
+            registerJsonSchema(
+                {
+                    fileMatch: ['response-rules://*'],
+                    schema,
+                    uri: 'https://response-rules-schema.json'
+                },
+                {
+                    comments: 'error',
+                    schemaValidation: 'error',
+                    trailingCommas: 'error'
+                }
+            )
         } catch (error) {
             consola.error('Failed to load JSON schema:', error)
         }
     }
 }
 
-export const MonacoSetupNodePluginEditorFeature = {
-    setup: async (monaco: Monaco) => {
+export const MonacoSetupHostMapperEditorFeature = {
+    setup: async (rawInbound?: unknown) => {
         try {
-            const schema = NodePluginSchema.toJSONSchema()
+            const schema = HostMapperSchema.toJSONSchema({ target: 'draft-07' })
 
-            monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-                schemaValidation: 'error',
-                comments: 'error',
-                trailingCommas: 'error',
+            injectInboundPaths(schema, rawInbound)
 
-                schemas: [
-                    {
-                        fileMatch: ['node-plugin://*'],
-                        schema,
-                        uri: 'https://node-plugin-schema.json'
-                    }
-                ],
-                validate: true
-            })
+            registerJsonSchema(
+                {
+                    fileMatch: ['host-mapper://*'],
+                    schema,
+                    uri: 'https://host-mapper-schema.json'
+                },
+                {
+                    comments: 'error',
+                    schemaValidation: 'error',
+                    trailingCommas: 'error'
+                }
+            )
+        } catch (error) {
+            consola.error('Failed to load JSON schema:', error)
+        }
+    }
+}
 
-            monaco.languages.json.jsonDefaults.setModeConfiguration({
-                documentFormattingEdits: true,
-                documentRangeFormattingEdits: true,
-                completionItems: true,
-                hovers: true,
-                documentSymbols: true,
-                tokens: true,
-                colors: true,
-                foldingRanges: true,
-                diagnostics: true,
-                selectionRanges: true
-            })
+type TSharedLists = GetSharedListsCommand.Response['response']['sharedLists']
 
-            monaco.editor.defineTheme('GithubDark', {
-                ...monacoTheme,
-                base: 'vs-dark'
-            })
+const buildSharedListDescription = (sharedList: TSharedLists[number]): string => {
+    const { type, itemsCount } = sharedList
+
+    return `**${type}** · ${itemsCount} item${itemsCount === 1 ? '' : 's'}`
+}
+
+const injectSharedListNames = (node: unknown, sharedLists: TSharedLists): void => {
+    if (!node || typeof node !== 'object') return
+
+    if (Array.isArray(node)) {
+        node.forEach((item) => injectSharedListNames(item, sharedLists))
+        return
+    }
+
+    const schemaNode = node as Record<string, unknown>
+
+    if (schemaNode.type === 'string' && String(schemaNode.pattern ?? '').startsWith('^ext:')) {
+        delete schemaNode.pattern
+
+        schemaNode.enum = sharedLists.map((sharedList) => `ext:${sharedList.name}`)
+        schemaNode.markdownEnumDescriptions = sharedLists.map(buildSharedListDescription)
+        schemaNode.title = 'Shared List'
+        schemaNode.markdownDescription =
+            sharedLists.length > 0
+                ? 'Reference to a shared list. Manage lists in **Shared Lists**.'
+                : 'No shared lists created yet. Create one in **Shared Lists** first.'
+        return
+    }
+
+    Object.values(schemaNode).forEach((value) => injectSharedListNames(value, sharedLists))
+}
+
+export const MonacoSetupNodePluginEditorFeature = {
+    setup: async (sharedLists: TSharedLists = []) => {
+        try {
+            const schema = NodePluginEditorSchema.toJSONSchema()
+
+            injectSharedListNames(schema, sharedLists)
+
+            registerJsonSchema(
+                {
+                    fileMatch: ['node-plugin://*'],
+                    schema,
+                    uri: 'https://node-plugin-schema.json'
+                },
+                {
+                    comments: 'error',
+                    schemaValidation: 'error',
+                    trailingCommas: 'error'
+                }
+            )
+        } catch (error) {
+            consola.error('Failed to load JSON schema:', error)
+        }
+    }
+}
+
+export const MonacoSetupSharedListEditorFeature = {
+    setup: () => {
+        try {
+            const schema = SharedListConfigSchema.toJSONSchema()
+            registerJsonSchema(
+                {
+                    fileMatch: ['shared-list://*'],
+                    schema,
+                    uri: 'https://shared-list-schema.json'
+                },
+                {
+                    comments: 'error',
+                    schemaValidation: 'error',
+                    trailingCommas: 'error'
+                }
+            )
         } catch (error) {
             consola.error('Failed to load JSON schema:', error)
         }

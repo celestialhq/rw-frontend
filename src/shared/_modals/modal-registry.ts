@@ -8,6 +8,7 @@ import {
     CreateHostDrawer,
     EditHostDrawer,
     EditManyHostsDrawer,
+    HostMapperModal,
     HostsConfigProfilesDrawer
 } from './hosts'
 import {
@@ -22,6 +23,7 @@ import {
     InternalSquadsInboundsDrawer,
     InternalSquadsUsageDrawer
 } from './internal-squads'
+import { NodeIntegrationEditorModal, NodeIntegrationsModal } from './node-integrations'
 import { NodePluginExecutorDrawer } from './node-plugins'
 import {
     CreateNodeModal,
@@ -34,6 +36,8 @@ import {
     NodeUsageStatsDrawer
 } from './nodes'
 import { PasskeysDrawer } from './remnawave-settings'
+import { SharedListEditorModal, SharedListsModal } from './shared-lists'
+import { SnippetsModal } from './snippets'
 import { CreateModal, HelpDrawerShared, RenameModalShared } from './universal'
 import {
     DetailedUserInfoDrawer,
@@ -94,6 +98,9 @@ export const MODAL_REGISTRY = {
 
     nodePlugins_nodePluginExecutorDrawer: NodePluginExecutorDrawer,
 
+    nodeIntegrations_nodeIntegrationsModal: NodeIntegrationsModal,
+    nodeIntegrations_nodeIntegrationEditorModal: NodeIntegrationEditorModal,
+
     infraBilling_viewInfraProviderModal: ViewInfraProviderModal,
     infraBilling_createInfraProviderModal: CreateInfraProviderModal,
     infraBilling_createInfraBillingNodeModal: CreateInfraBillingNodeModal,
@@ -103,7 +110,13 @@ export const MODAL_REGISTRY = {
     hosts_createHostDrawer: CreateHostDrawer,
     hosts_editHostDrawer: EditHostDrawer,
     hosts_editManyHostsDrawer: EditManyHostsDrawer,
+    hosts_hostMapperModal: HostMapperModal,
     hosts_hostsConfigProfilesDrawer: HostsConfigProfilesDrawer,
+
+    sharedLists_sharedListsModal: SharedListsModal,
+    sharedLists_sharedListEditorModal: SharedListEditorModal,
+
+    snippets_snippetsModal: SnippetsModal,
 
     rwSettings_passkeysDrawer: PasskeysDrawer
 } as const

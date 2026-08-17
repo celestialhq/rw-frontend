@@ -80,7 +80,8 @@
     "processing": "Processing",
     "operation-completed": "Operation completed",
     "usage-stats": "Usage stats",
-    "active-sessions": "Active sessions"
+    "active-sessions": "Active sessions",
+    "shared-lists": "Shared lists"
   },
   "bandwidth-metrics": {
     "current-year": "Current year",
@@ -441,7 +442,8 @@
     "hidden-host-description": "By default, Remnawave will not include hidden hosts in the subscription. Hidden host can be used with Mihomo and Xray-Json Advanced, Raw.",
     "server-description-1": "In supported clients, the protocol name (e.g. vless) will be replaced with the description specified here.",
     "server-description-2": "Not all client applications support this feature. For more details, refer to the documentation of the apps listed below.",
-    "supported-clients": "Supported clients"
+    "supported-clients": "Supported clients",
+    "mapper": "Mapper"
   },
   "base-node-form": {
     "country": "Country",
@@ -985,7 +987,6 @@
       "widget": {
         "infra-provider": "Infra Provider",
         "name-description": "The name of the provider. This is used to identify the provider in the UI.",
-        "name": "Name",
         "enter-provider-name": "Enter provider name",
         "favicon-link": "Favicon Link",
         "enter-favicon-link": "Enter favicon link",
@@ -1469,12 +1470,7 @@
         "snippet-is-valid": "Snippet is valid",
         "edit-snippet": "Edit Snippet",
         "snippets": "Snippets",
-        "new-snippet": "New snippet",
-        "snippets-help-line-1": "They are used to predefine some of your configurations.",
-        "snippets-help-line-2": "A snippet must contain an array of Outbound or Rule objects, and at least one item is required.",
-        "snippets-help-line-3": "Autocomplete is available for snippet names. Also, you can quickly preview the snippet by hovering over the name in the editor.",
-        "snippets-help-line-4": "Inside outbounds[], you can reference the snippets by name.",
-        "snippets-help-line-5": "Inside routing.rules[], you can reference the snippets by name."
+        "new-snippet": "New snippet"
       }
     }
   },
@@ -1771,7 +1767,6 @@
   },
   "use-nodes-table-widget": {
     "online": "Online",
-    "name": "Name",
     "address": "Address",
     "ip-addresses": "IP addresses",
     "traffic-used": "Traffic Used",
@@ -2274,5 +2269,36 @@
       "no-active-config-profile": "This node has no active config profile",
       "linked": "Linked"
     }
+  },
+  "node-integrations": {
+    "modal": {
+      "title": "Node Integrations",
+      "delete-description": "The integration will be removed from all nodes and affected nodes will be restarted."
+    },
+    "editor": {
+      "description": "Description",
+      "description-placeholder": "What this integration does",
+      "config-must-be-an-object": "Config must be a JSON object"
+    },
+    "select": {
+      "label": "Integrations",
+      "placeholder": "Select integrations"
+    }
+  },
+  "shared-lists": {
+    "modal": {
+      "subtitle": "Reusable IP and ASN lists referenced by plugins as ext:name",
+      "delete-description": "The list will be deleted. Plugins referencing it keep the ext: reference and will fail validation until it is fixed."
+    },
+    "editor": {
+      "name-description": "Referenced in plugins as ext:name. Cannot be changed later."
+    }
+  },
+  "apply-to-nodes": {
+    "title": "Apply to nodes?",
+    "apply": "Apply now",
+    "apply-description": "Affected nodes receive the new configuration right away.",
+    "later": "Not now",
+    "later-description": "Changes are saved, but nodes keep the current version until their next sync or restart."
   }
 }

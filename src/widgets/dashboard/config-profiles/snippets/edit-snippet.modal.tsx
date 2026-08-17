@@ -1,22 +1,27 @@
 import type { editor } from 'monaco-editor'
 
 import { MonacoSetupSnippetsFeature } from '@features/dashboard/config-profiles/monaco-setup'
-import { Button, Code, Group, Paper, Stack } from '@mantine/core'
+import { Box, Button, Group, Paper } from '@mantine/core'
 import { useForm, schemaResolver } from '@mantine/form'
 import { modals } from '@mantine/modals'
-import { Editor, Monaco, useMonaco } from '@monaco-editor/react'
+import { useMonaco } from '@monaco-editor/react'
 import { UpdateSnippetCommand } from '@remnawave/backend-contract'
+import clsx from 'clsx'
 import { t } from 'i18next'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { queryClient } from '@shared/api'
-import { useUpdateSnippet } from '@shared/api/hooks'
+import { useSyncSnippet, useUpdateSnippet } from '@shared/api/hooks'
 import { QueryKeys } from '@shared/api/hooks/keys-factory'
-import { monacoTheme } from '@shared/constants/monaco-theme'
+import { usePseudoFullscreen } from '@shared/hooks'
+import { CodeEditor, EditorStatusBar } from '@shared/ui/code-editor'
 import { CopyableFieldShared } from '@shared/ui/copyable-field/copyable-field'
+import { fullscreenClasses, FullscreenToggleButton } from '@shared/ui/fullscreen-toggle-button'
+import { forceMonacoRetokenize } from '@shared/utils/monaco/force-retokenize'
 
-import classes from './SnippetsDrawer.module.css'
+import { openConfirmSnippetSyncModal } from './confirm-snippet-sync.modal'
+import classes from './Snippets.module.css'
 
 export const EDIT_SNIPPET_MODAL_ID = 'edit-snippet-modal'
 
@@ -30,6 +35,7 @@ export const EditSnippetModal = (props: IProps) => {
     const { i18n } = useTranslation()
 
     const monaco = useMonaco()
+    const { isFullscreen, toggle: toggleFullscreen } = usePseudoFullscreen()
     const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
 
     const { mutate: updateSnippet, isPending: isUpdating } = useUpdateSnippet({
@@ -41,6 +47,8 @@ export const EditSnippetModal = (props: IProps) => {
         }
     })
 
+    const { mutate: syncSnippet } = useSyncSnippet()
+
     const editSnippetForm = useForm<UpdateSnippetCommand.RequestBody>({
         name: 'edit-snippet-form',
         mode: 'uncontrolled',
@@ -51,13 +59,6 @@ export const EditSnippetModal = (props: IProps) => {
             snippet: snippet.snippet as unknown as UpdateSnippetCommand.RequestBody['snippet']
         }
     })
-
-    const handleEditorDidMount = (monaco: Monaco) => {
-        monaco.editor.defineTheme('GithubDark', {
-            ...monacoTheme,
-            base: 'vs-dark'
-        })
-    }
 
     const handleUpdate = (values: UpdateSnippetCommand.RequestBody) => {
         if (!editorRef.current) return
@@ -87,30 +88,47 @@ export const EditSnippetModal = (props: IProps) => {
             return
         }
 
-        updateSnippet({
-            variables: {
-                name: values.name,
-                snippet: currentValue
+        updateSnippet(
+            {
+                variables: {
+                    name: values.name,
+                    snippet: currentValue
+                }
+            },
+            {
+                onSuccess: () => {
+                    openConfirmSnippetSyncModal(() => {
+                        syncSnippet({
+                            variables: {
+                                name: values.name
+                            }
+                        })
+                    })
+                }
             }
-        })
+        )
     }
 
     useEffect(() => {
         if (!monaco) return
 
-        MonacoSetupSnippetsFeature.setup(monaco, i18n.language)
+        MonacoSetupSnippetsFeature.setup(i18n.language)
     }, [i18n.language, monaco])
 
     return (
         <form onSubmit={(e) => editSnippetForm.onSubmit(handleUpdate)(e)}>
-            <Stack gap="md">
-                <CopyableFieldShared
-                    label={t('snippets.drawer.widget.snippet-name')}
-                    value={editSnippetForm.getValues().name}
-                />
+            <Box className={clsx(classes.container, isFullscreen && fullscreenClasses.overlay)}>
+                {!isFullscreen && (
+                    <CopyableFieldShared
+                        label={t('snippets.drawer.widget.snippet-name')}
+                        value={editSnippetForm.getValues().name}
+                    />
+                )}
 
                 <Paper
+                    className={clsx(classes.editorWrapper, isFullscreen && fullscreenClasses.fill)}
                     p={0}
+                    pos="relative"
                     style={{
                         border: editSnippetForm.getInputProps('snippet').error
                             ? '1px solid var(--mantine-color-red-5)'
@@ -118,12 +136,26 @@ export const EditSnippetModal = (props: IProps) => {
                     }}
                     withBorder
                 >
-                    <Editor
-                        beforeMount={handleEditorDidMount}
+                    <FullscreenToggleButton
+                        isFullscreen={isFullscreen}
+                        onToggle={toggleFullscreen}
+                    />
+
+                    <CodeEditor
+                        footer={
+                            <EditorStatusBar
+                                status={
+                                    editSnippetForm.getInputProps('snippet').error
+                                        ? 'error'
+                                        : 'success'
+                                }
+                            >
+                                {(editSnippetForm.getInputProps('snippet').error as string) ||
+                                    t('snippets.drawer.widget.snippet-is-valid')}
+                            </EditorStatusBar>
+                        }
                         className={classes.editor}
                         defaultLanguage="json"
-                        height={400}
-                        loading={t('config-editor.widget.loading-editor')}
                         onChange={(value) => {
                             try {
                                 JSON.parse(value || '[]')
@@ -138,75 +170,15 @@ export const EditSnippetModal = (props: IProps) => {
                         }}
                         onMount={(editor) => {
                             editorRef.current = editor
+
+                            forceMonacoRetokenize(editor)
                         }}
                         options={{
-                            autoClosingBrackets: 'always',
-                            autoClosingQuotes: 'always',
-                            autoIndent: 'full',
-                            automaticLayout: true,
-                            bracketPairColorization: {
-                                enabled: true,
-                                independentColorPoolPerBracketType: true
-                            },
-                            scrollbar: {
-                                useShadows: false,
-                                verticalHasArrows: true,
-                                horizontalHasArrows: true,
-                                vertical: 'visible',
-                                horizontal: 'visible',
-                                arrowSize: 30,
-                                alwaysConsumeMouseWheel: false
-                            },
-                            detectIndentation: true,
-                            folding: true,
-                            foldingStrategy: 'indentation',
-                            fontSize: 14,
-                            formatOnPaste: true,
-                            formatOnType: true,
-                            guides: {
-                                bracketPairs: true,
-                                indentation: true
-                            },
-                            insertSpaces: true,
-                            minimap: { enabled: true },
-                            quickSuggestions: true,
-                            renderLineHighlight: 'all',
-                            scrollBeyondLastLine: false,
-                            smoothScrolling: true,
-                            tabSize: 2,
-                            padding: {
-                                top: 10,
-                                bottom: 10
-                            }
+                            hover: { above: false }
                         }}
                         path="snippet://*"
-                        theme="GithubDark"
                         value={JSON.stringify(editSnippetForm.getValues().snippet || [], null, 2)}
                     />
-                </Paper>
-
-                <Paper
-                    mb="md"
-                    p="md"
-                    radius="sm"
-                    style={{
-                        backgroundColor: editSnippetForm.getInputProps('snippet').error
-                            ? 'rgba(241, 65, 65, 0.1)'
-                            : 'rgba(51, 171, 132, 0.1)',
-                        border: `1px solid ${editSnippetForm.getInputProps('snippet').error ? 'rgb(241, 65, 65)' : 'rgb(51, 171, 132)'}`
-                    }}
-                >
-                    <Code
-                        color={editSnippetForm.getInputProps('snippet').error ? 'red' : 'teal'}
-                        style={{
-                            backgroundColor: 'transparent',
-                            fontSize: '0.9rem',
-                            padding: 0
-                        }}
-                    >
-                        {editSnippetForm.getInputProps('snippet').error ||
-                            t('snippets.drawer.widget.snippet-is-valid')}
-                    </Code>
                 </Paper>
 
                 <Group gap="sm" justify="flex-end">
@@ -220,11 +192,11 @@ export const EditSnippetModal = (props: IProps) => {
                     >
                         {t('common.cancel')}
                     </Button>
-                    <Button loading={isUpdating} type="submit">
+                    <Button loading={isUpdating} type="submit" variant="soft">
                         {t('common.save')}
                     </Button>
                 </Group>
-            </Stack>
+            </Box>
         </form>
     )
 }

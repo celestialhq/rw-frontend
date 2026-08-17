@@ -80,7 +80,8 @@
     "processing": "Processing",
     "operation-completed": "Operation completed",
     "usage-stats": "Usage stats",
-    "active-sessions": "Active sessions"
+    "active-sessions": "Active sessions",
+    "shared-lists": "Shared lists"
   },
   "bandwidth-metrics": {
     "current-year": "امسال",
@@ -441,7 +442,8 @@
     "hidden-host-description": "By default, Remnawave will not include hidden hosts in the subscription. Hidden host can be used with Mihomo and Xray-Json Advanced, Raw.",
     "server-description-1": "In supported clients, the protocol name (e.g. vless) will be replaced with the description specified here.",
     "server-description-2": "Not all client applications support this feature. For more details, refer to the documentation of the apps listed below.",
-    "supported-clients": "Supported clients"
+    "supported-clients": "Supported clients",
+    "mapper": "Mapper"
   },
   "base-node-form": {
     "country": "کشور",
@@ -985,7 +987,6 @@
       "widget": {
         "infra-provider": "ارائه‌دهنده تجهیزات",
         "name-description": "نام ارائه‌دهنده. این نام برای شناسایی ارائه‌دهنده در رابط کاربری استفاده می‌شود.",
-        "name": "نام",
         "enter-provider-name": "نام ارائه‌دهنده را وارد کنید",
         "favicon-link": "لینک Favicon",
         "enter-favicon-link": "لینک Favicon را وارد کنید",
@@ -1469,12 +1470,7 @@
         "snippet-is-valid": "قطعه کد صحیح است",
         "edit-snippet": "ویرایش قطعه کد",
         "snippets": "قطعه کدها",
-        "new-snippet": "قطعه کد جدید",
-        "snippets-help-line-1": "قطعه کدها برای آماده‌سازی بخشی از کانفیگ استفاده می‌شوند.",
-        "snippets-help-line-2": "هر قطعه کد باید شامل آرایه‌ای از اشیا Outbound یا Rule باشد و باید حداقل یک آیتم داخل آرایه وجود داشته باشد.",
-        "snippets-help-line-3": "برای اسم قطعه کدها تکمیل خودکار در دسترس است. همچنین با بردن نشانگر موس روی اسم اسنیپت می‌توانید پیش‌نمایش سریعی از محتوای آن را مشاهده کنید.",
-        "snippets-help-line-4": "داخل آرایه outbounds[] می‌توانید به اسم قطعه کدها اشاره کنید.",
-        "snippets-help-line-5": "داخل آرایه routing.rules[] می‌توانید به اسم قطعه کدها اشاره کنید."
+        "new-snippet": "قطعه کد جدید"
       }
     }
   },
@@ -1771,7 +1767,6 @@
   },
   "use-nodes-table-widget": {
     "online": "آنلاین",
-    "name": "اسم",
     "address": "آدرس",
     "ip-addresses": "IP addresses",
     "traffic-used": "ترافیک استفاده‌شده",
@@ -2274,5 +2269,36 @@
       "no-active-config-profile": "This node has no active config profile",
       "linked": "Linked"
     }
+  },
+  "node-integrations": {
+    "modal": {
+      "title": "Node Integrations",
+      "delete-description": "The integration will be removed from all nodes and affected nodes will be restarted."
+    },
+    "editor": {
+      "description": "Description",
+      "description-placeholder": "What this integration does",
+      "config-must-be-an-object": "Config must be a JSON object"
+    },
+    "select": {
+      "label": "Integrations",
+      "placeholder": "Select integrations"
+    }
+  },
+  "shared-lists": {
+    "modal": {
+      "subtitle": "Reusable IP and ASN lists referenced by plugins as ext:name",
+      "delete-description": "The list will be deleted. Plugins referencing it keep the ext: reference and will fail validation until it is fixed."
+    },
+    "editor": {
+      "name-description": "Referenced in plugins as ext:name. Cannot be changed later."
+    }
+  },
+  "apply-to-nodes": {
+    "title": "Apply to nodes?",
+    "apply": "Apply now",
+    "apply-description": "Affected nodes receive the new configuration right away.",
+    "later": "Not now",
+    "later-description": "Changes are saved, but nodes keep the current version until their next sync or restart."
   }
 }
