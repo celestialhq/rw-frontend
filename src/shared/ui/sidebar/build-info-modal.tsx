@@ -88,7 +88,7 @@ export function BuildInfoModal({ remnawaveMetadata, isNewVersionAvailable }: Bui
 
                             <Badge
                                 color={
-                                    remnawaveMetadata.git.backend.branch === 'dev' ? 'red' : 'teal'
+                                    remnawaveMetadata.git.backend.branch !== 'main' ? 'red' : 'teal'
                                 }
                                 leftSection={<TbGitBranch size={16} />}
                                 size="lg"
@@ -226,7 +226,7 @@ export function BuildInfoModal({ remnawaveMetadata, isNewVersionAvailable }: Bui
                 </Button>
                 <Button
                     component="a"
-                    href="https://github.com/remnawave"
+                    href="https://github.com/celestialhq"
                     leftSection={<TbBrandGithub size={16} />}
                     radius="md"
                     size="sm"
